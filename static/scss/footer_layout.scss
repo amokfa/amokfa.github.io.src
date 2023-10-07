@@ -1,0 +1,55 @@
+@import "svg_icons.scss";
+
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1em;
+  background: #dbdefa;
+  grid-gap: 1em;
+
+  .discussion {
+    font-weight: 700;
+    color: inherit !important;
+    padding: 1em;
+    background: #70aef8;
+    border-radius: 3px;
+    box-shadow: 0 0 5px #808080;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+
+    &:hover {
+      text-decoration: none;
+      opacity: 85%;
+    }
+  }
+
+  .links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 3em;
+
+    @media (max-width: 800px) {
+      flex-direction: column;
+      grid-gap: 2em;
+    }
+
+    .social {
+      .footer-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 0.5em;
+        color: #032a71;
+      }
+
+      > * {
+        margin: 0 0.5em;
+      }
+    }
+  }
+}
+

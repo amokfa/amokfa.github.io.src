@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home</title>
+    <meta name="google-site-verification" content="d25Puo7RcT1XRfGE5SsZVxPntEUmQdILgIWWd7zO8SM" />
+    <meta name="msvalidate.01" content="BFE5DE50747B2A37392758854ABF90E1" />
+</head>
+<body>
+<article>
+    <ul id="posts"></ul>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function page_specific_stuff() {
+    ['/projects.html', '/tags.html', '/404.html'].map(path => window._ConstexprJS_.addPath({
+      generator: path,
+      output: path
+    }))
+
+    const postsEl = document.querySelector('#posts')
+    const posts = await fetch('/collections/posts.json').then(res => res.json())
+    posts.forEach(post => window._ConstexprJS_.addPath({
+      generator: post.url,
+      output: post.url
+    }))
+    posts.forEach(post => {
+      let tags = ''
+      post.tags.forEach(tag => {
+        tags += `<a class="tag_element" href="/tags/generator.html?${tag}">${tag}</a> `
+      })
+      const el = make_element(`<li><a href="${post.url}">${post.title}</a> ${tags}</li>`)
+      insertFirst(postsEl, el)
+    })
+  }
+</script>
+
+<script constexpr>
+  Promise.all([
+    fetch('/favicon.ico'), site_global_rendering(), page_specific_stuff()
+  ])
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+<style>
+    #posts {
+        margin-top: 2em;
+        padding: 0;
+    }
+
+    #posts li {
+        margin: 1em;
+    }
+</style>
+</html>

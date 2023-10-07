@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<h1 id="main_title">Not Found</h1>
+<article>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+    async function page_specific_stuff() {
+    }
+</script>
+
+<script constexpr>
+  Promise.all([site_global_rendering(), page_specific_stuff()])
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+</html>

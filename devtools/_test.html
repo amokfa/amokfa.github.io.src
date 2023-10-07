@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+    <video autoplay playsinline controls="false"></video>
+</article>
+</body>
+<script>
+    async function getConnectedDevices(type) {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        return devices.filter(device => device.kind === type)
+    }
+
+    // Open camera with at least minWidth and minHeight capabilities
+    async function openCamera(cameraId) {
+        const constraints = {
+            'video': {
+                'deviceId': cameraId,
+            }
+        }
+
+        return await navigator.mediaDevices.getUserMedia(constraints);
+    }
+
+    async function rt_main() {
+        const cameras = await getConnectedDevices('videoinput');
+        if (cameras && cameras.length > 0) {
+            // Open first available video camera with a resolution of 1280x720 pixels
+            const cam_stream = await openCamera(cameras[0].deviceId);
+            let vid = document.querySelector('video')
+            vid.srcObject = cam_stream
+        } else {
+            console.log('didnt find a camera')
+        }
+    }
+</script>
+<style>
+    video {
+        width: 100%;
+    }
+</style>
+
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function render_page() {
+    const base_page_render = site_global_rendering()
+    await base_page_render
+  }
+</script>
+
+<script constexpr>
+  render_page()
+    .then(() => window._ConstexprJS_.compile())
+    .then(() => rt_main())
+</script>
+
+</html>

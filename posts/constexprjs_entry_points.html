@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+    <p>
+        <progi>constexprjs</progi> executable requires three mandatory arguments, <progi>--input</progi>,
+        <progi>--output</progi>, and <progi>--entry</progi>.
+        <progi>--entry</progi> option can be used multiple times in an invocation. Its values must be paths of HTML
+        files relative to the input root:
+    </p>
+    <prog class="language-bash">
+constexprjs --input=. --output=../deployment --entry /index.html --entry /subsite/index.html
+    </prog>
+    <p>
+        This is the sequence of operations constexprjs performs when it is invoked:
+    </p>
+    <ol>
+        <li>
+            Render all the pages. For each page:
+            <ol>
+                <li>Figure out its dependencies (css, images, etc).</li>
+                <li>Snapshot the DOM state when the page finishes rendering.</li>
+                <li>Close the page.</li>
+            </ol>
+        </li>
+        <li>
+            Write the DOM snapshots of each page as HTML files.
+        </li>
+        <li>
+            Combine the dependency lists of all the pages into a single list.
+        </li>
+        <li>
+            Copy dependencies to the output directory.
+        </li>
+    </ol>
+    <p>
+        It maintains a list of pages that it needs to process. In the beginning, this list contains only the
+        pages specified as entry points (<progi>/index.html</progi> and <progi>/subsite/index.html</progi>
+        in the above example). The constexpr code inside these entry points is supposed to use the <progi>addPaths</progi>
+        api hook to notify the compiler about other pages that it needs to render. The argument of this function must be
+        an object with two keys, <progi>generator</progi> and <progi>output</progi>:
+    </p>
+    <prog class="language-js">
+window._ConstexprJS_.addPath(
+    {
+        generator: "/about.html",
+        output: "/about.html"
+    }
+)
+window._ConstexprJS_.addPath(
+    {
+        generator: "/posts/generator_from_date.html?2023-jan",
+        output: "/posts/2023-jan.html"
+    }
+)
+    </prog>
+    <p>
+        These invocations will append <progi>/about.html</progi> and
+        <progi>/posts/generator_from_date.html?2023-jan</progi> to the list of pages that the compiler needs to process.
+        The compilation results of these pages will be written to <progi>/about.html</progi> and
+        <progi>/posts/2023-jan.html</progi> respectively.
+    </p>
+
+    <p>
+        Think of the generator page as a function that takes input in url query string/hash and produces the intended
+        page as output.
+    </p>
+
+    <p>
+        Every page except the entry points will have a parent page which queued it for compilation. The queueing
+        relationship between the pages will form a tree:
+    </p>
+
+    <div class="graphviz">
+graph {
+    a -- b [dir=forward];
+    a -- c [dir=forward];
+    c -- d [dir=forward];
+    c -- e [dir=forward];
+    c -- f [dir=forward];
+    a [label="/index.html", shape=box];
+    b [label="/about.html", shape=box];
+    c [label="/tags.html", shape=box];
+    d [label="/tags/javascript.html", shape=box];
+    e [label="/tags/webdev.html", shape=box];
+    f [label="/tags/clojure.html", shape=box];
+}
+    </div>
+
+    <h2>Links to generated pages</h2>
+    <p>
+        The compiler also maps all the links to generator page (<progi>/posts/generator_from_date.html?2023-jan</progi>)
+        to the correct output HTMLs (<progi>/posts/2023-jan.html</progi>). This ensures that the original and the final
+        website look and work exactly the same even when you use this feature.
+    </p>
+
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function render_page() {
+    const base_page_render = site_global_rendering()
+    await base_page_render
+  }
+</script>
+
+<script constexpr>
+  render_page()
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+</html>

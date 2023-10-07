@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+    <p>
+        constexprjs allows you to execute some of the javascript in your website
+        before it is deployed. I'll refer to such javascript as <progi>constexpr</progi>. You can use constexpr code for
+        programmatically generating HTML in your website.
+    </p>
+    <p>
+        The constexpr code is stripped out by the compiler, so the runtime code must not depend on it. Hence, there has to
+        be a clear boundary between the runtime code and compile time code. In this article I'll share some tips for
+        managing this when building a site with constexprjs.
+    </p>
+    <blockquote>
+        This article requires some familiarity with constexprjs. <a href="/posts/constexprjs_hello_world.html">Read this guide</a>
+        to get up and running with constexprjs.
+    </blockquote>
+    <h2>A simple example</h2>
+    <p>
+        Set up the environment as described in the above linked guide. After that, put this in <progi>index.html</progi>:
+    </p>
+    <prog class="language-html">
+<textarea>
+<html>
+  <head>
+    <title>Dynamic Pages Example</title>
+  </head>
+  <body>
+    <p>This page was rendered on: <span id="timestamp"></span></p>
+  </body>
+  <script constexpr>
+    let d = new Date()
+    document.querySelector('#timestamp').textContent = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
+    window._ConstexprJS_.compile()
+  </script>
+</html>
+</textarea>
+    </prog>
+    <p>
+        And run the compiler:
+    </p>
+    <prog class="language-bash">constexprjs --input=. --output=_out --entry=index.htm</prog>
+    <p>
+        The compiler will emit the following static website:
+    </p>
+    <prog class="language-html">
+        <textarea>
+<html>
+    <head>
+        <title>Dynamic Pages Example</title>
+    </head>
+    <body>
+        <p>This page was rendered on: <span id="timestamp">1:58:5</span></p>
+    </body>
+</html>
+        </textarea>
+    </prog>
+    <p>
+        Let's add a button to this page that will add all the numbers in the timestamp and <progi>alert</progi> the result,
+        just to demonstrate how to build non-static websites with constexprjs. Let's first modify our rendering code to
+        add a button to the page:
+    </p>
+    <prog class="language-html">
+        <textarea>
+<script constexpr>
+  let d = new Date()
+  document.querySelector('#timestamp').textContent = `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
+
+  let b = document.createElement('button')
+  b.textContent = "Calculate"
+  document.body.appendChild(b)
+
+  window._ConstexprJS_.compile()
+</script>
+        </textarea>
+    </prog>
+    <p>
+        After that, define a regular, non-constexpr function named <progi>runtime_bootstrap</progi> that will add an
+        event listener to this button:
+    </p>
+    <prog class="language-html">
+        <textarea>
+<script>
+  function runtime_bootstrap() {
+    document.querySelector('button').addEventListener('click', () => {
+      let result = 0
+      document.querySelector('#timestamp').textContent.split(':')
+        .forEach(s => result += parseInt(s))
+      alert(result)
+    })
+  }
+</script>
+        </textarea>
+    </prog>
+    <p>
+        Finally we'll modify the rendering code to add a <progi>script</progi> tag to our page that calls the bootstrap
+        function:
+    </p>
+        <prog class="language-html">
+        <textarea>
+<script constexpr>
+...
+  let s = document.createElement('script')
+  s.textContent = 'runtime_bootstrap()'
+  document.body.appendChild(s)
+
+  window._ConstexprJS_.compile()
+</script>
+        </textarea>
+    </prog>
+    <p>
+        Now when you run the compiler, you will get the following page as output:
+    </p>
+    <prog class="language-html">
+        <textarea>
+<html>
+  <head>
+    <title>Dynamic Pages Example</title>
+    <script>
+      function runtime_bootstrap() {
+        document.querySelector('button').addEventListener('click', () => {
+          let result = 0
+          document.querySelector('#timestamp').textContent.split(':')
+            .forEach(s => result += parseInt(s))
+          alert(result)
+        })
+      }
+    </script>
+  </head>
+  <body>
+    <p>This page was rendered on: <span id="timestamp">2:32:13</span></p>
+    <button>Calculate</button>
+    <script>runtime_bootstrap()</script>
+  </body>
+</html>
+        </textarea>
+    </prog>
+    <p>
+        This page contains three things:
+    </p>
+    <ol>
+        <li>Generated HTML (timestamp and button)</li>
+        <li>Runtime bootstrap function</li>
+        <li>A script tag that calls the bootstrap function</li>
+    </ol>
+    <p>
+        All the rendering code has been stripped out.
+    </p>
+    <h2>Implementation in this website</h2>
+    <p>
+      The rendering code generates all the site global theming (navbar, sidebars, syntax highlighting etc). I've put this
+      code in <a href="https://github.com/amokfa/knmw.link.src/blob/master/static/js/constexpr/renderer.js">/static/js/constexpr/renderer.js</a>.
+      This script is <a href="https://github.com/amokfa/knmw.link.src/blob/master/devtools/_template.html">included as constexpr in every page</a>.
+    </p>
+    <p>
+        The code that bootstraps the dynamic behavior is contained in a separate file, <a href="https://github.com/amokfa/knmw.link.src/blob/master/static/js/dynamic.js">/static/js/dynamic.js</a>.
+        The constexpr code in <progi>renderer.js</progi> adds this script tag to every page once it has finished rendering:
+    </p>
+    <prog class="language-js">
+addRuntimeBootstrapHook({
+  src: '/static/js/dynamic.js'
+})
+    </prog>
+    <p>
+      This is the implementation of <progi>addRuntimeBootstrapHook</progi> utility:
+    </p>
+    <prog class="language-js">
+function addRuntimeBootstrapHook(js) {
+  let el = document.createElement('script')
+  if (js.src) {
+    el.setAttribute('async', '')
+    el.setAttribute('defer', '')
+    el.setAttribute('src', js.src)
+  } else if (js.code) {
+    el.textContent = js.code
+  } else {
+    throw "invalid arguments"
+  }
+  document.body.appendChild(el)
+}
+    </prog>
+    <blockquote>
+        See pages tagged with <a class="tag_element" href="/tags/generator.html?constexprjs">constexprjs</a> for more guides.
+    </blockquote>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function page_specific_stuff() {
+  }
+</script>
+
+<script constexpr>
+  Promise.all([site_global_rendering(), page_specific_stuff()])
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+</html>

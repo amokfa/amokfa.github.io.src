@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+    <ul>
+    </ul>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function page_specific_stuff() {
+    await site_global_rendering()
+    const tagName = window.location.search.substring(1)
+    document.querySelector('#main_title').textContent = 'Tag: ' + tagName
+    document.querySelector('head title').textContent = 'Tag: ' + tagName
+    const posts = await fetch('/collections/posts.json').then(res => res.json())
+    const list = document.querySelector('ul')
+    let postCount = 0
+    posts.filter(p => p.tags.indexOf(tagName) !== -1)
+      .forEach(p => {
+        postCount++
+        let tags = ''
+        p.tags.forEach(tag => {
+          tags += `<a class="tag_element" href="/tags/generator.html?${tag}">${tag}</a> `
+        })
+        list.appendChild(make_element(`<li><a href="${p.url}">${p.title}</a> ${tags}</li>`))
+      })
+    if (postCount === 0) {
+      window._ConstexprJS_.log(`no posts found with tag: "${tagName}"`)
+    }
+  }
+</script>
+
+<script constexpr>
+  Promise.all([page_specific_stuff()])
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+<style>
+    ul {
+        margin-top: 2em;
+        padding: 0;
+    }
+    ul li {
+        margin: 1em;
+    }
+</style>
+
+
+</html>

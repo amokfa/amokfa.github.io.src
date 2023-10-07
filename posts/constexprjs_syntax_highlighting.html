@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+    <p>
+        Syntax highlighted code in a webpage, like this one, is just some html with some styling added to it. For example, this html:
+    </p>
+    <prog class="language-html">
+&lt;pre>
+    &lt;span class="token keyword">function&lt;/span>
+    &lt;span class="token function">calculate&lt;/span>
+    &lt;span class="token punctuation">(&lt;/span>
+    &lt;span class="token parameter">n&lt;/span>
+    &lt;span class="token punctuation">)&lt;/span>
+    &lt;span class="token punctuation">{&lt;/span>
+    &lt;span class="token keyword">if&lt;/span>
+    &lt;span class="token punctuation">(&lt;/span>n
+    &lt;span class="token operator">===&lt;/span>
+    &lt;span class="token number">0&lt;/span>
+    &lt;span class="token punctuation">)&lt;/span>
+    &lt;span class="token punctuation">{&lt;/span>
+    &lt;span class="token keyword">return&lt;/span>
+    &lt;span class="token number">1&lt;/span>
+    &lt;span class="token punctuation">;&lt;/span>
+    &lt;span class="token keyword">else&lt;/span>
+    &lt;span class="token punctuation">{&lt;/span>
+    &lt;span class="token keyword">return&lt;/span>
+    n
+    &lt;span class="token operator">*&lt;/span>
+    &lt;span class="token function">calculate&lt;/span>
+    &lt;span class="token punctuation">(&lt;/span>
+    n
+    &lt;span class="token operator">-&lt;/span>
+    &lt;span class="token number">1&lt;/span>
+    &lt;span class="token punctuation">)&lt;/span>
+    &lt;span class="token punctuation">}&lt;/span>
+    &lt;span class="token punctuation">}&lt;/span>
+&lt;/pre>
+    </prog>
+    <p>
+        Generates this output when rendered:
+    </p>
+    <prog class="language-js">
+function calculate(n) {
+    if (n === 0) {
+        return 1;
+    else {
+        return n * calculate(n-1)
+    }
+}
+    </prog>
+    <p>
+        As you can see, it's just a bit of HTML and CSS. The clients shouldn't have to download and execute javascript to highlight
+        code in a webpage. As a matter of fact, syntax highlighting on this page works without javascript. You can
+        verify that by disabling javascript in your browser and reloading this page.
+    </p>
+    <p>
+        This site accomplishes that using constexprjs, which is a tool that can execute the javascript in your pages ahead
+        of time. When building sites with constexprjs you use javascript instead of templating language. As for plugins, you can
+        use <em>any</em> javascript library/framework. This code is all you need to integrate prism.js
+        in your website.
+    </p>
+    <prog id="syntax_highlight_code" class="language-js">
+    </prog>
+    <p>
+        It's also results in better UX. You won't see the code in black and white while the syntax highlighting code is doing its job.
+        Websites use tricks like hiding the code blocks while the page is loading to avoid this glitch.
+    </p>
+    <p>
+        Using <progi>katex</progi> for rendering math formulae is just as simple:
+    </p>
+    <prog id="render_latex_code" class="language-js">
+    </prog>
+    <blockquote>
+        See pages tagged with <a class="tag_element" href="/tags/generator.html?constexprjs">constexprjs</a> for more guides.
+    </blockquote>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function page_specific_stuff() {
+    document.querySelector('#syntax_highlight_code').textContent = syntax_highlight.toString()
+    document.querySelector('#render_latex_code').textContent = render_latex.toString()
+    await site_global_rendering()
+  }
+</script>
+
+<script constexpr>
+  Promise.all([page_specific_stuff()])
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+</html>

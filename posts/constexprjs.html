@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+    <h2>What is constexpr</h2>
+    <p>
+        It's a feature defined by the C++ standard. Quoting cppreference:
+        <blockquote>The constexpr specifier declares that it is possible to evaluate the value of the function or variable at compile time.
+            Such variables and functions can then be used where only compile time constant expressions are allowed</blockquote>
+    </p>
+    <p>
+        So if you create a valid constexpr function in C++, call it with constant values, and assign the result to a
+        constexpr variable, the entire computation will happen at compile time.
+        Other languages also have this feature. It's called <progi>const</progi> in rust, <progi>comptime</progi> in zig,
+        macros in lisps that compile, and so on.
+
+    </p>
+    <h2>What is constexprjs?</h2>
+    <p>
+        It's a static site generator without a DSL or a templating language (liquid, handlebars, haml). Rather, it employs JavaScript to generate HTML,
+        a function it excels at given that this was the primary reason for JavaScript's creation. It executes some of the
+        javascript in your website before deployment. The whole browser runtime is available at your disposal when
+        generating sites with it.
+    </p>
+
+    <h2>Demo</h2>
+    <p>This whole website is built using constexprjs.</p>
+
+    <h2>How does it work?</h2>
+    <p>
+        The compiler renders the pages using chrome, and saves the rendered state as new pages when they finish rendering.
+        It also strips out the javascript that was used for generating HTML, potentially reducing download
+        size for the website users drastically. For example, this website is rendered using 50k lines of javascript, none
+        of which you need to download or execute to view this site. You can test this by disabling the javascript in your browser.
+        <prog class="language-bash">
+$ tokei static/packages/ static/js/constexpr/
+===============================================================================
+ Language            Files        Lines         Code     Comments       Blanks
+===============================================================================
+ CSS                     4         1095         1081           12            2
+ JavaScript             29        61395        49577         5539         6279
+-------------------------------------------------------------------------------
+ Markdown                1           77            0           53           24
+ |- HTML                 1           15           10            3            2
+ (Total)                             92           10           56           26
+===============================================================================
+ Total                  34        62567        50658         5604         6305
+===============================================================================
+        </prog>
+        Any piece of javascript code that just generates some HTML can be made constexpr.
+    </p>
+    <p>
+        The generated pages don't have to be completely static. For example the mobile view navigation, and the bottom right
+        viewport, use javascript.
+    </p>
+
+    <h2>Setup and usage</h2>
+
+    <p>
+        The CLI can be installed from npm:
+    </p>
+    <prog class="language-bash">npm i -g constexprjs@latest</prog>
+    <p>
+        Command line usage:
+        <prog>
+$ constexprjs --help
+usage: constexprjs [-h] [-v] --input INPUT_DIRECTORY --output OUTPUT_DIRECTORY [--entry ENTRYPOINTS] [--skip-resources] [--jobcount JOBCOUNT] [--jobtimeout JOBTIMEOUT] [--depfile DEPFILE] [--noheadless] [--verbose]
+
+Zero cost abstractions for web development
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+  --input INPUT_DIRECTORY
+                        Input website root directory
+  --output OUTPUT_DIRECTORY
+                        Output directory
+  --entry ENTRYPOINTS   Add an HTML file to be used as entry point, paths must be relative to the website root, can be used multiple times, must provide at least one entry point
+  --skip-resources      Do not copy resources to the output directory
+  --jobcount JOBCOUNT   Number of compilation jobs to run in parallel
+  --jobtimeout JOBTIMEOUT
+                        Time in milliseconds for which the compiler will wait for the pages to render
+  --depfile DEPFILE     A JSON object containing the command line arguments, file dependency, compilation results will be written to this path
+  --noheadless          Do not run chrome in headless mode, can be used for debugging using browser console
+  --verbose             Enable verbose logging
+        </prog>
+    </p>
+    <p>
+        This is what an invocation looks like:
+    </p>
+    <div id="asciinema_cont">
+        <asciinema-player speed="10" rows="202" src="/static/files/build.cast"></asciinema-player>
+    </div>
+    <p>
+        As you can see it can also copy resources (<progi>css</progi>, <progi>images</progi> etcetra)
+        that are fetched by pages being rendered.
+    </p>
+
+    <p>
+        See <a href="/posts/constexprjs_hello_world.html">this page</a> for a hello world demo of constexprjs.
+    </p>
+
+    <h2>Plugins</h2>
+    <p>
+        You can use any web development technology (and any number of technologies) to generate the HTML without any
+        fear of bloat. Pivottable.js demo:
+    </p>
+    <div id="pt_output"></div>
+    <p>
+        This page also uses prism.js for syntax highlighting, katex for math formulae, viz.js for graphs and asciinema-player for
+        rendering CLI output, along with jquery and papaparse. None of which you need to download or execute because it's constexpr.
+    </p>
+
+    <h2>Performance</h2>
+    <p>
+      As long as everything is setup correctly (use only local resources, trigger compilation as soon as rendering
+      finishes) compilation times should be very reasonably. In any case compilation time should never be an issue
+      because the generated website will look and work exactly the same as the original website (the one you write)
+      if things are setup properly, so you will only have to run the compiler once per deployment.
+    </p>
+
+    <h2>Cons</h2>
+    <p>
+      One area in which constexprjs can't compete with other static site generators is ease of use. You cannot use this
+      "static site generator" if you aren't a web developer. You have to be proficient in javascript, css, and doing
+      things by hand.
+    </p>
+    <p>
+      However you can think of constexprjs as a tool for building an easy-to-use static site generator. I built one for
+      this website. Now I can write <a href="https://github.com/amokfa/knmw.link.src/tree/master/posts/dfbhd_sbf.html">HTML files</a>
+      with bare minimum markup and don't have to worry about the web development aspect of building a website. I can copy
+      over this <a href="https://github.com/amokfa/knmw.link.src/tree/master/devtools/_template.html">template</a> and
+      just start writing a page.
+    </p>
+  <p>
+    Note that you have to write html, css, js when building themes for traditional SSGs as well (<a href="https://github.com/mmistakes/minimal-mistakes">Example</a>).
+    Constexprjs just has a higher barrier for entry, it doesn't come with batteries included (all it does is evaluate
+    js in your pages ahead of time), and there is no plugin system. You're supposed to use the standard
+    web dev techniques.
+  </p>
+
+    <h2>Tips</h2>
+
+    <ol>
+        <li>
+            You can mark tags other than <progi>script</progi> with <progi>constexpr</progi> as well.
+            Add this code to your page to differentiate original page from the generated page:
+            <prog class="language-html">
+&lt;style constexpr>
+body {
+    border: 2px solid red;
+}
+&lt;/style>
+            </prog>
+            This code will add a red border to your page which will only appear on the original website.
+        </li>
+        <li>
+            In the original webpage, you'll see a console error when the code tries to call the compilation trigger
+            functions. Because those functions are injected by the compiler. You can add this snippet to
+            fix that error:
+
+            <prog class="language-html">
+&lt;script constexpr>
+if (!window._ConstexprJS_) {
+  window._ConstexprJS_ = {
+    compile: () => {},
+    abort: () => {},
+    addPath: () => {},
+    addExclusion: () => {},
+    addDependency: () => {},
+    log: () => {}
+  }
+}
+&lt;/script>
+            </prog>
+        </li>
+        <li>
+            You can manage multiple rendering task in your page using promises:
+            <prog class="language-js">
+Promise.all([render_task_1(), render_task_2()])
+    .then(() => window._ConstexprJS_.compile())
+            </prog>
+        </li>
+        <li>
+            You should keep all structured data separate from the html in <a
+                href="https://github.com/amokfa/knmw.link.src/tree/master/collections">json files</a>.
+            <progi>constexpr</progi> javascript should fetch these json files and render the site using them.
+            <br/>
+            I plan to add sqlite support to the compiler. The runtime will have <progi>window._ConstexprJS_.runSQL</progi> function
+            for querying this database.
+        </li>
+        <li>
+            Use this if you love javascript
+        </li>
+        <li>
+            Use this if you hate javascript
+        </li>
+    </ol>
+    <blockquote>
+        See pages tagged with <a class="tag_element" href="/tags/generator.html?constexprjs">constexprjs</a> for more guides.
+    </blockquote>
+    <div id="end_note">
+        <div id="gh_links">
+            <a class="github-button" href="https://github.com/amokfa/ConstexprJS/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch amokfa/ConstexprJS on GitHub">Watch</a>
+            <a class="github-button" href="https://github.com/amokfa/ConstexprJS" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star amokfa/ConstexprJS on GitHub">Star</a>
+            <a class="github-button" href="https://github.com/amokfa/ConstexprJS/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue amokfa/ConstexprJS on GitHub">Issue</a>
+        </div>
+    </div>
+</article>
+</body>
+
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/css/pivot.css">
+<script constexpr src="/static/js/constexpr/third_party/jquery.js"></script>
+<script constexpr src="/static/js/constexpr/third_party/pivot.js"></script>
+<script constexpr src="/static/js/constexpr/third_party/papaparse.js"></script>
+<script constexpr>
+  async function render_pivottable() {
+    return new Promise((resolve) => {
+      Papa.parse("/static/files/tips.csv", {
+        download: true,
+        skipEmptyLines: true,
+        complete: function (parsed) {
+          $("#pt_output").pivot(parsed.data, {
+            rows: ["sex", "smoker"],
+            cols: ["day"],
+            renderer: $.pivotUtilities.renderers["Heatmap"],
+            aggregator: $.pivotUtilities.aggregators.Sum(["tip"])
+          });
+          resolve()
+        }
+      });
+    })
+  }
+</script>
+<link rel="stylesheet" type="text/css" href="/static/css/asciinema-player.css"/>
+<script constexpr>
+  async function do_asciinema() {
+    await evalScript('/static/js/constexpr/third_party/asciinema-player.js')
+    return new Promise((resolve) => {
+      const player = document.querySelector('asciinema-player')
+      player.querySelector('.play-button').click()
+
+      function checker() {
+        if (player.innerHTML.indexOf('ALL_DONE') !== -1) {
+          const lines = player.querySelectorAll('.line')
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i]
+            if (lines.length - i <= 5) {
+              line.remove()
+            } else {
+              const last = line.children[line.children.length - 1]
+              last.innerText = last.innerText.trimEnd() + ' '
+            }
+          }
+          player.innerHTML = player.innerHTML.replace('ALL_DONE', '')
+          resolve()
+        } else {
+          setTimeout(checker, 200)
+        }
+      }
+
+      checker()
+    })
+  }
+</script>
+
+<script constexpr>
+  async function render_page() {
+    const task = site_global_rendering()
+      await Promise.all([task, do_asciinema(), render_pivottable()])
+  }
+</script>
+
+<script constexpr>
+  window._ConstexprJS_.addExclusion('/static/files/build.cast')
+  window._ConstexprJS_.addExclusion('/static/files/tips.csv')
+
+  render_page()
+    .then(() => {
+        addRuntimeBootstrapHook({
+            src: 'https://buttons.github.io/buttons.js'
+        })
+    })
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+<style>
+    article ol li {
+        margin: 2em 0;
+    }
+
+    #asciinema_cont {
+        width: 100%;
+        height: 400px;
+        overflow-y: auto;
+    }
+
+    #asciinema_cont * {
+        font-size: 1em !important;
+    }
+
+    asciinema-player .control-bar {
+        display: none;
+    }
+
+    asciinema-player .asciinema-player {
+        overflow-x: auto !important;
+    }
+
+    #pt_output {
+        width: 100%;
+        overflow-x: auto;
+        line-height: 1rem;
+    }
+
+    article {
+        overflow: hidden;
+    }
+
+    #end_note {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        grid-gap: 1em;
+        padding: 1em 1em 0;
+
+        margin: 0 -1em -1em;
+    }
+    #gh_links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        grid-gap: 1em;
+        flex-wrap: wrap;
+    }
+</style>
+</html>

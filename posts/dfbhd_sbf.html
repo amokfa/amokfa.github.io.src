@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+  <p>
+  If you look in the game assets of Delta Force: Black Hawk Down, you'll see some sbf files (<progi>menumus.sbf</progi>,
+  <progi>gamemus.sbf</progi>, <progi>EXP1.sbf</progi>) that store the music tracks. I wrote a <a href="https://github.com/amokfa/dfbhd_mus">program</a>
+  that converts the tracks inside these files to mp3. This page discusses the structure of these files.
+  You can listen to the results <a href="/posts/dfbhd_mus.html">here</a>. Note that all the information in this page was
+  acquired through reverse engineering. Some of it might be wrong. If you find any glitches in the output music files,
+  create an issue.
+  </p>
+
+  <h2>Header and index</h2>
+  <p>
+    Each SBF file starts with a header of this format:
+
+  <prog>
+struct SBFHeader {
+    magic: [u8; 4],
+    i1: u32,
+    i2: u32,
+    i3: u32,
+    index_offset: u32,
+    index_count: u32
+}
+  </prog>
+    The magic is always "SBF0" in ascii. I didn't find any significance of i1, i2, i3. Index offset and index count
+    declare the location of the index of music tracks in this file. Each index entry has this format:
+  <prog>
+struct SBFIndexEntryBin {
+    ident: [u8; 8],
+    z1: u32,
+    z2: u32,
+    start: u32,
+    size: u32,
+    block_size: u32,
+    z3: u32,
+}
+  </prog>
+    ident is again an ascii identifier. z1, z2, z3 are always zero. start and size declare the location of that music entry
+    inside the file. block_size is always 4104 (= 4096 + 8), and size is always a multiple of block_size. So the segment
+    of file between start and (start + size) is a list of chunks of size 4104. The track identifiers are named like this:
+    (MARKA001, MARKA002, ...). Marka breakdown is the first mission of the game. So all the segments of a mission need to
+    be extracted, grouped, and the sound data of all these segments is to be concatenated.
+  </p>
+
+  <h2>Chunk format</h2>
+  <p>
+    Each segment has a list of chunks of this format:
+    <prog>
+struct SBFChunkData {
+    size: u32,
+    scale1: u8,
+    scale2: u8,
+    two_fifty: u8,
+    zero: u8,
+    content: [u8; 4096]
+}
+    </prog>
+    content is the actual PCM data. size is always 4096, except for the chunks at the tail of a segment, meaning it's the
+    count of valid bytes inside the chunk.
+  </p>
+  <p>
+    Experimentation reveals the PCM data format is unsigned 8 bit, 2 channel, at
+    22050Hz sample rate. If you convert it to mp3 based on this spec, you get something like this:
+  </p>
+  <audio controls preload="metadata" loud src="/static/media/dfbhd_unprocessed.mp3" preload="none"></audio>
+  <p>
+    It has the right rhythm but the amplitude is all over the place. It turns out the scale fields in the chunk header
+    are modifiers that needs to be applied to the PCM data to get proper sounding audio. The digital signal needs to be
+    divided by <formula>\(2^{scale}\)</formula>. I scaled the signal up to signed 16 bit and applied this modifier to
+    get the result linked above.
+  </p>
+  <h2>Why did they encode it like this?</h2>
+  <p>
+    The decision to choose 8 bit PCM was clearly a space optimization. But the problem with 8 bit audio is precision.
+    There are only 256 values that the amplitude can have. For parts of the track where the volume is relatively loud,
+    this isn't that big of a problem, but it adds a lot of noise to the quieter parts of the track and sounds worse.
+    (relative difference between 1 and 2 is much bigger than difference between 115 and 116). For example, this is a
+    downscaled 8 bit version of the first track in the list. Notice the hissing and cracking in the first few seconds.
+  </p>
+  <audio controls preload="metadata" src="/static/media/dfbhd_downscaled.mp3" preload="none"></audio>
+  <p>
+    Their solution was to divide the tracks into 4096 byte chunks, which stores around 100ms of sound, use full
+    256 level precision for quiet parts as well, and add metadata to the chunk describing how it must be scaled
+    in a high precision space to get the final result.
+  </p>
+  <h2>Why didn't they just use mp3?</h2>
+  <p>
+    <a href="https://www.reddit.com/r/gamedev/comments/oc645j/is_it_safe_to_use_the_mp3_format_in_games_in_2021/">mp3 was
+    under a patent until 2017</a>. Maybe they didn't want to bother with the licensing.
+    Ogg vorbis is a free alternative but it came out in 2000. Considering the game came out in 2003, they might have already
+    implemented this solution by the time ogg became popular.
+  </p>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+    async function render_page() {
+        document.querySelector('audio[loud]').volume = 0.1
+        document.querySelector
+        document.querySelectorAll('prog')
+            .forEach((el) => el.classList.add('language-rust'))
+        const base_page_render = site_global_rendering()
+        await base_page_render
+
+        document.querySelector('#main_bg').src = '/static/img/dfbhd.jpg'
+        document.querySelector('#main_bg').style = 'filter: none;'
+    }
+</script>
+
+<script constexpr>
+  render_page()
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+<style>
+  formula {
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+  }
+  formula span {
+      margin: 0;
+  }
+</style>
+
+</html>

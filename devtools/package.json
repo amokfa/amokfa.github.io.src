@@ -1,0 +1,20 @@
+{
+  "name": "devtools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "node serve.js",
+    "deploy": "npm run build && ssh root@knmw.link rm -rf /var/website/blog && scp -r ../_out root@knmw.link:/var/website/blog"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "exec-sh": "^0.4.0",
+    "fs-extra": "^10.0.0",
+    "http-server": "^13.0.1",
+    "open": "^8.2.1"
+  }
+}

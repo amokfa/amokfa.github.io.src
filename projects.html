@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Projects</title>
+</head>
+<body>
+<article>
+    <ol id="proj_list">
+    </ol>
+</article>
+
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function page_specific_stuff() {
+    const projects = await fetch('/collections/projects.json').then(res => res.json())
+    const list = document.querySelector('#proj_list')
+    projects.forEach(
+      (p, idx) => {
+        const container = make_element(
+          `
+          <div>
+              <li class="title"><a href="${p.url}">${p.name}</a></li>
+              <li class="desc">${p.description}</li>
+          </div>
+          `,
+          "table"
+        );
+        [...container.children].forEach(
+          ch => list.appendChild(ch)
+        )
+        if (idx !== projects.length - 1) {
+          list.appendChild(
+            make_element(
+              `<li class="divider"/>`
+            )
+          )
+        }
+      }
+    )
+  }
+</script>
+
+<script constexpr>
+  Promise.all([site_global_rendering(), page_specific_stuff()])
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+<style>
+    ol {
+        width: 100%;
+        max-width: 100%;
+        list-style: none;
+        padding: 0;
+    }
+    ol > * {
+        width: 100%;
+        text-align: center;
+        margin: 1em 0;
+    }
+    ol > .title {
+        font-size: 1.5em;
+    }
+    .divider {
+        width: 10em;
+        margin: auto;
+        height: 1px;
+        background: grey;
+    }
+</style>
+</body>
+</html>

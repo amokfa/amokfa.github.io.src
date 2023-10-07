@@ -1,0 +1,9 @@
+## Sources for [http://knmw.link](http://knmw.link)
+
+### Development
+
+Run `npm i` in `devtools` directory.
+
+Use `serve` task to start a development server.
+
+Use `build` task to compile the website to `_out`. You'll need to install [constexprjs](https://knmw.link/posts/constexprjs.html)

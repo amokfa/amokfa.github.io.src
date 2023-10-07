@@ -1,0 +1,84 @@
+[
+  {
+    "title": "ConstexprJS",
+    "url": "/posts/constexprjs.html",
+    "description": "An introduction to constexprjs",
+    "tags": [
+      "constexprjs",
+      "web"
+    ]
+  },
+  {
+    "title": "ConstexprJS hello world",
+    "url": "/posts/constexprjs_hello_world.html",
+    "description": "A tutorial for constexprjs",
+    "tags": [
+      "constexprjs"
+    ]
+  },
+  {
+    "title": "Entry Points in ConstexprJS",
+    "url": "/posts/constexprjs_entry_points.html",
+    "description": "How to use entry points in constexprjs",
+    "tags": [
+      "constexprjs"
+    ]
+  },
+  {
+    "title": "Dependency resolution in ConstexprJS",
+    "url": "/posts/constexprjs_dependency_resolution.html",
+    "description": "This page describes how constexprjs figures how the dependencies of a page",
+    "tags": [
+      "constexprjs"
+    ]
+  },
+  {
+    "title": "ConstexprJS API Documentation",
+    "url": "/posts/constexprjs_api_docs.html",
+    "description": "Description of API hooks provided by constexprjs to the compiler code",
+    "tags": [
+      "constexprjs"
+    ]
+  },
+  {
+    "title": "Code organization with ConstexprJS",
+    "url": "/posts/constexprjs_code_organization.html",
+    "description": "Some tips for organizing code when using constexprjs",
+    "tags": [
+      "constexprjs"
+    ]
+  },
+  {
+    "title": "Syntax Highlighting in a Webpage Without Javascript",
+    "url": "/posts/constexprjs_syntax_highlighting.html",
+    "description": "This guide describes how you can use constexprjs to highlight code in your website without using javascript",
+    "tags": [
+      "constexprjs",
+      "web"
+    ]
+  },
+  {
+    "title": "Accessing xorg clipboard from command line",
+    "url": "/posts/clipboard_cli.html",
+    "description": "A simple command line utility for working with clipboard on linux",
+    "tags": [
+      "utilities"
+    ]
+  },
+  {
+    "title": "All Delta Force Black Hawk Down OSTs",
+    "url": "/posts/dfbhd_mus.html",
+    "description": "All Delta Force Black Hawk Down OSTs extracted from the SBF assets",
+    "tags": [
+      "games"
+    ]
+  },
+  {
+    "title": "Reverse engineering SBF file format",
+    "url": "/posts/dfbhd_sbf.html",
+    "description": "Describes the SBF assets used to store music in DFBHD",
+    "tags": [
+      "games"
+    ]
+  }
+]

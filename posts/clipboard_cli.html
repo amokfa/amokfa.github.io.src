@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+    <p>
+        In this article I'm going to share a simple bash function that makes dealing with system clipboard easier on linux:
+    </p>
+    <prog class="language-bash">
+clb () {
+        TMP='/tmp/.clb.tmp'
+        if [[ $1 = 'e' ]]
+        then
+                clb > $TMP
+                $EDITOR $TMP
+                cat $TMP | clb
+                rm $TMP
+        elif [[ -t 0 ]]
+        then
+                xsel -b -o
+        else
+                xsel -b -i
+        fi
+}
+    </prog>
+    <p>
+        You need to install <progi>xsel</progi> on your system.
+    </p>
+    <h2>Usage</h2>
+
+    <ul>
+        <li>
+            <p>
+                It automatically determines whether it's supposed to output the current clipboard or overwrite the clipboard
+                based on its location in the pipeline:
+            </p>
+            <prog class="language-bash">
+clb | rg '^//' # Search clipboard for comments
+
+cat program.cc | rg '^//' | clb # Copy all comments in a file
+
+clb | sed 's/C++/Rust/g' | clb # modify clipboard contents
+            </prog>
+        </li>
+        <li>
+            <p>
+                It will open the clipboard content in your <progi>EDITOR</progi> if invoked as <progi>clb e</progi>.
+                Clipboard will be updated when you exit the editor.
+            </p>
+        </li>
+    </ul>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function render_page() {
+    const base_page_render = site_global_rendering()
+    await base_page_render
+  }
+</script>
+
+<script constexpr>
+  render_page()
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+</html>

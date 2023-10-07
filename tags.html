@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Tags</title>
+</head>
+<body>
+<article>
+    <ul class="tags_list">
+    </ul>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+  async function page_specific_stuff() {
+    const posts = await fetch('/collections/posts.json').then(res => res.json())
+    const tagsCount = {}
+    posts.forEach(p => p.tags.forEach(tag => {
+      if (tagsCount[tag]) {
+        tagsCount[tag]++
+      } else {
+        tagsCount[tag] = 1
+      }
+    }))
+    const tags = Object.keys(tagsCount)
+    tags.sort((a, b) => tagsCount[b] - tagsCount[a])
+    const list = document.querySelector('ul')
+    tags.forEach(tag => {
+      list.appendChild(make_element(`<li><a class="tag_element" href="/tags/generator.html?${tag}"><div>${tag} <span style="color: #196d00; margin-left: 1em;">${tagsCount[tag]}</span></div></a></li>`))
+    })
+    Array.from(tags).forEach(tag => window._ConstexprJS_.addPath({
+      generator: `/tags/generator.html?${tag}`,
+      output: `/tags/${tag}.html`
+    }))
+  }
+</script>
+
+<script constexpr>
+  Promise.all([site_global_rendering(), page_specific_stuff()])
+    .then(() => window._ConstexprJS_.compile())
+</script>
+
+<style>
+    ul {
+        flex-direction: column;
+    }
+</style>
+
+</html>
