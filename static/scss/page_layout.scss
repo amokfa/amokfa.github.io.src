@@ -30,8 +30,13 @@
         transition-property: background;
         transition-duration: 0.15s;
 
-        &.current, &:hover {
-          background: #4c9bfa;
+        &.current {
+          background: #4c9bfb;
+        }
+        @media (min-width: 800px) {
+          &:hover {
+            background: #4c9bfa;
+          }
         }
       }
     }

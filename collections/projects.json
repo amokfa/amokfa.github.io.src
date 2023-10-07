@@ -1,7 +1,7 @@
 [
   {
     "name": "constexprjs",
-    "description": "Zero cost abstractions in web development",
+    "description": "A static site generator without a templating language ",
     "url": "/posts/constexprjs.html"
   },
   {
