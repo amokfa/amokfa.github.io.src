@@ -165,20 +165,7 @@ addRuntimeBootstrapHook({
     <p>
       This is the implementation of <progi>addRuntimeBootstrapHook</progi> utility:
     </p>
-    <prog class="language-js">
-function addRuntimeBootstrapHook(js) {
-  let el = document.createElement('script')
-  if (js.src) {
-    el.setAttribute('async', '')
-    el.setAttribute('defer', '')
-    el.setAttribute('src', js.src)
-  } else if (js.code) {
-    el.textContent = js.code
-  } else {
-    throw "invalid arguments"
-  }
-  document.body.appendChild(el)
-}
+    <prog id="runtime_fn" class="language-js">
     </prog>
     <blockquote>
         See pages tagged with <a class="tag_element" href="/tags/generator.html?constexprjs">constexprjs</a> for more guides.
@@ -189,12 +176,14 @@ function addRuntimeBootstrapHook(js) {
 <script constexpr src="/static/js/constexpr/renderer.js"></script>
 
 <script constexpr>
-  async function page_specific_stuff() {
+  async function render_page() {
+      document.querySelector('prog#runtime_fn').textContent = addRuntimeBootstrapHook.toString()
+      await site_global_rendering()
   }
 </script>
 
 <script constexpr>
-  Promise.all([site_global_rendering(), page_specific_stuff()])
+  render_page()
     .then(() => window._ConstexprJS_.compile())
 </script>
 

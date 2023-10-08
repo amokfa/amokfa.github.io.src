@@ -27,7 +27,7 @@
     tags.sort((a, b) => tagsCount[b] - tagsCount[a])
     const list = document.querySelector('ul')
     tags.forEach(tag => {
-      list.appendChild(make_element(`<li><a class="tag_element" href="/tags/generator.html?${tag}"><div>${tag} <span style="color: #196d00; margin-left: 1em;">${tagsCount[tag]}</span></div></a></li>`))
+      list.appendChild(make_element(`<li><a class="tag_element" href="/tags/generator.html?${tag}"><div>${tag} <span>${tagsCount[tag]}</span></div></a></li>`))
     })
     Array.from(tags).forEach(tag => window._ConstexprJS_.addPath({
       generator: `/tags/generator.html?${tag}`,
@@ -44,6 +44,13 @@
 <style>
     ul {
         flex-direction: column;
+    }
+    .tag_element span {
+        margin-left: 1em;
+        color: #196d00;
+    }
+    body.dark .tag_element span {
+        color: #3bfd04;
     }
 </style>
 

@@ -50,8 +50,8 @@ $ tokei static/packages/ static/js/constexpr/
         Any piece of javascript code that just generates some HTML can be made constexpr.
     </p>
     <p>
-        The generated pages don't have to be completely static. For example the mobile view navigation, and the bottom right
-        viewport, use javascript.
+        The generated pages don't have to be completely static. For example the mobile view navigation, theme switcher,
+        and the bottom left viewport, use javascript.
     </p>
 
     <h2>Setup and usage</h2>
@@ -122,7 +122,7 @@ optional arguments:
     <h2>Cons</h2>
     <p>
       One area in which constexprjs can't compete with other static site generators is ease of use. You cannot use this
-      "static site generator" if you aren't a web developer. You have to be proficient in javascript, css, and doing
+      static site generator if you aren't a web developer. You have to be proficient in javascript, css, and doing
       things by hand.
     </p>
     <p>
@@ -314,6 +314,10 @@ Promise.all([render_task_1(), render_task_2()])
         width: 100%;
         overflow-x: auto;
         line-height: 1rem;
+    }
+
+    .dark #pt_output {
+        color: black;
     }
 
     article {

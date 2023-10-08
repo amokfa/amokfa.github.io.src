@@ -89,13 +89,11 @@ body {
       width: 30px;
       height: 30px;
       border-radius: 10em;
-      background: #00000055;
     }
     display: flex;
     flex-direction: column;
     justify-content: center;
     .dialog {
-      background: #e7e3e3;
       max-height: 100%;
       display: flex;
       flex-direction: column;
@@ -106,8 +104,6 @@ body {
         width: 100%;
         padding: 0.5em;
         font-size: 1.3em;
-        color: #e7e3e3;
-        background: linear-gradient(to top, #e7e3e3, 2%, #383737);
       }
       .content {
         flex-grow: 1;
@@ -121,57 +117,31 @@ body {
     .dialog {
       .content {
         padding: 1em;
+        //display: flex;
+        //flex-direction: column;
+        //align-items: center;
         button {
           width: 100%;
           font-size: 1.1em;
           padding: 0.3em 1em;
-          color: #655ff5;
           transition: background 0.1s;
-          &:hover {
-            background: #dbdefa;
-          }
           font-weight: bold;
-          border: 1px solid #655ff5;
           border-radius: 2px;
         }
-        form {
-          label {
-            display: none;
-          }
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          grid-gap: 0.5em;
-
-          input[type=email] {
-            padding: 0.5em;
-            font-size: 1.2em;
+        #toggle_theme_wrapper {
+          width: 2em;
+          height: 2em;
+          margin-top: 1em;
+          cursor: pointer;
+          padding: 5px;
+          border-radius: 3px;
+          #toggle_theme {
             width: 100%;
-          }
-          input[type=submit] {
-            width: 100%;
-            font-size: 1.1em;
-            padding: 0.3em 1em;
-            color: #655ff5;
-            transition: background 0.1s;
-            &:hover {
-              background: #dbdefa;
-            }
-            font-weight: bold;
-            border: 1px solid #655ff5;
-            border-radius: 2px;
-          }
-          .message {
-            border-left: 3px solid #840202;
-            background: #f6c8c8;
-            padding: 1em 0 1em 0.5em;
-            width: 100%;
-          }
-          .reg_footer {
-            width: 100%;
-            display: flex;
-            align-items: flex-start;
-            grid-gap: 1em;
+            height: 100%;
+            mask-image: url('/static/img/icons/moon.svg');
+            mask-position: center;
+            mask-repeat: no-repeat;
+            mask-size: contain;
           }
         }
       }
@@ -248,7 +218,6 @@ body {
   position: fixed;
   left: -2em;
   bottom: -2em;
-  background: rgba(203, 200, 200, 0.1);
   transition: left 0.1s linear, bottom 0.1s linear, width 0.1s linear, height 0.1s linear;
   &:hover {
     left: -1em;
@@ -262,8 +231,7 @@ body {
   #screen_img {
     width: 70%;
     height: 50%;
-    border: 2px solid #2a2a2a;
-    background: #575656;
+    border: 2px solid;
   }
 }
 
@@ -283,7 +251,6 @@ body {
   }
   z-index: 4;
   transition: opacity 0.2s linear;
-  background: rgba(0, 0, 0, 0.95);
   pointer-events: all;
 
   display: flex;
@@ -294,7 +261,7 @@ body {
     max-height: 100%;
     object-fit: contain;
     border-radius: 5px;
-    border: 3px solid #0e0e2a;
+    border: 3px solid;
   }
 }
 

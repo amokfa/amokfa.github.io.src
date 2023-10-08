@@ -272,19 +272,22 @@ async function site_global_rendering() {
   insertBefore(body_wrapper, make_element(
     `<div id="right-sidebar">
     <div class="dialog">
-        <div class="heading">Join the newsletter</div>
+        <div class="heading">Settings</div>
         <div class="content">
             <button>Subscribe</button>
+            <div id="toggle_theme_wrapper"><div id="toggle_theme" /></div>
         </div>
     </div>
     <img src="/static/img/icons/swipe.svg" class="open" />
     <img src="/static/img/icons/swipe.svg" class="close" />
 </div>`
   ))
+  fetch('/static/img/icons/moon.svg')
+
   el = document.createElement('noscript')
   el.textContent = `
   <style>
-    #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar .message {
+    #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar #toggle_theme_wrapper {
       display: none;
     } 
   </style>

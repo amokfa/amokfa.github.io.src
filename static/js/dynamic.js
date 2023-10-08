@@ -52,8 +52,23 @@ function form_ui_setup() {
     }
   )
 }
-
 form_ui_setup()
+
+function theme_switcher_setup() {
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark')
+  }
+  document.querySelector('#toggle_theme').addEventListener('click', () => {
+    if (document.body.classList.contains('dark')) {
+      document.body.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    } else {
+      document.body.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    }
+  })
+}
+theme_switcher_setup()
 
 function make_element(str) {
   const p = document.createElement("template")
@@ -80,5 +95,4 @@ function show_image_tag(tag) {
     }
   }
   document.addEventListener('keydown', key_handler)
-
 }

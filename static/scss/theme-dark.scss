@@ -1,0 +1,108 @@
+body.dark {
+  color: #cecdcd;
+  $main_bg: #2a2706;
+  #left-sidebar, #right-sidebar {
+    .open, .close {
+      background: #00000055;
+    }
+    .dialog {
+      background: $main_bg;
+      .heading {
+        background: linear-gradient(to top, $main_bg, 5%, adjust-color($main_bg, $lightness: +10%));
+      }
+    }
+  }
+  #right-sidebar {
+    button {
+      color: #655ff5;
+      &:hover {
+        background: none;
+      }
+      border: 1px solid #655ff5;
+    }
+    #toggle_theme_wrapper {
+      &:hover {
+        background-color: #ffffff22;
+      }
+      #toggle_theme {
+        background-color: white;
+      }
+    }
+  }
+  #view_bg_btn {
+    background: rgba(203, 200, 200, 0.1);
+    #screen_img {
+      border-color: #2a2a2a;
+      background: #575656;
+    }
+  }
+  .image_viewer {
+    background: rgba(0, 0, 0, 0.95);
+    > img {
+      border-color: #0e0e2a;
+    }
+  }
+  $wrapper_bg: #0d2507;
+  header {
+    background: $wrapper_bg;
+    nav {
+      $nav_active: #006186;
+      $nav_passive: #003477;
+      a {
+        background: $nav_passive;
+        &.current {
+          background: $nav_active;
+        }
+        @media (min-width: 800px) {
+          &:hover {
+            background: $nav_active;
+          }
+        }
+      }
+    }
+  }
+  footer {
+    background: $wrapper_bg;
+    .footer-title {
+      color: #75a6ff;
+    }
+  }
+  article {
+    background: #ffffff22;
+    //backdrop-filter: blur(5px);
+    section {
+      background: $main_bg;
+    }
+  }
+  .tag_element {
+    background: #79146a;
+    &:hover {
+      background: #9b1a8a;
+    }
+  }
+  a {
+    color: #3c8f17;
+    text-decoration: none;
+  }
+  a:visited {
+    color: #3c8f17;
+  }
+  a:hover {
+    text-decoration: none;
+    color: #28620e;
+  }
+  prog, formula {
+    background: #000000;
+  }
+  progi {
+    background: #000000;
+    border-color: #414141;
+  }
+  blockquote {
+    border-color: #f8aeae;
+    background: #400244;
+  }
+  h2 {
+    background: adjust-color($main_bg, $lightness: +5%);
+  }
+}
