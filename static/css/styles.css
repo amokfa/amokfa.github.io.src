@@ -577,99 +577,99 @@ em {
     padding: 1em;
   }
 }
-body {
+body.light {
   color: #111111;
 }
-body #left-sidebar .open, body #left-sidebar .close, body #right-sidebar .open, body #right-sidebar .close {
+body.light #left-sidebar .open, body.light #left-sidebar .close, body.light #right-sidebar .open, body.light #right-sidebar .close {
   background: rgba(0, 0, 0, 0.3333333333);
 }
-body #left-sidebar .dialog, body #right-sidebar .dialog {
+body.light #left-sidebar .dialog, body.light #right-sidebar .dialog {
   background: #e7e3e3;
 }
-body #left-sidebar .dialog .heading, body #right-sidebar .dialog .heading {
+body.light #left-sidebar .dialog .heading, body.light #right-sidebar .dialog .heading {
   background: linear-gradient(to top, #e7e3e3, 5%, #a09191);
 }
-body #right-sidebar button {
-  color: #655ff5;
-  border: 1px solid #655ff5;
+body.light #right-sidebar button {
+  background: none;
+  border: 1px solid #b8acac;
 }
-body #right-sidebar button:hover {
-  background: #dbdefa;
+body.light #right-sidebar button:hover {
+  background: #b8acac;
 }
-body #right-sidebar #toggle_theme_wrapper:hover {
+body.light #right-sidebar #toggle_theme_wrapper:hover {
   background-color: rgba(0, 0, 0, 0.1333333333);
 }
-body #right-sidebar #toggle_theme_wrapper #toggle_theme {
+body.light #right-sidebar #toggle_theme_wrapper #toggle_theme {
   background-color: black;
 }
-body #view_bg_btn {
+body.light #view_bg_btn {
   background: rgba(203, 200, 200, 0.1);
 }
-body #view_bg_btn #screen_img {
+body.light #view_bg_btn #screen_img {
   border-color: #2a2a2a;
   background: #575656;
 }
-body .image_viewer {
+body.light .image_viewer {
   background: rgba(0, 0, 0, 0.95);
 }
-body .image_viewer > img {
+body.light .image_viewer > img {
   border-color: #0e0e2a;
 }
-body header {
+body.light header {
   background: #e9ffa4;
 }
-body header nav a {
+body.light header nav a {
   background: #f6a75c;
 }
-body header nav a.current {
+body.light header nav a.current {
   background: #d75404;
 }
 @media (min-width: 800px) {
-  body header nav a:hover {
+  body.light header nav a:hover {
     background: #d75404;
   }
 }
-body footer {
+body.light footer {
   background: #e9ffa4;
 }
-body footer .footer-title {
+body.light footer .footer-title {
   color: #032a71;
 }
-body article {
+body.light article {
   background: rgba(255, 255, 255, 0.1333333333);
 }
-body article section {
+body.light article section {
   background: #e7e3e3;
 }
-body .tag_element {
+body.light .tag_element {
   background: #d5ecbc;
 }
-body .tag_element:hover {
+body.light .tag_element:hover {
   background: #bde5a3;
 }
-body a {
+body.light a {
   color: #3c8f17;
   text-decoration: none;
 }
-body a:visited {
+body.light a:visited {
   color: #3c8f17;
 }
-body a:hover {
+body.light a:hover {
   text-decoration: none;
   color: #28620e;
 }
-body prog, body formula {
+body.light prog, body.light formula {
   background: #ffffff;
 }
-body progi {
+body.light progi {
   background: #ffffff;
   border-color: #c1bfbf;
 }
-body blockquote {
+body.light blockquote {
   border-color: #f8aeae;
   background: #fdcfd2;
 }
-body h2 {
+body.light h2 {
   background: #b8acac;
 }
 
@@ -686,11 +686,12 @@ body.dark #left-sidebar .dialog .heading, body.dark #right-sidebar .dialog .head
   background: linear-gradient(to top, #2a2706, 5%, #57500c);
 }
 body.dark #right-sidebar button {
-  color: #655ff5;
-  border: 1px solid #655ff5;
+  color: #cecdcd;
+  background: none;
+  border: 1px solid #837a13;
 }
 body.dark #right-sidebar button:hover {
-  background: none;
+  background: #837a13;
 }
 body.dark #right-sidebar #toggle_theme_wrapper:hover {
   background-color: rgba(255, 255, 255, 0.1333333333);

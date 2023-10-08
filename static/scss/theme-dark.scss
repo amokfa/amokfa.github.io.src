@@ -14,11 +14,12 @@ body.dark {
   }
   #right-sidebar {
     button {
-      color: #655ff5;
+      color: #cecdcd;
+      background: none;
       &:hover {
-        background: none;
+        background: adjust-color($main_bg, $lightness: +20%);
       }
-      border: 1px solid #655ff5;
+      border: 1px solid adjust-color($main_bg, $lightness: +20%);
     }
     #toggle_theme_wrapper {
       &:hover {

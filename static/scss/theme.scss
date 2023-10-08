@@ -1,4 +1,4 @@
-body {
+body.light {
   color: #111111;
   $main_bg: #e7e3e3;
   #left-sidebar, #right-sidebar {
@@ -14,11 +14,11 @@ body {
   }
   #right-sidebar {
     button {
-      color: #655ff5;
+      background: none;
       &:hover {
-        background: #dbdefa;
+        background: adjust-color($main_bg, $lightness: -20%);
       }
-      border: 1px solid #655ff5;
+      border: 1px solid adjust-color($main_bg, $lightness: -20%);
     }
     #toggle_theme_wrapper {
       &:hover {

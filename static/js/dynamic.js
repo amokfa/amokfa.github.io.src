@@ -57,12 +57,16 @@ form_ui_setup()
 function theme_switcher_setup() {
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark')
+  } else {
+    document.body.classList.add('light')
   }
-  document.querySelector('#toggle_theme').addEventListener('click', () => {
+  document.querySelector('#toggle_theme_wrapper').addEventListener('click', () => {
     if (document.body.classList.contains('dark')) {
       document.body.classList.remove('dark')
+      document.body.classList.add('light')
       localStorage.setItem('theme', 'light')
     } else {
+      document.body.classList.remove('lighjt')
       document.body.classList.add('dark')
       localStorage.setItem('theme', 'dark')
     }
