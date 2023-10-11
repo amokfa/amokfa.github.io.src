@@ -88,8 +88,8 @@ optional arguments:
     <p>
         This is what an invocation looks like:
     </p>
-    <div id="asciinema_cont">
-        <asciinema-player speed="10" rows="202" src="/static/files/build.cast"></asciinema-player>
+    <div class="asciinema-cont">
+        <div class="asciinema-player"></div>
     </div>
     <p>
         As you can see it can also copy resources (<progi>css</progi>, <progi>images</progi> etcetra)
@@ -114,7 +114,8 @@ optional arguments:
     <h2>Performance</h2>
     <p>
       As long as everything is setup correctly (use only local resources, trigger compilation as soon as rendering
-      finishes) compilation times should be very reasonably. In any case compilation time should never be an issue
+      finishes) compilation times should be very reasonably. For example it can compile this website that has 18 pages in
+      less than a second. In any case compilation time should never be an issue
       because the generated website will look and work exactly the same as the original website (the one you write)
       if things are setup properly, so you will only have to run the compiler once per deployment.
     </p>
@@ -216,6 +217,7 @@ Promise.all([render_task_1(), render_task_2()])
 <script constexpr src="/static/js/constexpr/third_party/jquery.js"></script>
 <script constexpr src="/static/js/constexpr/third_party/pivot.js"></script>
 <script constexpr src="/static/js/constexpr/third_party/papaparse.js"></script>
+<script constexpr src="/static/js/constexpr/third_party/asciinema-player.js"></script>
 <script constexpr>
   async function render_pivottable() {
     return new Promise((resolve) => {
@@ -237,34 +239,30 @@ Promise.all([render_task_1(), render_task_2()])
 </script>
 <link rel="stylesheet" type="text/css" href="/static/css/asciinema-player.css"/>
 <script constexpr>
-  async function do_asciinema() {
-    await evalScript('/static/js/constexpr/third_party/asciinema-player.js')
-    return new Promise((resolve) => {
-      const player = document.querySelector('asciinema-player')
-      player.querySelector('.play-button').click()
-
-      function checker() {
-        if (player.innerHTML.indexOf('ALL_DONE') !== -1) {
-          const lines = player.querySelectorAll('.line')
-          for (let i = 0; i < lines.length; i++) {
-            const line = lines[i]
-            if (lines.length - i <= 5) {
-              line.remove()
-            } else {
-              const last = line.children[line.children.length - 1]
-              last.innerText = last.innerText.trimEnd() + ' '
+    async function do_asciinema() {
+        let player = AsciinemaPlayer.create(
+            '/static/files/build.cast',
+            document.querySelector('.asciinema-player'),
+            {
+                rows: 500,
+                autoPlay: true,
+                preload: true,
+                startAt: 1000,
+                controls: false,
             }
-          }
-          player.innerHTML = player.innerHTML.replace('ALL_DONE', '')
-          resolve()
-        } else {
-          setTimeout(checker, 200)
-        }
-      }
-
-      checker()
-    })
-  }
+        )
+        player.addEventListener('ended', () => {
+            document.querySelectorAll('.ap-line')
+                .forEach((el) => {
+                    if (el.textContent.trim() === "") {
+                        el.remove()
+                    }
+                })
+            // document.querySelector('.ap-cursor-a').remove()
+            // document.querySelector('.ap-cursor-b').remove()
+            // resolve()
+        })
+    }
 </script>
 
 <script constexpr>
@@ -292,21 +290,17 @@ Promise.all([render_task_1(), render_task_2()])
         margin: 2em 0;
     }
 
-    #asciinema_cont {
+    .asciinema-cont {
         width: 100%;
         height: 400px;
         overflow-y: auto;
     }
 
-    #asciinema_cont * {
+    .asciinema-cont * {
         font-size: 1em !important;
     }
 
-    asciinema-player .control-bar {
-        display: none;
-    }
-
-    asciinema-player .asciinema-player {
+    .asciinema-player .asciinema-player {
         overflow-x: auto !important;
     }
 
