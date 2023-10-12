@@ -26,6 +26,8 @@ async function render_base_page() {
     ].map(p => p.then(res => res.json()))
   )
 
+  document.body.classList.add('light')
+
   const this_post = all_posts.filter(p => p.url === document.location.pathname)[0]
 
   document.head.appendChild(
