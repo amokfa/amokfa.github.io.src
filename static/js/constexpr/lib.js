@@ -58,10 +58,6 @@ function dump_markdown() {
 function addRuntimeBootstrapHook(js) {
   let el = document.createElement('script')
   if (js.src) {
-    if (!js.early) {
-      el.setAttribute('async', '')
-      el.setAttribute('defer', '')
-    }
     el.setAttribute('src', js.src)
   } else if (js.code) {
     el.textContent = js.code
@@ -71,6 +67,8 @@ function addRuntimeBootstrapHook(js) {
   if (js.early) {
     document.body.prepend(el)
   } else {
+    el.setAttribute('async', '')
+    el.setAttribute('defer', '')
     document.body.appendChild(el)
   }
 }

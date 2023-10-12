@@ -299,9 +299,12 @@ async function site_global_rendering() {
   section_management()
 
   addRuntimeBootstrapHook({
-    src: '/static/js/dynamic.js'
+    src: '/static/js/dynamic-pre.js',
+    early: true
   })
-
+  addRuntimeBootstrapHook({
+    src: '/static/js/dynamic-post.js'
+  })
   window.onfocus = () => {
     // setTimeout(() => window.location.reload(), 400)
   }
