@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>About</title>
+</head>
+<body>
+<article>
+  <h2>I'm Sagar Tiwari</h2>
+  <p>
+    Software developer. Currently working at Bytebeam.
+  </p>
+  <h2>Skill set</h2>
+  <ul>
+    <li>Rust</li>
+    <li>Javascript/Typescript</li>
+    <li>Browser stack</li>
+    <li>ReactJS</li>
+    <li>Flutter</li>
+    <li>Clojure</li>
+    <li>Android
+      <ul>
+        <li>JNI</li>
+        <li>NDK</li>
+        <li>Android-Rust interop</li>
+      </ul>
+    </li>
+    <li>Intellij Plugin Development</li>
+  </ul>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+    async function render_page() {
+        const base_page_render = site_global_rendering()
+        await base_page_render
+    }
+</script>
+
+<script constexpr>
+    render_page()
+        .then(() => window._ConstexprJS_.compile())
+</script>
+<style>
+    body #left-sidebar > .dialog {
+        display: none;
+    }
+</style>
+</html>

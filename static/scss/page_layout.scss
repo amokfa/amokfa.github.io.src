@@ -1,6 +1,6 @@
 #body_wrapper {
   header {
-    padding: 1em 0;
+    padding: 1em;
     #main_title {
       padding: 0 1em;
       width: 100%;
@@ -45,7 +45,7 @@
   }
   @media (max-width: 800px) {
     header {
-      padding-top: 0;
+      padding: 0 0 1em;
       nav {
         width: 100%;
         flex-direction: column;
