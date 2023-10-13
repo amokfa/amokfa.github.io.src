@@ -200,6 +200,13 @@ Promise.all([render_task_1(), render_task_2()])
     <blockquote>
         See pages tagged with <a class="tag_element" href="/tags/generator.html?constexprjs">constexprjs</a> for more guides.
     </blockquote>
+    <div id="end_note">
+        <div id="gh_links">
+            <a class="github-button" href="https://github.com/amokfa/ConstexprJS/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch amokfa/ConstexprJS on GitHub">Watch</a>
+            <a class="github-button" href="https://github.com/amokfa/ConstexprJS" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star amokfa/ConstexprJS on GitHub">Star</a>
+            <a class="github-button" href="https://github.com/amokfa/ConstexprJS/issues" data-icon="octicon-issue-opened" data-size="large" data-show-count="true" aria-label="Issue amokfa/ConstexprJS on GitHub">Issue</a>
+        </div>
+    </div>
 </article>
 </body>
 
@@ -270,6 +277,11 @@ Promise.all([render_task_1(), render_task_2()])
   window._ConstexprJS_.addExclusion('/static/files/tips.csv')
 
   render_page()
+    .then(() => {
+        addRuntimeBootstrapHook({
+            src: 'https://buttons.github.io/buttons.js'
+        })
+    })
     .then(() => window._ConstexprJS_.compile())
 </script>
 
@@ -304,6 +316,23 @@ Promise.all([render_task_1(), render_task_2()])
 
     article {
         overflow: hidden;
+    }
+
+    #end_note {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        grid-gap: 1em;
+        padding: 1em 1em 0;
+
+        margin: 0 -1em -1em;
+    }
+    #gh_links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        grid-gap: 1em;
+        flex-wrap: wrap;
     }
 </style>
 </html>
