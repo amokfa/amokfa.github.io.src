@@ -64,10 +64,12 @@ function addRuntimeBootstrapHook(js) {
   } else {
     throw "invalid arguments"
   }
+  // if (js.async) {
+  //   el.setAttribute('async', '')
+  // }
   if (js.early) {
     document.body.prepend(el)
   } else {
-    el.setAttribute('async', '')
     el.setAttribute('defer', '')
     document.body.appendChild(el)
   }

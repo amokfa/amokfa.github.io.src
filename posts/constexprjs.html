@@ -203,6 +203,7 @@ Promise.all([render_task_1(), render_task_2()])
         <li>Use sqlite instead of JSON files for data</li>
         <li>A shell executor function</li>
         <li>Incremental compilation</li>
+        <li>Make resource collector recognize query/hash strings</li>
       </ul>
     </p>
     <blockquote>
@@ -287,7 +288,8 @@ Promise.all([render_task_1(), render_task_2()])
   render_page()
     .then(() => {
         addRuntimeBootstrapHook({
-            src: 'https://buttons.github.io/buttons.js'
+            src: 'https://buttons.github.io/buttons.js',
+            async: true
         })
     })
     .then(() => window._ConstexprJS_.compile())
