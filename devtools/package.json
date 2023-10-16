@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build.js",
     "serve": "node serve.js",
-    "deploy": "npm run build && rsync -avz ../_out root@knmw.link:/var/website/blog"
+    "deploy": "npm run build && rsync -avz ../_out/ root@knmw.link:/var/website/blog"
   },
   "keywords": [],
   "author": "",

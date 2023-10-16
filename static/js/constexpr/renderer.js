@@ -306,9 +306,8 @@ async function site_global_rendering() {
     src: '/static/js/dynamic-post.js'
   })
   addRuntimeBootstrapHook({
-    src: '/static/js/analytics.js',
+    src: '/static/js/mtm.js',
   })
-  document.body.appendChild(make_element(`<noscript><p><img src="https://knmwlink.matomo.cloud/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>`))
   window.onfocus = () => {
     // setTimeout(() => window.location.reload(), 400)
   }
