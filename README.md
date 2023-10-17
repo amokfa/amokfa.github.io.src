@@ -1,4 +1,4 @@
-## Sources for [http://knmw.link](http://knmw.link)
+## Sources for [https://amokfa.github.io](https://amokfa.github.io)
 
 ### Development
 
