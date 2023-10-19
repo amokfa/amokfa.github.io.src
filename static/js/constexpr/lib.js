@@ -64,9 +64,9 @@ function addRuntimeBootstrapHook(js) {
   } else {
     throw "invalid arguments"
   }
-  // if (js.async) {
-  //   el.setAttribute('async', '')
-  // }
+  if (js.async) {
+    el.setAttribute('async', '')
+  }
   if (js.early) {
     document.body.prepend(el)
   } else {

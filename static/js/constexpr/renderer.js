@@ -4,7 +4,6 @@ const article = document.querySelector('article')
 article.setAttribute('role', 'main')
 let footer
 let el
-let main_bg
 
 let global_cfg
 let all_posts
@@ -25,6 +24,10 @@ async function render_base_page() {
       fetch('/collections/nav.json')
     ].map(p => p.then(res => res.json()))
   )
+
+  let main_bg = make_element('<img alt="background" class="bg" id="main_bg" src="/static/img/bg.jpg" loading="lazy" />')
+  document.body.appendChild(main_bg)
+  document.body.appendChild(make_element(`<div id="view_bg_btn" onclick="show_image_tag(document.querySelector('#main_bg'))"><div id="screen_img" /></div>`));
 
   document.body.classList.add('light')
 
@@ -133,14 +136,31 @@ async function render_base_page() {
   body_wrapper.appendChild(footer)
 
   document.body.appendChild(body_wrapper)
-
-  document.querySelectorAll('img:not([alt])').forEach(el => el.setAttribute('alt', ''))
-}
-
-function setup_bg() {
-  main_bg = make_element('<img class="bg" id="main_bg" src="/static/img/bg.jpg" />')
-  document.body.appendChild(main_bg)
-  document.body.appendChild(make_element(`<div id="view_bg_btn" onclick="show_image_tag(document.querySelector('#main_bg'))"><div id="screen_img" /></div>`))
+  insertBefore(
+      body_wrapper,
+      make_element(`
+<div id="left-sidebar">
+    <div class="dialog">
+        <div class="heading">Table of content</div>
+        <ol class="content"></ol>
+    </div>
+    <img alt="open left sidebar" src="/static/img/icons/swipe.svg" class="open" />
+    <img alt="close left sidebar" src="/static/img/icons/swipe.svg" class="close" />
+</div>`))
+  insertBefore(body_wrapper, make_element(
+      `<div id="right-sidebar">
+    <div class="dialog">
+        <div class="heading">Settings</div>
+        <div class="content">
+            <button>Subscribe</button>
+            <div id="toggle_theme_wrapper"><div id="toggle_theme" /></div>
+        </div>
+    </div>
+    <img alt="open right sidebar" src="/static/img/icons/swipe.svg" class="open" />
+    <img alt="close right sidebar" src="/static/img/icons/swipe.svg" class="close" />
+</div>`
+  ))
+  window._ConstexprJS_.addDependency('/static/img/icons/moon.svg')
 }
 
 async function fetchFile(path) {
@@ -258,33 +278,7 @@ function section_management() {
 }
 
 async function site_global_rendering() {
-  setup_bg()
   await Promise.all([render_base_page(), syntax_highlight(), render_latex(), render_graphviz(), literal_links()])
-  insertBefore(
-    body_wrapper,
-    make_element(`
-<div id="left-sidebar">
-    <div class="dialog">
-        <div class="heading">Table of content</div>
-        <ol class="content"></ol>
-    </div>
-    <img src="/static/img/icons/swipe.svg" class="open" />
-    <img src="/static/img/icons/swipe.svg" class="close" />
-</div>`))
-  insertBefore(body_wrapper, make_element(
-    `<div id="right-sidebar">
-    <div class="dialog">
-        <div class="heading">Settings</div>
-        <div class="content">
-            <button>Subscribe</button>
-            <div id="toggle_theme_wrapper"><div id="toggle_theme" /></div>
-        </div>
-    </div>
-    <img src="/static/img/icons/swipe.svg" class="open" />
-    <img src="/static/img/icons/swipe.svg" class="close" />
-</div>`
-  ))
-  fetch('/static/img/icons/moon.svg')
 
   el = document.createElement('noscript')
   el.textContent = `
@@ -298,6 +292,10 @@ async function site_global_rendering() {
 
   section_management()
 
+  addRuntimeBootstrapHook({
+    code: `document.body.setAttribute('render_date', '${new Date()}')`,
+    async: true
+  })
   addRuntimeBootstrapHook({
     src: '/static/js/dynamic-pre.js',
     early: true
