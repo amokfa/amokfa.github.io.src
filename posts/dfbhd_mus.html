@@ -63,7 +63,7 @@
 
   async function render_page() {
     for (let track of tracks) {
-      let path = `http://knmw.link:743/audio/dfbhd/${track}`
+      let path = `https://knmw.link/raw/audio/dfbhd/${track}`
       article.appendChild(make_element(`<h2>${track}</h2>`))
       article.appendChild(make_element(`<audio controls src="${path}" preload="none"></audio>`))
     }
