@@ -1,6 +1,6 @@
 body.dark {
   color: #cecdcd;
-  $main_bg: #2a2706;
+  $main_bg: #1f2021;
   #left-sidebar, #right-sidebar {
     .open, .close {
       background: #00000055;
@@ -31,7 +31,7 @@ body.dark {
     }
   }
   #view_bg_btn {
-    background: rgba(203, 200, 200, 0.1);
+    background: rgba(50, 50, 50, 0.7);
     #screen_img {
       border-color: #2a2a2a;
       background: #575656;
@@ -43,12 +43,12 @@ body.dark {
       border-color: #0e0e2a;
     }
   }
-  $wrapper_bg: #0d2507;
+  $wrapper_bg: #2b2f2a;
   header {
     background: $wrapper_bg;
     nav {
-      $nav_active: #006186;
-      $nav_passive: #003477;
+      $nav_active: #4e4254;
+      $nav_passive: #3e3244;
       a {
         background: $nav_passive;
         &.current {
@@ -76,9 +76,9 @@ body.dark {
     }
   }
   .tag_element {
-    background: #79146a;
+    background: #481515;
     &:hover {
-      background: #9b1a8a;
+      background: #341010;
     }
   }
   a {
@@ -101,7 +101,7 @@ body.dark {
   }
   blockquote {
     border-color: #f8aeae;
-    background: #400244;
+    background: #331d34;
   }
   h2 {
     background: adjust-color($main_bg, $lightness: +5%);
