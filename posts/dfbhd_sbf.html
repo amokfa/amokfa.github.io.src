@@ -65,7 +65,7 @@ struct SBFChunkData {
     Experimentation reveals the PCM data format is unsigned 8 bit, 2 channel, at
     22050Hz sample rate. If you convert it to mp3 based on this spec, you get something like this:
   </p>
-  <audio controls preload="metadata" loud src="/static/media/dfbhd_unprocessed.mp3" preload="none"></audio>
+  <audio controls preload="metadata" loud src="/static/media/dfbhd_unprocessed.mp3"></audio>
   <p>
     It has the right rhythm but the amplitude is all over the place. It turns out the scale fields in the chunk header
     are modifiers that needs to be applied to the PCM data to get proper sounding audio. The digital signal needs to be
@@ -80,7 +80,7 @@ struct SBFChunkData {
     (relative difference between 1 and 2 is much bigger than difference between 115 and 116). For example, this is a
     downscaled 8 bit version of the first track in the list. Notice the hissing and cracking in the first few seconds.
   </p>
-  <audio controls preload="metadata" src="/static/media/dfbhd_downscaled.mp3" preload="none"></audio>
+  <audio controls preload="metadata" src="/static/media/dfbhd_downscaled.mp3"></audio>
   <p>
     This is unacceptable because this game has a lot of ambient music (e.g. <progi>GASA</progi> track).
   </p>
