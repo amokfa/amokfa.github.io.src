@@ -160,7 +160,6 @@ async function render_base_page() {
     <img alt="close right sidebar" src="/static/img/icons/swipe.svg" class="close" />
 </div>`
   ))
-  window._ConstexprJS_.addDependency('/static/img/icons/moon.svg')
 }
 
 async function fetchFile(path) {
@@ -279,12 +278,13 @@ function section_management() {
 }
 
 async function site_global_rendering() {
+  document.body.setAttribute('render_date', '${new Date()}')
   await Promise.all([render_base_page(), syntax_highlight(), render_latex(), render_graphviz(), literal_links()])
 
   el = document.createElement('noscript')
   el.textContent = `
   <style>
-    #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar #toggle_theme_wrapper {
+    #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar #toggle_theme_wrapper, #view_bg_btn {
       display: none;
     } 
   </style>

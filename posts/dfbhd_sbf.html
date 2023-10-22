@@ -103,8 +103,9 @@ struct SBFChunkData {
 
 <script constexpr>
     async function render_page() {
-        document.querySelector('audio[loud]').volume = 0.1
-        document.querySelector
+        addRuntimeBootstrapHook({
+            code: `document.querySelector('audio[loud]').volume = 0.1`
+        })
         document.querySelectorAll('prog')
             .forEach((el) => el.classList.add('language-rust'))
         const base_page_render = site_global_rendering()

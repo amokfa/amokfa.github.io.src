@@ -38,10 +38,9 @@
 </script>
 
 <script constexpr>
-  Promise.all([
-    fetch('/favicon.ico'), site_global_rendering(), page_specific_stuff()
-  ])
-    .then(() => window._ConstexprJS_.compile())
+    window._ConstexprJS_.addDependency('/favicon.ico')
+    Promise.all([site_global_rendering(), page_specific_stuff()])
+      .then(() => window._ConstexprJS_.compile())
 </script>
 
 <style>

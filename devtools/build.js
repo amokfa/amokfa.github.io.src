@@ -26,7 +26,7 @@ async function main() {
 
     const sass_task = execSh('npx sass ./static/scss/styles.scss:./static/css/styles.css --style compressed')
     const website_task = execSh(
-        `constexprjs ${process.argv.slice(2).join(' ')} --input=. --output=_out --entry /index.html --jobcount 4 --depfile devtools/deps.json --verbose`,
+        `constexprjs ${process.argv.slice(2).join(' ')} --input=. --output=_out --entry /index.html --jobcount 12 --depfile devtools/deps.json --verbose`,
         {},
     )
 
