@@ -76,12 +76,6 @@ body.dark {
       background: $main_bg;
     }
   }
-  .tag_element {
-    background: #481515;
-    &:hover {
-      background: #341010;
-    }
-  }
   a {
     color: #3c8f17;
     text-decoration: none;
@@ -92,13 +86,15 @@ body.dark {
       text-decoration: none;
       color: #28620e;
     }
-    .tag_element {
+    &.tag_element {
       color: $main_fg;
+      background: #481515;
       &:visited {
         color: $main_fg;
       }
       &:hover {
         color: $main_fg;
+        background: #341010;
       }
     }
   }

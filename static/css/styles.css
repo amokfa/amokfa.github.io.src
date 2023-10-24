@@ -651,24 +651,20 @@ body.light article {
 body.light article section {
   background: #fcfdf7;
 }
-body.light .tag_element {
-  background: #d5ecbc;
-}
-body.light .tag_element:hover {
-  background: #bde5a3;
-}
 body.light a {
   color: #3c8f17;
   text-decoration: none;
 }
-body.light a .tag_element {
+body.light a.tag_element {
+  color: #111111;
+  background: #d5ecbc;
+}
+body.light a.tag_element:visited {
   color: #111111;
 }
-body.light a .tag_element:visited {
+body.light a.tag_element:hover {
   color: #111111;
-}
-body.light a .tag_element:hover {
-  color: #111111;
+  background: #bde5a3;
 }
 body.light a:visited {
   color: #3c8f17;
@@ -766,12 +762,6 @@ body.dark article {
 body.dark article section {
   background: #1f2021;
 }
-body.dark .tag_element {
-  background: #481515;
-}
-body.dark .tag_element:hover {
-  background: #341010;
-}
 body.dark a {
   color: #3c8f17;
   text-decoration: none;
@@ -783,14 +773,16 @@ body.dark a:hover {
   text-decoration: none;
   color: #28620e;
 }
-body.dark a .tag_element {
+body.dark a.tag_element {
+  color: #cecdcd;
+  background: #481515;
+}
+body.dark a.tag_element:visited {
   color: #cecdcd;
 }
-body.dark a .tag_element:visited {
+body.dark a.tag_element:hover {
   color: #cecdcd;
-}
-body.dark a .tag_element:hover {
-  color: #cecdcd;
+  background: #341010;
 }
 body.dark prog, body.dark formula {
   background: #000000;

@@ -19,13 +19,13 @@
     const list = document.querySelector('ul')
     let postCount = 0
     posts.filter(p => p.tags.indexOf(tagName) !== -1)
-      .forEach(p => {
+      .forEach(post => {
         postCount++
         let tags = ''
-        p.tags.forEach(tag => {
+        post.tags.forEach(tag => {
           tags += `<a class="tag_element" href="/tags/generator.html?${tag}">${tag}</a> `
         })
-        list.appendChild(make_element(`<li><a href="${p.url}">${p.title}</a> ${tags}</li>`))
+        list.appendChild(make_element(`<li><a class="post_card" style="display: block;" href="${post.url}"><h3>${post.title}</h3><object>${tags}</object><div class="post_description">${post.description}</div></a></li>`))
       })
     if (postCount === 0) {
       window._ConstexprJS_.log(`no posts found with tag: "${tagName}"`)
@@ -42,6 +42,7 @@
     ul {
         margin-top: 2em;
         padding: 0;
+        list-style: none;
     }
     ul li {
         margin: 1em;

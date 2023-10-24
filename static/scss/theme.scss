@@ -79,22 +79,18 @@ body.light {
       background: $main_bg;
     }
   }
-  .tag_element {
-    background: #d5ecbc;
-    &:hover {
-      background: #bde5a3;
-    }
-  }
   a {
     color: #3c8f17;
     text-decoration: none;
-    .tag_element {
+    &.tag_element {
       color: $main_fg;
+      background: #d5ecbc;
       &:visited {
         color: $main_fg;
       }
       &:hover {
         color: $main_fg;
+        background: #bde5a3;
       }
     }
     &:visited {
