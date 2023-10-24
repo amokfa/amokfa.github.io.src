@@ -1,9 +1,10 @@
 * {
-  transition: color 0.1s ease-in, shitfuck 1s ease-in;
+  transition: background 0.1s ease-in, shitfuck 1s ease-in;
 }
 
 body.light {
-  color: #111111;
+  $main_fg: #111111;
+  color: $main_fg;
   $main_bg: #fcfdf7;
   #left-sidebar, #right-sidebar {
     .open, .close {
@@ -87,15 +88,23 @@ body.light {
   a {
     color: #3c8f17;
     text-decoration: none;
-  }
-  a:visited {
-    color: #3c8f17;
-  }
-  a:hover {
-    text-decoration: none;
-    color: #28620e;
-  }
-  prog, formula {
+    .tag_element {
+      color: $main_fg;
+      &:visited {
+        color: $main_fg;
+      }
+      &:hover {
+        color: $main_fg;
+      }
+    }
+    &:visited {
+      color: #3c8f17;
+    }
+    &:hover {
+      text-decoration: none;
+      color: #28620e;
+    }
+  }  prog, formula {
     background: #ffffff;
   }
   progi {
@@ -108,5 +117,15 @@ body.light {
   }
   h2 {
     background: adjust-color($main_bg, $lightness: -20%);
+  }
+  .post_card {
+    $card_bg: adjust-color($main_bg, $lightness: -10%);
+    border-color: $card_bg;
+    &:hover {
+      background: $card_bg;
+    }
+    .post_description {
+      color: $main_fg;
+    }
   }
 }

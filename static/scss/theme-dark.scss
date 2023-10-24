@@ -1,5 +1,6 @@
 body.dark {
-  color: #cecdcd;
+  $main_fg: #cecdcd;
+  color: $main_fg;
   $main_bg: #1f2021;
   #left-sidebar, #right-sidebar {
     .open, .close {
@@ -84,13 +85,22 @@ body.dark {
   a {
     color: #3c8f17;
     text-decoration: none;
-  }
-  a:visited {
-    color: #3c8f17;
-  }
-  a:hover {
-    text-decoration: none;
-    color: #28620e;
+    &:visited {
+      color: #3c8f17;
+    }
+    &:hover {
+      text-decoration: none;
+      color: #28620e;
+    }
+    .tag_element {
+      color: $main_fg;
+      &:visited {
+        color: $main_fg;
+      }
+      &:hover {
+        color: $main_fg;
+      }
+    }
   }
   prog, formula {
     background: #000000;
@@ -105,5 +115,15 @@ body.dark {
   }
   h2 {
     background: adjust-color($main_bg, $lightness: +5%);
+  }
+  .post_card {
+    $card_bg: adjust-color($main_bg, $lightness: -5%);
+    border-color: $card_bg;
+    &:hover {
+      background: $card_bg;
+    }
+    .post_description {
+      color: $main_fg;
+    }
   }
 }

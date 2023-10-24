@@ -31,7 +31,7 @@
       post.tags.forEach(tag => {
         tags += `<a class="tag_element" href="/tags/generator.html?${tag}">${tag}</a> `
       })
-      const el = make_element(`<li><a href="${post.url}">${post.title}</a> ${tags}</li>`)
+      const el = make_element(`<li><a class="post_card" style="display: block;" href="${post.url}"><h3>${post.title}</h3><object>${tags}</object><div class="post_description">${post.description}</div></a></li>`)
       insertFirst(postsEl, el)
     })
   }
@@ -47,10 +47,8 @@
     #posts {
         margin-top: 2em;
         padding: 0;
+        list-style-type: none;
     }
 
-    #posts li {
-        margin: 1em;
-    }
 </style>
 </html>

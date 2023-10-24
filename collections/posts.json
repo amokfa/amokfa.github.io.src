@@ -51,7 +51,7 @@
   {
     "title": "Syntax Highlighting in a Webpage Without Javascript",
     "url": "/posts/constexprjs_syntax_highlighting.html",
-    "description": "This guide describes how you can use constexprjs to highlight code in your website without using javascript",
+    "description": "This guide describes how you can use constexprjs to highlight code in your website on server side",
     "tags": [
       "constexprjs",
       "web"

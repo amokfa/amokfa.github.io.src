@@ -22,7 +22,6 @@
   padding: 0.3em 1em;
   font-size: 0.8em;
   border-radius: 10em;
-  color: inherit !important;
   &:hover {
     text-decoration: none;
   }
@@ -110,4 +109,11 @@ em {
   ul, ol {
     padding: 1em;
   }
+}
+
+.post_card {
+  margin: 1em;
+  padding: 1em;
+  border: 1px solid;
+  border-radius: 1em;
 }
