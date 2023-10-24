@@ -64,9 +64,9 @@ $ tokei static/packages/ static/js/constexpr/
         Command line usage:
         <prog>
 $ constexprjs --help
-usage: constexprjs [-h] [-v] --input INPUT_DIRECTORY --output OUTPUT_DIRECTORY [--entry ENTRYPOINTS] [--skip-resources] [--jobcount JOBCOUNT] [--jobtimeout JOBTIMEOUT] [--depfile DEPFILE] [--noheadless] [--verbose]
+usage: constexprjs [-h] [-v] --input INPUT_DIRECTORY --output OUTPUT_DIRECTORY [--entry ENTRYPOINTS] [--skip-resources] [--jobcount JOBCOUNT] [--jobtimeout JOBTIMEOUT] [--depfile DEPFILE] [--headless] [--verbose]
 
-Zero cost abstractions for web development
+A static site generator without a templating language
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -81,19 +81,17 @@ optional arguments:
   --jobtimeout JOBTIMEOUT
                         Time in milliseconds for which the compiler will wait for the pages to render
   --depfile DEPFILE     A JSON object containing the command line arguments, file dependency, compilation results will be written to this path
-  --noheadless          Do not run chrome in headless mode, can be used for debugging using browser console
+  --headless            Run chrome in headless mode, can be used for running in environments without display server
   --verbose             Enable verbose logging
         </prog>
     </p>
     <p>
         This is what an invocation looks like:
     </p>
-    <div class="asciinema-cont">
-        <div class="asciinema-player"></div>
-    </div>
+    <video src="/static/media/constexprjs.mp4" style="width: 100%;" controls></video>
     <p>
-        As you can see it can also copy resources (<progi>css</progi>, <progi>images</progi> etcetra)
-        that are fetched by pages being rendered.
+        It also copies resources (<progi>css</progi>, <progi>images</progi> etcetra)
+        that are fetched by pages being rendered to the output directory.
     </p>
 
     <p>
@@ -107,8 +105,14 @@ optional arguments:
     </p>
     <div id="pt_output"></div>
     <p>
-        This page also uses prism.js for syntax highlighting, katex for math formulae, viz.js for graphs and asciinema-player for
-        rendering CLI output, along with jquery and papaparse. None of which you need to download or execute because it's constexpr.
+      Asciinema demo:
+    </p>
+    <div class="asciinema-cont">
+      <div class="asciinema-player"></div>
+    </div>
+    <p>
+      This page also uses prism.js for syntax highlighting, katex for math formulae, and viz.js for graphs, along with
+      jquery and papaparse. None of which you need to download or execute because it's constexpr.
     </p>
 
     <h2>Performance</h2>
@@ -128,9 +132,9 @@ optional arguments:
     </p>
     <p>
       However you can think of constexprjs as a tool for building an easy-to-use static site generator. I built one for
-      this website. Now I can write <a href="https://github.com/amokfa/knmw.link.src/tree/master/posts/dfbhd_sbf.html">HTML files</a>
+      this website. Now I can write <a href="https://github.com/amokfa/amokfa.github.io.src/tree/master/posts/dfbhd_sbf.html">HTML files</a>
       with bare minimum markup and don't have to worry about the web development aspect of building a website. I can copy
-      over this <a href="https://github.com/amokfa/knmw.link.src/tree/master/devtools/_template.html">template</a> and
+      over this <a href="https://github.com/amokfa/amokfa.github.io.src/tree/master/devtools/_template.html">template</a> and
       just start writing a page.
     </p>
   <p>
@@ -184,7 +188,7 @@ Promise.all([render_task_1(), render_task_2()])
         </li>
         <li>
             You should keep all structured data separate from the html in <a
-                href="https://github.com/amokfa/knmw.link.src/tree/master/collections">json files</a>.
+                href="https://github.com/amokfa/amokfa.github.io.src/tree/master/collections">json files</a>.
             <progi>constexpr</progi> javascript should fetch these json files and render the site using them.
             <br/>
             I plan to add sqlite support to the compiler. The runtime will have <progi>window._ConstexprJS_.runSQL</progi> function

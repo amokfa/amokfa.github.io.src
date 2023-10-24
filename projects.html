@@ -17,12 +17,12 @@
     const projects = await fetch('/collections/projects.json').then(res => res.json())
     const list = document.querySelector('#proj_list')
     projects.forEach(
-      (p, idx) => {
-        const container = make_element(
-          `
-          <li><a class="post_card" style="display: block;" href="${p.url}"><h3>${p.name}</h3><div class="post_description">${p.description}</div></a></li>
-          `
-        );
+      (post) => {
+        const container = make_element(`
+<li><div class="post_card">
+<a style="display: block;" href="${post.url}"><h3>${post.name}</h3></a>
+<div class="post_description">${post.description}</div>
+</div></li>`);
         [...container.children].forEach(
           ch => list.appendChild(ch)
         )
