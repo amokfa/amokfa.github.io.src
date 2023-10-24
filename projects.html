@@ -5,8 +5,8 @@
 </head>
 <body>
 <article>
-    <ol id="proj_list">
-    </ol>
+    <ul id="proj_list">
+    </ul>
 </article>
 
 <script constexpr src="/static/js/constexpr/lib.js"></script>
@@ -20,23 +20,12 @@
       (p, idx) => {
         const container = make_element(
           `
-          <div>
-              <li class="title"><a href="${p.url}">${p.name}</a></li>
-              <li class="desc">${p.description}</li>
-          </div>
-          `,
-          "table"
+          <li><a class="post_card" style="display: block;" href="${p.url}"><h3>${p.name}</h3><div class="post_description">${p.description}</div></a></li>
+          `
         );
         [...container.children].forEach(
           ch => list.appendChild(ch)
         )
-        if (idx !== projects.length - 1) {
-          list.appendChild(
-            make_element(
-              `<li class="divider"/>`
-            )
-          )
-        }
       }
     )
   }
