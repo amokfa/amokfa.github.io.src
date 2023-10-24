@@ -15,7 +15,7 @@ body.dark {
   }
   #right-sidebar {
     button {
-      color: #cecdcd;
+      color: $main_fg;
       background: none;
       &:hover {
         background: adjust-color($main_bg, $lightness: +20%);
@@ -97,6 +97,17 @@ body.dark {
         background: #341010;
       }
     }
+    &.post_card {
+      $card_bg: adjust-color($main_bg, $lightness: -5%);
+      border-color: $card_bg;
+      &:hover {
+        color: #3c8f17;
+        background: $card_bg;
+      }
+      .post_description {
+        color: $main_fg;
+      }
+    }
   }
   prog, formula {
     background: #000000;
@@ -111,15 +122,5 @@ body.dark {
   }
   h2 {
     background: adjust-color($main_bg, $lightness: +5%);
-  }
-  .post_card {
-    $card_bg: adjust-color($main_bg, $lightness: -5%);
-    border-color: $card_bg;
-    &:hover {
-      background: $card_bg;
-    }
-    .post_description {
-      color: $main_fg;
-    }
   }
 }
