@@ -31,7 +31,12 @@
       post.tags.forEach(tag => {
         tags += `<a class="tag_element" href="/tags/generator.html?${tag}">${tag}</a> `
       })
-      const el = make_element(`<li><a class="post_card" style="display: block;" href="${post.url}"><h3>${post.title}</h3><object>${tags}</object><div class="post_description">${post.description}</div></a></li>`)
+      const el = make_element(`
+<li><div class="post_card">
+<a style="display: block;" href="${post.url}"><h3>${post.title}</h3></a>
+<div>${tags}</div>
+<div class="post_description">${post.description}</div>
+</div></li>`)
       insertFirst(postsEl, el)
     })
   }

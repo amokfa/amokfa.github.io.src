@@ -101,17 +101,6 @@ body.light {
         background: #bde5a3;
       }
     }
-    &.post_card {
-      $card_bg: adjust-color($main_bg, $lightness: -10%);
-      border-color: $card_bg;
-      &:hover {
-        color: #3c8f17;
-        background: $card_bg;
-      }
-      .post_description {
-        color: $main_fg;
-      }
-    }
   }
   prog, formula {
     background: #ffffff;
@@ -126,5 +115,10 @@ body.light {
   }
   h2 {
     background: adjust-color($main_bg, $lightness: -20%);
+  }
+  .post_card {
+    $card_bg: adjust-color($main_bg, $lightness: -10%);
+    background: $card_bg;
+    border-color: adjust-color($card_bg, $lightness: -10%);
   }
 }
