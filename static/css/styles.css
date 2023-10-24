@@ -119,7 +119,7 @@ body #right-sidebar .etopower {
 }
 @media (max-width: 800px) {
   body {
-    font-size: 0.8em;
+    font-size: 0.85em;
     padding: 0;
   }
   body #left-sidebar, body #right-sidebar {
@@ -751,11 +751,11 @@ body.dark header nav a {
   background: #3e3244;
 }
 body.dark header nav a.current {
-  background: #4e4254;
+  background: #1c171e;
 }
 @media (min-width: 800px) {
   body.dark header nav a:hover {
-    background: #4e4254;
+    background: #1c171e;
   }
 }
 body.dark footer {
