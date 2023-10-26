@@ -62,6 +62,7 @@
   ]
 
   async function render_page() {
+      let article = document.querySelector('article')
     for (let track of tracks) {
       let path = `https://knmw.link/raw/audio/dfbhd/${track}`
       article.appendChild(make_element(`<h2>${track}</h2>`))
