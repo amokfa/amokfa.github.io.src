@@ -36,7 +36,7 @@ async function initial_setup() {
 async function render_content() {
   await populate_head()
 
-  let main_bg = make_element('<img alt="background" class="bg" id="main_bg" src="/static/img/bg.jpg" loading="lazy" />')
+  let main_bg = make_element('<img alt="background" class="bg" id="main_bg" src="/static/img/bg.webp" loading="lazy" />')
   document.body.appendChild(main_bg)
   document.body.appendChild(make_element(`<div id="view_bg_btn" onclick="show_image_tag(document.querySelector('#main_bg'))"><div id="screen_img" /></div>`));
   document.body.classList.add('light')
