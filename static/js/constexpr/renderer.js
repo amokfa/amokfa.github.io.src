@@ -121,6 +121,7 @@ async function render_content() {
     <img alt="close right sidebar" src="/static/img/icons/swipe.svg" class="close" />
 </div>`
   ))
+  window._ConstexprJS_.addDependency("/static/img/icons/moon.svg")
 }
 
 async function fetchFile(path) {
