@@ -50,7 +50,7 @@ async function render_base_page() {
   )
   document.head.appendChild(
     make_element(
-      `<link rel="stylesheet" href='/static/css/styles.css'>`
+      `<style>${await fetchFile('/static/css/styles.css')}</style>`
     )
   )
   document.head.appendChild(
