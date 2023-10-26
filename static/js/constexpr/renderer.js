@@ -1,15 +1,12 @@
-let body_wrapper
-const header = document.createElement('header')
 const article = document.querySelector('article')
 article.setAttribute('role', 'main')
-let footer
-let el
 
+let post_load_css
 let global_cfg
 let all_posts
 let nav_items
 
-async function render_base_page() {
+async function initial_setup() {
   [
     '/collections/config.json',
     '/collections/nav.json',
@@ -18,13 +15,19 @@ async function render_base_page() {
   ].forEach(p => window._ConstexprJS_.addExclusion(p));
 
   [global_cfg, all_posts, nav_items] = await Promise.all(
-    [
-      fetch('/collections/config.json'),
-      fetch('/collections/posts.json'),
-      fetch('/collections/nav.json')
-    ].map(p => p.then(res => res.json()))
+      [
+        fetch('/collections/config.json'),
+        fetch('/collections/posts.json'),
+        fetch('/collections/nav.json')
+      ].map(p => p.then(res => res.json()))
   )
 
+  post_load_css = make_element(
+      `<div id="post_load_css" style="display: none;"></div>`
+  )
+}
+
+async function render_base_page() {
   let main_bg = make_element('<img alt="background" class="bg" id="main_bg" src="/static/img/bg.jpg" loading="lazy" />')
   document.body.appendChild(main_bg)
   document.body.appendChild(make_element(`<div id="view_bg_btn" onclick="show_image_tag(document.querySelector('#main_bg'))"><div id="screen_img" /></div>`));
@@ -58,7 +61,8 @@ async function render_base_page() {
       `<link rel="preconnect" href="https://fonts.gstatic.com">`
     )
   )
-  document.body.appendChild(
+  document.body.appendChild(post_load_css)
+  post_load_css.appendChild(
     make_element(
       `<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">`
     )
@@ -88,6 +92,7 @@ async function render_base_page() {
       heading = make_element(`<h1 id="main_title"></h1>`)
     }
   }
+  let header = document.createElement('header')
   header.appendChild(heading)
   document.head.appendChild(
     make_element(`<title>${heading.textContent}</title>`)
@@ -113,9 +118,9 @@ async function render_base_page() {
     }
     ne.appendChild(item)
   })
-  insertFirst(header, ne)
+  header.prepend(ne)
 
-  footer = make_element(`
+  let footer = make_element(`
 <footer>
     <div class="links">
         <div class="social">
@@ -130,12 +135,12 @@ async function render_base_page() {
 </footer>
 `)
   article.remove()
-  body_wrapper = make_element(`<div id="body_wrapper" class="first_body_wrapper"></div>`)
+  let body_wrapper = make_element(`<div id="body_wrapper" class="first_body_wrapper"></div>`)
   body_wrapper.appendChild(header)
   body_wrapper.appendChild(article)
   body_wrapper.appendChild(footer)
 
-  document.body.appendChild(body_wrapper)
+  insertBefore(post_load_css, body_wrapper)
   insertBefore(
       body_wrapper,
       make_element(`
@@ -181,7 +186,7 @@ async function syntax_highlight() {
   if (els.length > 0) {
     window.Prism = {manual: true};
     await evalScript("/static/js/constexpr/third_party/prism.js")
-    document.body.appendChild(
+    post_load_css.appendChild(
       make_element(`<link rel="stylesheet" href="/static/css/prism.css">`)
     )
     await Promise.all(els.map(
@@ -197,7 +202,7 @@ async function render_latex() {
   if (blocks.length > 0) {
     await evalScript("/static/packages/katex/katex.js")
     await evalScript("/static/packages/katex/contrib/auto-render.js")
-    document.head.appendChild(make_element(`<link rel="stylesheet" href="/static/packages/katex/katex.css">`))
+    post_load_css.appendChild(make_element(`<link rel="stylesheet" href="/static/packages/katex/katex.css">`))
     window._ConstexprJS_.addDependency('/static/packages/katex/fonts')
     blocks.forEach(block => renderMathInElement(block))
   }
@@ -218,6 +223,9 @@ async function render_graphviz() {
   }
 }
 
+/**
+ * Set href on all links marked at literal
+ */
 async function literal_links() {
   document.querySelectorAll('a[literal]').forEach(
     el => el.setAttribute('href', el.textContent)
@@ -228,11 +236,14 @@ function gen_id(title) {
   return title.toLowerCase().replace(/[^\w]/g, '').replaceAll(' ', '_')
 }
 
+/**
+ * Set href on all links marked at literal
+ */
 function create_sections() {
   const sections = []
   if (!article.querySelector('section')) {
     if (article.children[0] && article.children[0].nodeName !== 'H2') {
-      insertFirst(article, make_element(`<h2 style="display: none;">Top</h2>`))
+      article.prepend(make_element(`<h2 style="display: none;">Top</h2>`))
     }
     const header_idxs = []
     const nodes = Array.from(article.children)
@@ -265,6 +276,9 @@ function create_sections() {
   return section_names
 }
 
+/**
+ * create sections and table of content
+ */
 function section_management() {
   const section_names = create_sections()
   if (section_names.length > 1) {
@@ -278,10 +292,11 @@ function section_management() {
 }
 
 async function site_global_rendering() {
-  document.body.setAttribute('render_date', '${new Date()}')
+  document.body.setAttribute('render_date', `${new Date()}`)
+  await initial_setup()
   await Promise.all([render_base_page(), syntax_highlight(), render_latex(), render_graphviz(), literal_links()])
 
-  el = document.createElement('noscript')
+  let el = document.createElement('noscript')
   el.textContent = `
   <style>
     #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar #toggle_theme_wrapper, #view_bg_btn {
@@ -293,10 +308,6 @@ async function site_global_rendering() {
 
   section_management()
 
-  addRuntimeBootstrapHook({
-    code: `document.body.setAttribute('render_date', '${new Date()}')`,
-    async: true
-  })
   addRuntimeBootstrapHook({
     src: '/static/js/dynamic-pre.js',
     early: true

@@ -15,10 +15,6 @@ function make_element(str) {
   return p.content.cloneNode(true).children[0]
 }
 
-function insertFirst(par, ch) {
-  par.insertBefore(ch, par.children[0])
-}
-
 function insertBefore(sib, el) {
   sib.parentNode.insertBefore(el, sib)
 }
@@ -38,7 +34,7 @@ async function sleep(n) {
 
 function dump_markdown() {
   Array.from(document.querySelectorAll('progi')).forEach(e => {
-    insertAfter(e, make_element(`<span>\`${e.textContent}\`</span>`))
+    e.insertAfter(make_element(`<span>\`${e.textContent}\`</span>`))
     e.remove()
   });
   let s = ''
