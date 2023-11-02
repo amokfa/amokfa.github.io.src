@@ -27,7 +27,7 @@
   }
 }
 
-prog, formula {
+prog {
   font-size: 0.85em;
   line-height: 1.5em;
   font-family: 'Roboto Mono', monospace;
@@ -42,7 +42,7 @@ prog * {
   background: none !important;
 }
 
-progi {
+progi, formula {
   font-family: 'Roboto Mono', monospace;
   padding: 0.15em 0.2em;
   border-radius: 5px;
