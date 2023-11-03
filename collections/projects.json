@@ -5,6 +5,11 @@
     "url": "/posts/constexprjs.html"
   },
   {
+    "name": "Datest",
+    "description": "A testing framework designed to be used from the REPL",
+    "url": "/posts/datest.html"
+  },
+  {
     "name": "flutter_scaled_window",
     "description": "Render a widget/app at a custom resolution. Useful when developing for multiple environments.",
     "url": "https://pub.dev/packages/scaled_window"

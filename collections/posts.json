@@ -80,5 +80,13 @@
     "tags": [
       "games"
     ]
+  },
+  {
+    "title": "Datest",
+    "url": "/posts/datest.html",
+    "description": "Documentation for 'datest', a clojure(script) testing framework designed to be used from the REPL",
+    "tags": [
+      "clojure"
+    ]
   }
 ]
