@@ -10,8 +10,8 @@
     <ol>
       <li>Designed to be used from REPL</li>
       <li>Test suites and test results are clojure values that you can manipulate in the REPL</li>
-      <li>Works with both clojure and clojurescript</li>
       <li>Cleans stack traces to only contain frames from your module</li>
+      <li>Works with both clojure and clojurescript</li>
     </ol>
     <h2>Defining a test suite</h2>
     <p>
@@ -22,7 +22,7 @@
     <prog>
 (def suite1 (testing :test []
                     {:result :OK
-                     :message "A simple test suite"))
+                     :message "A simple test suite"}))
     </prog>
     <p>
         The first argument to the macro is the name of the test suite (<progi>:test</progi> in this case). How the rest
@@ -80,16 +80,17 @@
     </p>
     <prog>
 (run-test combined)
-{:test {:result :OK,
-        :message "A simple test suite"},
- :a {:b {:result :OK},
-     :c {:result :ERR,
-         :message "failing test"},
+=>
+{:a {:b {:result :OK, :state {}},
+     :c {:result :ERR, :message "failing test", :state {}},
      :d {:result :EXCEPTION,
-         :exception #error}}}
-
+         :exception #error{},
+         :state {}}},
+ :test {:result :OK, :message "A simple test suite", :state {}}}
+    </prog>
+    <prog>
 (run-test (get-in combined [:a :c]))
-{:result :ERR, :message "failing test"}
+=> {:result :ERR, :message "failing test", :state {}}
     </prog>
 
     <h2>Test state</h2>
