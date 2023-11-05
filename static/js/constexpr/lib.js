@@ -5,7 +5,8 @@ if (!window._ConstexprJS_) {
     addPath: () => {},
     addExclusion: () => {},
     addDependency: () => {},
-    log: () => {}
+    log: () => {},
+    DEV: true
   }
 }
 
