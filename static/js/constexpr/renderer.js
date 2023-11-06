@@ -110,6 +110,7 @@ async function render_content() {
 </div>`))
   insertBefore(body_wrapper, make_element(
       `<div id="right-sidebar">
+    <a href="/posts/constexprjs.html"><img src="/static/img/power.png" class="etopower"></a>
     <div class="dialog">
         <div class="heading">Settings</div>
         <div class="content">
