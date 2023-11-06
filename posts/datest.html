@@ -93,7 +93,22 @@
 => {:result :ERR, :message "failing test", :state {}}
     </prog>
 
-    <h2>Test state</h2>
+  <h2>Stack traces cleanup</h2>
+  <p>
+    The framework uses first word of the namespace as filter for stack traces by default. For example, for
+    tests defined in <progi>datest.core</progi>, <progi>run-test</progi> will filter out all stack frames that don't
+    have <progi>datest</progi> in them.
+  </p>
+  <p>
+    If this default behavior doesn't work for you, you can rebind <progi>datest.core/EXCEPTION_FILTER</progi> to a regex
+    of your choice and it will be used for cleaning up exceptions.
+  </p>
+  <prog>
+    (binding [datest.core/EXCEPTION_FILTER #"clojure\.lang"]
+    (testing :my-test [])
+  </prog>
+
+  <h2>Test state</h2>
     <p>
         Consider the following test unit:
     </p>
