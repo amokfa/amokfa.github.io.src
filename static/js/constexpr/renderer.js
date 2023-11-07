@@ -50,8 +50,8 @@ function Page() {
         e('img', { src: '/static/img/bg.webp', className: 'bg', id: 'main_bg', loading: 'lazy' }),
         e(ViewBgBtn),
         e(LeftSidebar),
+        e(PageContent),
         e(RightSidebar),
-        e(PageContent)
     )
 }
 
@@ -63,6 +63,26 @@ function ViewBgBtn() {
     )
 }
 
-function LeftSidebar() {}
-function RightSidebar() {}
-function PageContent() {}
+function LeftSidebar() {
+    return e(
+        'div',
+        { id: 'left-sidebar' }
+    )
+}
+function RightSidebar() {
+    return e(
+        'div',
+        { id: 'right-sidebar' }
+    )
+}
+function PageContent() {
+    return e(
+        'div',
+        { id: 'body_wrapper' },
+        e(
+            'header', {}
+        ),
+        e('article', {}),
+        e('footer', {})
+    )
+}
