@@ -2,7 +2,7 @@
   overflow-x: hidden;
 }
 
-body {
+#body_wrapper_2 {
   user-select: none;
   font-family: 'Roboto', sans-serif;
 
@@ -73,7 +73,7 @@ body {
   }
 }
 
-body {
+#body_wrapper_2 {
   #left-sidebar, #right-sidebar {
     .open, .close {
       position: absolute;

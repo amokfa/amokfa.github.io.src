@@ -5,9 +5,8 @@ async function evalConstexpr(path) {
     eval(t)
 }
 
-let PageResources
 let NewBody
-
+let PageResources
 async function fetchResources() {
     let res = {
         mainCss: await fetch('/static/css/styles.css').then(res => res.text()),
@@ -45,13 +44,13 @@ async function site_global_rendering() {
 }
 
 async function renderBody() {
-    // const pageContent = document.body
-    // document.body = document.createElement('body')
-    NewBody = document.createElement('body')
-    NewBody.setAttribute('render_date', `${new Date()}`)
-    NewBody.classList.add('dark')
+    document.body.setAttribute('render_date', `${new Date()}`)
+    document.body.classList.add('dark')
 
-    ReactDOM.createRoot(NewBody)
+    const newBody = document.createElement('div')
+    newBody.setAttribute('id', 'body_wrapper_2')
+    document.body.prepend(newBody)
+    ReactDOM.createRoot(newBody)
         .render(e(
             PageResources.Provider,
             {value: await fetchResources()},
@@ -64,7 +63,7 @@ async function populateHead() {
 
 function Page() {
     React.useEffect(() => {
-        document.body = NewBody
+        document.querySelector('body > article').remove()
     }, []);
     return e(
         React.Fragment,
