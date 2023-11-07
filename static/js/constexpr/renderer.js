@@ -20,11 +20,16 @@ async function fetchResources() {
         projects: await fetch('/collections/projects.json')
             .then(res => res.json())
     };
-    res.thisPost = res.posts.filter(p => p.url === document.location.pathname)[0]
+    res.thisPost = res.posts.find(p => p.url === document.location.pathname)
     if (res.thisPost) {
         res.title = res.thisPost.title
     } else {
-        res.title = ''
+        let navItem = res.nav.find(n => n.href === document.location.pathname)
+        if (navItem) {
+            res.title = navItem.name
+        } else {
+            res.title = ''
+        }
     }
     return res
 }
@@ -185,13 +190,13 @@ function PageContent() {
                     'nav', {},
                     context.nav
                         .map(item => e(
-                            'a', {href: item.href},
+                            'a', {href: item.href, className: item.href === window.location.pathname ? 'current' : ''},
                             item.name
                         ))
                 ),
                 e('h1', {id: 'main_title'}, context.thisPost ? context.thisPost.title : null),
             ),
-            e('article', {}),
+            e(Article, {}),
             e(
                 'footer', {},
                 e(
@@ -235,4 +240,8 @@ function PageContent() {
             )
         )
     )
+}
+
+function Article() {
+
 }
