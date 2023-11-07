@@ -6,6 +6,7 @@ async function evalConstexpr(path) {
 }
 
 let PageResources
+let NewBody
 
 async function fetchResources() {
     return {
@@ -26,23 +27,25 @@ async function site_global_rendering() {
 async function renderBody() {
     // const pageContent = document.body
     // document.body = document.createElement('body')
-    const newBody = document.createElement('body')
-    newBody.setAttribute('render_date', `${new Date()}`)
-    newBody.classList.add('light')
+    NewBody = document.createElement('body')
+    NewBody.setAttribute('render_date', `${new Date()}`)
+    NewBody.classList.add('light')
 
-    ReactDOM.createRoot(newBody)
+    ReactDOM.createRoot(NewBody)
         .render(e(
             PageResources.Provider,
             {value: await fetchResources()},
-            e(Page, {newBody}, null)
+            e(Page, {}, null)
         ))
-    document.body = newBody
 }
 
 async function populateHead() {
 }
 
 function Page() {
+    React.useEffect(() => {
+        document.body = NewBody
+    }, []);
     return e(
         React.Fragment,
         {},
@@ -67,9 +70,49 @@ function ViewBgBtn() {
 }
 
 function LeftSidebar() {
+    let marks
+    if (document.querySelector('article').children[0].tagName === 'H2') {
+        marks = []
+    } else {
+        marks = ['Top']
+    }
+    marks.push(...Array.from(document.querySelectorAll('article h2'))
+        .map(el => el.textContent))
     return e(
         'div',
-        {id: 'left-sidebar'}
+        {id: 'left-sidebar', style: {display: marks.length === 1 ? 'none' : null}},
+        e(
+            'div',
+            {className: 'dialog'},
+            e(
+                'div',
+                {className: 'heading'},
+                'Settings'
+            ),
+            e(
+                'ol',
+                {className: 'content'},
+                marks.map(
+                    mark => e(
+                        'li',
+                        {key: mark},
+                        e(
+                            'a',
+                            {href: `#${mark}`},
+                            mark
+                        )
+                    )
+                ),
+            ),
+            e(
+                'img',
+                {className: 'open', alt: 'open left sidebar', src: '/static/img/icons/swipe.svg'}
+            ),
+            e(
+                'img',
+                {className: 'close', alt: 'close left sidebar', src: '/static/img/icons/swipe.svg'}
+            ),
+        )
     )
 }
 
