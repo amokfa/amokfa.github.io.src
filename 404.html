@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <body>
-<h1 id="main_title">Not Found</h1>
 <article>
 </article>
 </body>
@@ -10,12 +9,14 @@
 
 <script constexpr>
     async function page_specific_stuff() {
+        document.querySelector('#main_title').textContent = 'Not Found'
     }
 </script>
 
 <script constexpr>
-  Promise.all([site_global_rendering(), page_specific_stuff()])
-    .then(() => window._ConstexprJS_.compile())
+    site_global_rendering()
+        .then(() => page_specific_stuff())
+        .then(() => window._ConstexprJS_.compile())
 </script>
 
 </html>

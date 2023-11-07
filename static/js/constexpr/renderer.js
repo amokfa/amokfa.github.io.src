@@ -36,10 +36,25 @@ async function site_global_rendering() {
     await evalConstexpr('/static/js/constexpr/lib.js')
     await evalConstexpr('/static/js/constexpr/react.js')
     await evalConstexpr('/static/js/constexpr/react-dom.js')
+
     PageResources = React.createContext()
     window.e = React.createElement
+
     await renderBody()
+
+    document.querySelector('body > article').remove()
+    await Promise.all([literal_links(), render_latex(), render_graphviz(), syntax_highlight()])
     await populateHead()
+    addRuntimeBootstrapHook({
+        src: '/static/js/dynamic-pre.js',
+        early: true
+    })
+    addRuntimeBootstrapHook({
+        src: '/static/js/dynamic-post.js'
+    })
+    addRuntimeBootstrapHook({
+        src: '/static/js/mtm.js',
+    })
 }
 
 async function renderBody() {
@@ -49,21 +64,25 @@ async function renderBody() {
     const newBody = document.createElement('div')
     newBody.setAttribute('id', 'body_wrapper')
     document.body.prepend(newBody)
-    ReactDOM.createRoot(newBody)
-        .render(e(
-            PageResources.Provider,
-            {value: await fetchResources()},
-            e(Page, {}, null)
-        ))
+
+    const resources = await fetchResources()
+
+    await new Promise((resolve) => {
+        ReactDOM.createRoot(newBody)
+            .render(e(
+                PageResources.Provider,
+                {value: resources},
+                e(Page, {pageHasRendered: () => resolve()}, null)
+            ))
+    })
 }
 
 async function populateHead() {
 }
 
-function Page() {
+function Page({ pageHasRendered }) {
     React.useEffect(() => {
-        document.querySelector('body > article').remove()
-        window._ConstexprJS_.compile()
+        pageHasRendered()
     }, []);
     return e(
         React.Fragment,
@@ -77,6 +96,8 @@ function Page() {
         e(LeftSidebar),
         e(PageContent),
         e(RightSidebar),
+        // All the unnecessary css is loaded here after the page has loaded
+        e('div', {id: 'post_load_css'})
     )
 }
 
@@ -109,11 +130,11 @@ function LeftSidebar() {
         {id: 'left-sidebar'},
         e(
             'div',
-            {className: 'dialog', style: {display: marks.length === 1 ? 'none' : null}},
+            {className: 'dialog', style: {display: marks.length < 2 ? 'none' : null}},
             e(
                 'div',
                 {className: 'heading'},
-                'Settings'
+                'Table of content'
             ),
             e(
                 'ol',
@@ -250,6 +271,9 @@ function PageContent() {
 
 function Article() {
     let currentContent = [...document.querySelector('article').children]
+    if (currentContent.length === 0) {
+        return e('article')
+    }
     if (currentContent[0].tagName !== 'H2') {
         currentContent.unshift(make_element(`<h2 style="display: none;">Top</h2>`))
     }
@@ -283,3 +307,60 @@ function Article() {
         )
     )
 }
+
+/**
+ * Set href on all links marked at literal
+ */
+async function literal_links() {
+    document.querySelectorAll('a[literal]').forEach(
+        el => el.setAttribute('href', el.textContent)
+    )
+}
+
+async function syntax_highlight() {
+    document.querySelectorAll('prog, progi').forEach(el => {
+        el.setAttribute('role', 'figure')
+        el.textContent = el.textContent.trim()
+    })
+    const els = [...document.querySelectorAll('prog[class]')]
+    if (els.length > 0) {
+        window.Prism = {manual: true};
+        await evalConstexpr("/static/js/constexpr/third_party/prism.js")
+        document.querySelector('#post_load_css').appendChild(
+            make_element(`<link rel="stylesheet" href="/static/css/prism.css">`)
+        )
+        await Promise.all(els.map(
+            el => new Promise((resolve) => {
+                Prism.highlightElement(el, null, () => resolve())
+            })
+        ))
+    }
+}
+
+async function render_latex() {
+    const blocks = document.querySelectorAll('formula')
+    if (blocks.length > 0) {
+        await evalConstexpr("/static/packages/katex/katex.js")
+        await evalConstexpr("/static/packages/katex/contrib/auto-render.js")
+        document.querySelector('#post_load_css').appendChild(make_element(`<link rel="stylesheet" href="/static/packages/katex/katex.css">`))
+        window._ConstexprJS_.addDependency('/static/packages/katex/fonts')
+        blocks.forEach(block => renderMathInElement(block))
+    }
+}
+
+async function render_graphviz() {
+    const blocks = document.querySelectorAll('.graphviz')
+    if (blocks.length > 0) {
+        await evalConstexpr('/static/packages/vizjs/viz.js')
+        await evalConstexpr('/static/packages/vizjs/full.render.js')
+
+        for (const block of blocks) {
+            const viz = new Viz()
+            const vizel = await viz.renderSVGElement(block.textContent)
+            block.textContent = ''
+            block.appendChild(vizel)
+        }
+    }
+}
+
+

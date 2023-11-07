@@ -14,7 +14,7 @@
     await site_global_rendering()
     const tagName = window.location.search.substring(1)
     document.querySelector('#main_title').textContent = 'Tag: ' + tagName
-    document.querySelector('head title').textContent = 'Tag: ' + tagName
+    // document.querySelector('head title').textContent = 'Tag: ' + tagName
     const posts = await fetch('/collections/posts.json').then(res => res.json())
     const list = document.querySelector('ul')
     let postCount = 0
