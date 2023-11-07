@@ -6,6 +6,7 @@ async function evalConstexpr(path) {
 }
 
 let PageResources
+
 async function fetchResources() {
     return {
         mainCss: await fetch('/static/css/styles.css').then(res => res.text()),
@@ -32,12 +33,14 @@ async function renderBody() {
     ReactDOM.createRoot(newBody)
         .render(e(
             PageResources.Provider,
-            { value: await fetchResources() },
-            e(Page, { newBody }, null)
+            {value: await fetchResources()},
+            e(Page, {newBody}, null)
         ))
     document.body = newBody
 }
-async function populateHead() {}
+
+async function populateHead() {
+}
 
 function Page() {
     return e(
@@ -47,7 +50,7 @@ function Page() {
             PageResources.Consumer, null,
             context => e('style', {}, context.mainCss)
         ),
-        e('img', { src: '/static/img/bg.webp', className: 'bg', id: 'main_bg', loading: 'lazy' }),
+        e('img', {src: '/static/img/bg.webp', className: 'bg', id: 'main_bg', loading: 'lazy'}),
         e(ViewBgBtn),
         e(LeftSidebar),
         e(PageContent),
@@ -58,27 +61,63 @@ function Page() {
 function ViewBgBtn() {
     return e(
         'div',
-        { id: 'view_bg_btn' },
-        e('div', { id: 'screen_img' })
+        {id: 'view_bg_btn'},
+        e('div', {id: 'screen_img'})
     )
 }
 
 function LeftSidebar() {
     return e(
         'div',
-        { id: 'left-sidebar' }
+        {id: 'left-sidebar'}
     )
 }
+
 function RightSidebar() {
     return e(
         'div',
-        { id: 'right-sidebar' }
+        {id: 'right-sidebar'},
+        e(
+            'div',
+            {className: 'dialog'},
+            e(
+                'div',
+                {className: 'heading'},
+                'Settings'
+            ),
+            e(
+                'div',
+                {className: 'content'},
+                e(
+                    'button',
+                    {},
+                    'Subscribe'
+                ),
+                e(
+                    'div',
+                    {id: 'toggle_theme_wrapper'},
+                    e(
+                        'div',
+                        {id: 'toggle_theme'}
+                    )
+                )
+            ),
+            e(
+                'img',
+                {className: 'open', alt: 'open right sidebar', src: '/static/img/icons/swipe.svg'}
+            ),
+            e(
+                'img',
+                {className: 'close', alt: 'close right sidebar', src: '/static/img/icons/swipe.svg'}
+            ),
+        )
     )
 }
+
 function PageContent() {
     return e(
         'div',
-        { id: 'body_wrapper' },
+        {id: 'body_wrapper'},
         e(
             'header', {}
         ),
