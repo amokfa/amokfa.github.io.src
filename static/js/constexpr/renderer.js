@@ -89,6 +89,12 @@ function ViewBgBtn() {
     )
 }
 
+function titleToId(title) {
+    return title.toLowerCase()
+        .replaceAll(' ', '_')
+        .replace(/[^\w]/g, '')
+}
+
 function LeftSidebar() {
     let marks = []
     try {
@@ -98,6 +104,7 @@ function LeftSidebar() {
     } catch (e) {}
     marks.push(...Array.from(document.querySelectorAll('article h2'))
         .map(el => el.textContent))
+
     return e(
         'div',
         {id: 'left-sidebar'},
@@ -118,7 +125,7 @@ function LeftSidebar() {
                         {key: mark},
                         e(
                             'a',
-                            {href: `#${mark}`},
+                            {href: `#${titleToId(mark)}`},
                             mark
                         )
                     )
@@ -190,7 +197,7 @@ function PageContent() {
                     'nav', {},
                     context.nav
                         .map(item => e(
-                            'a', {href: item.href, className: item.href === window.location.pathname ? 'current' : ''},
+                            'a', {href: item.href, key: item.href, className: item.href === window.location.pathname ? 'current' : ''},
                             item.name
                         ))
                 ),
@@ -243,5 +250,37 @@ function PageContent() {
 }
 
 function Article() {
-
+    let currentContent = [...document.querySelector('article').children]
+    if (currentContent[0].tagName !== 'H2') {
+        currentContent.unshift(make_element(`<h2 style="display: none;">Top</h2>`))
+    }
+    const headerIdxs = []
+    currentContent.forEach((el, idx) => {
+        if (el.nodeName === 'H2') {
+            headerIdxs.push(idx)
+        }
+    })
+    const sections = []
+    for (let i=0; i<headerIdxs.length; i++) {
+        sections.push({
+            id: titleToId(currentContent[headerIdxs[i]].textContent),
+            ref: React.createRef(),
+            elements: currentContent.slice(headerIdxs[i], headerIdxs[i+1] || 1000000),
+        })
+    }
+    React.useEffect(() => {
+        for (let section of sections) {
+            for (let el of section.elements) {
+                section.ref.current.appendChild(el)
+            }
+        }
+    }, [])
+    return e(
+        'article', {},
+        sections.map(
+            ({id, ref}) => e(
+                'section', {id: id, key: id, ref},
+            )
+        )
+    )
 }
