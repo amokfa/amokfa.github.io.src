@@ -5,7 +5,6 @@ async function evalConstexpr(path) {
     eval(t)
 }
 
-let NewBody
 let PageResources
 async function fetchResources() {
     let res = {
@@ -48,7 +47,7 @@ async function renderBody() {
     document.body.classList.add('dark')
 
     const newBody = document.createElement('div')
-    newBody.setAttribute('id', 'body_wrapper_2')
+    newBody.setAttribute('id', 'body_wrapper')
     document.body.prepend(newBody)
     ReactDOM.createRoot(newBody)
         .render(e(
@@ -64,6 +63,7 @@ async function populateHead() {
 function Page() {
     React.useEffect(() => {
         document.querySelector('body > article').remove()
+        window._ConstexprJS_.compile()
     }, []);
     return e(
         React.Fragment,
@@ -189,7 +189,7 @@ function PageContent() {
         {},
         context => e(
             'div',
-            {id: 'body_wrapper'},
+            {id: 'page_content'},
             e(
                 'header', {},
                 e(

@@ -91,18 +91,18 @@ table {
   overflow-x: hidden;
 }
 
-#body_wrapper_2 {
+#body_wrapper {
   user-select: none;
   font-family: "Roboto", sans-serif;
   width: 100%;
 }
-#body_wrapper_2 #right-sidebar .etopower {
+#body_wrapper #right-sidebar .etopower {
   display: none;
   transform: translateX(50%) translateY(-50%) rotateZ(45deg);
   position: absolute;
 }
 @media (min-width: 800px) {
-  #body_wrapper_2 #right-sidebar .etopower {
+  #body_wrapper #right-sidebar .etopower {
     width: 250px;
     height: 250px;
     top: -1em;
@@ -110,7 +110,7 @@ table {
   }
 }
 @media (max-width: 800px) {
-  #body_wrapper_2 #right-sidebar .etopower {
+  #body_wrapper #right-sidebar .etopower {
     width: 60vw;
     height: 60vw;
     top: 0;
@@ -118,28 +118,28 @@ table {
   }
 }
 @media (max-width: 800px) {
-  #body_wrapper_2 {
+  #body_wrapper {
     font-size: 0.85em;
     padding: 0;
   }
-  #body_wrapper_2 #left-sidebar, #body_wrapper_2 #right-sidebar {
+  #body_wrapper #left-sidebar, #body_wrapper #right-sidebar {
     width: 100%;
     height: 100%;
     position: fixed;
     top: 0;
   }
-  #body_wrapper_2 #left-sidebar {
+  #body_wrapper #left-sidebar {
     left: -100%;
   }
-  #body_wrapper_2 #right-sidebar {
+  #body_wrapper #right-sidebar {
     left: 100%;
   }
-  #body_wrapper_2 #body_wrapper {
+  #body_wrapper #page_content {
     width: 100%;
   }
 }
 @media (min-width: 800px) {
-  #body_wrapper_2 {
+  #body_wrapper {
     font-size: 1em;
     padding: 1em;
     display: flex;
@@ -147,59 +147,59 @@ table {
     flex-direction: row;
     align-items: flex-start;
   }
-  #body_wrapper_2 #left-sidebar, #body_wrapper_2 #right-sidebar {
+  #body_wrapper #left-sidebar, #body_wrapper #right-sidebar {
     position: sticky;
     top: 1em;
     height: calc(100vh - 2em);
   }
-  #body_wrapper_2 #left-sidebar, #body_wrapper_2 #right-sidebar, #body_wrapper_2 #body_wrapper {
+  #body_wrapper #left-sidebar, #body_wrapper #right-sidebar, #body_wrapper #page_content {
     width: 0;
     flex-grow: 1;
     flex-shrink: 0;
   }
-  #body_wrapper_2 #body_wrapper {
+  #body_wrapper #page_content {
     flex-grow: 2;
   }
-  #body_wrapper_2 #body_wrapper {
+  #body_wrapper #page_content {
     user-select: text;
   }
 }
 
-#body_wrapper_2 #left-sidebar, #body_wrapper_2 #right-sidebar {
+#body_wrapper #left-sidebar, #body_wrapper #right-sidebar {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-#body_wrapper_2 #left-sidebar .open, #body_wrapper_2 #left-sidebar .close, #body_wrapper_2 #right-sidebar .open, #body_wrapper_2 #right-sidebar .close {
+#body_wrapper #left-sidebar .open, #body_wrapper #left-sidebar .close, #body_wrapper #right-sidebar .open, #body_wrapper #right-sidebar .close {
   position: absolute;
   bottom: 10%;
   width: 30px;
   height: 30px;
   border-radius: 10em;
 }
-#body_wrapper_2 #left-sidebar .dialog, #body_wrapper_2 #right-sidebar .dialog {
+#body_wrapper #left-sidebar .dialog, #body_wrapper #right-sidebar .dialog {
   max-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-#body_wrapper_2 #left-sidebar .dialog .heading, #body_wrapper_2 #right-sidebar .dialog .heading {
+#body_wrapper #left-sidebar .dialog .heading, #body_wrapper #right-sidebar .dialog .heading {
   flex-grow: 0;
   flex-shrink: 0;
   width: 100%;
   padding: 0.5em;
   font-size: 1.3em;
 }
-#body_wrapper_2 #left-sidebar .dialog .content, #body_wrapper_2 #right-sidebar .dialog .content {
+#body_wrapper #left-sidebar .dialog .content, #body_wrapper #right-sidebar .dialog .content {
   flex-grow: 1;
   width: 100%;
   overflow-y: auto;
   margin: 0;
 }
-#body_wrapper_2 #right-sidebar .dialog .content {
+#body_wrapper #right-sidebar .dialog .content {
   padding: 1em;
 }
-#body_wrapper_2 #right-sidebar .dialog .content button {
+#body_wrapper #right-sidebar .dialog .content button {
   width: 100%;
   font-size: 1.1em;
   padding: 0.3em 1em;
@@ -207,7 +207,7 @@ table {
   font-weight: bold;
   border-radius: 2px;
 }
-#body_wrapper_2 #right-sidebar .dialog .content #toggle_theme_wrapper {
+#body_wrapper #right-sidebar .dialog .content #toggle_theme_wrapper {
   width: 2em;
   height: 2em;
   margin-top: 1em;
@@ -215,7 +215,7 @@ table {
   padding: 5px;
   border-radius: 3px;
 }
-#body_wrapper_2 #right-sidebar .dialog .content #toggle_theme_wrapper #toggle_theme {
+#body_wrapper #right-sidebar .dialog .content #toggle_theme_wrapper #toggle_theme {
   width: 100%;
   height: 100%;
   mask-image: url("/static/img/icons/moon.svg");
@@ -227,29 +227,29 @@ table {
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
 }
-#body_wrapper_2 #right-sidebar .open {
+#body_wrapper #right-sidebar .open {
   left: -50px;
   transform: rotateZ(180deg);
 }
-#body_wrapper_2 #right-sidebar .close {
+#body_wrapper #right-sidebar .close {
   left: 20px;
 }
-#body_wrapper_2 #left-sidebar .content {
+#body_wrapper #left-sidebar .content {
   padding-left: 2em;
 }
-#body_wrapper_2 #left-sidebar li {
+#body_wrapper #left-sidebar li {
   line-height: 1.5em;
   margin: 0.5em 0;
 }
-#body_wrapper_2 #left-sidebar .open {
+#body_wrapper #left-sidebar .open {
   right: -50px;
 }
-#body_wrapper_2 #left-sidebar .close {
+#body_wrapper #left-sidebar .close {
   right: 20px;
   transform: rotateZ(180deg);
 }
 @media (min-width: 800px) {
-  #body_wrapper_2 #left-sidebar .open, #body_wrapper_2 #left-sidebar .close, #body_wrapper_2 #right-sidebar .open, #body_wrapper_2 #right-sidebar .close {
+  #body_wrapper #left-sidebar .open, #body_wrapper #left-sidebar .close, #body_wrapper #right-sidebar .open, #body_wrapper #right-sidebar .close {
     display: none !important;
   }
 }
@@ -341,7 +341,7 @@ table {
 }
 
 @media (max-width: 800px) {
-  body #body_wrapper {
+  body #page_content {
     transition: opacity 0.2s linear;
   }
   body #left-sidebar, body #right-sidebar {
@@ -366,27 +366,27 @@ table {
   }
 }
 @media (min-width: 800px) {
-  body #body_wrapper {
+  body #page_content {
     opacity: 1 !important;
   }
 }
-#body_wrapper header {
+#page_content header {
   padding: 1em;
 }
-#body_wrapper header #main_title {
+#page_content header #main_title {
   padding: 0 1em;
   width: 100%;
   text-align: center;
   margin-top: 1em;
 }
-#body_wrapper header nav {
+#page_content header nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: baseline;
   grid-gap: 1em;
 }
-#body_wrapper header nav a {
+#page_content header nav a {
   text-decoration: none;
   color: inherit;
   font-weight: 500;
@@ -395,41 +395,41 @@ table {
   border-radius: 0.3em;
   text-align: center;
 }
-#body_wrapper article {
+#page_content article {
   line-height: 2em;
   padding: 0 1em;
   overflow: hidden;
 }
-#body_wrapper article section {
+#page_content article section {
   margin: 1em 0;
   padding: 1em;
 }
-#body_wrapper article section p, #body_wrapper article section prog, #body_wrapper article section blockquote {
+#page_content article section p, #page_content article section prog, #page_content article section blockquote {
   margin: 1rem 0;
 }
 @media (max-width: 800px) {
-  #body_wrapper header {
+  #page_content header {
     padding: 0 0 1em;
   }
-  #body_wrapper header nav {
+  #page_content header nav {
     width: 100%;
     flex-direction: column;
     align-items: center;
     grid-gap: 0;
   }
-  #body_wrapper header nav a {
+  #page_content header nav a {
     border-radius: 0;
     width: 100%;
     padding: 1.5em;
   }
-  #body_wrapper header nav a + a {
+  #page_content header nav a + a {
     border-top: none;
   }
-  #body_wrapper article {
+  #page_content article {
     padding: 0;
   }
 }
-#body_wrapper footer {
+#page_content footer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -437,25 +437,25 @@ table {
   padding: 1em;
   grid-gap: 1em;
 }
-#body_wrapper footer .links {
+#page_content footer .links {
   display: flex;
   align-items: center;
   justify-content: center;
   grid-gap: 3em;
 }
 @media (max-width: 800px) {
-  #body_wrapper footer .links {
+  #page_content footer .links {
     flex-direction: column;
     grid-gap: 2em;
   }
 }
-#body_wrapper footer .links .social .footer-title {
+#page_content footer .links .social .footer-title {
   font-size: 1.2em;
   font-weight: bold;
   text-align: center;
   margin-bottom: 0.5em;
 }
-#body_wrapper footer .links .social > * {
+#page_content footer .links .social > * {
   margin: 0 0.5em;
 }
 
