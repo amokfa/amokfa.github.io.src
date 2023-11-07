@@ -1,6 +1,18 @@
-{
-  "HOME": "/",
-  "PROJECTS": "/projects.html",
-  "TAGS": "/tags.html",
-  "ABOUT": "/about.html"
-}
+[
+  {
+    "name": "HOME",
+    "href": "/"
+  },
+  {
+    "name": "PROJECTS",
+    "href": "/projects.html"
+  },
+  {
+    "name": "TAGS",
+    "href": "/tags.html"
+  },
+  {
+    "name": "ABOUT",
+    "href": "/about.html"
+  }
+]
