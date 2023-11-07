@@ -130,15 +130,15 @@ function LeftSidebar() {
                     )
                 ),
             ),
-            e(
-                'img',
-                {className: 'open', alt: 'open left sidebar', src: '/static/img/icons/swipe.svg'}
-            ),
-            e(
-                'img',
-                {className: 'close', alt: 'close left sidebar', src: '/static/img/icons/swipe.svg'}
-            ),
-        )
+        ),
+        e(
+            'img',
+            {className: 'open', alt: 'open left sidebar', src: '/static/img/icons/swipe.svg'}
+        ),
+        e(
+            'img',
+            {className: 'close', alt: 'close left sidebar', src: '/static/img/icons/swipe.svg'}
+        ),
     )
 }
 
@@ -171,15 +171,15 @@ function RightSidebar() {
                     )
                 )
             ),
-            e(
-                'img',
-                {className: 'open', alt: 'open right sidebar', src: '/static/img/icons/swipe.svg'}
-            ),
-            e(
-                'img',
-                {className: 'close', alt: 'close right sidebar', src: '/static/img/icons/swipe.svg'}
-            ),
-        )
+        ),
+        e(
+            'img',
+            {className: 'open', alt: 'open right sidebar', src: '/static/img/icons/swipe.svg'}
+        ),
+        e(
+            'img',
+            {className: 'close', alt: 'close right sidebar', src: '/static/img/icons/swipe.svg'}
+        ),
     )
 }
 
