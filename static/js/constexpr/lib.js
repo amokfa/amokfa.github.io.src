@@ -71,3 +71,11 @@ function addRuntimeBootstrapHook(js) {
     document.body.appendChild(el)
   }
 }
+
+window._ConstexprJS_.consoleInfo = console.info
+const SUPPRESSED_WARNINGS = ['Download the React DevTools'];
+console.info = function filterWarnings(msg, ...args) {
+  if (!SUPPRESSED_WARNINGS.some((entry) => msg.includes(entry))) {
+    window._ConstexprJS_.consoleInfo(msg, ...args);
+  }
+};
