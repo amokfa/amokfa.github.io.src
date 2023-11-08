@@ -6,31 +6,6 @@
   display: inline-block;
 }
 
-.svg-icon.email {
-  background-image: url("/static/img/icons/email.svg");
-}
-
-.svg-icon.facebook {
-  background-image: url("/static/img/icons/facebook.svg");
-}
-
-.svg-icon.github {
-  background-image: url("/static/img/icons/github.svg");
-}
-
-.svg-icon.twitter {
-  background-position: 0 3px;
-  background-image: url("/static/img/icons/twitter.svg");
-}
-
-.svg-icon.reddit {
-  background-image: url("/static/img/icons/reddit.svg");
-}
-
-.svg-icon.hn {
-  background-image: url("/static/img/icons/hn.svg");
-}
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote,
 a, abbr, acronym, address, big, cite, code,
@@ -176,6 +151,7 @@ table {
   width: 30px;
   height: 30px;
   border-radius: 10em;
+  opacity: 0.6;
 }
 #body_wrapper #left-sidebar .dialog, #body_wrapper #right-sidebar .dialog {
   max-height: 100%;
@@ -589,9 +565,6 @@ em {
 body.light {
   color: #111111;
 }
-body.light #left-sidebar .open, body.light #left-sidebar .close, body.light #right-sidebar .open, body.light #right-sidebar .close {
-  background: rgba(0, 0, 0, 0.3333333333);
-}
 body.light #left-sidebar .dialog, body.light #right-sidebar .dialog {
   background: #fcfdf7;
 }
@@ -694,9 +667,6 @@ body.light .post_card {
 
 body.dark {
   color: #cecdcd;
-}
-body.dark #left-sidebar .open, body.dark #left-sidebar .close, body.dark #right-sidebar .open, body.dark #right-sidebar .close {
-  background: rgba(0, 0, 0, 0.3333333333);
 }
 body.dark #left-sidebar .dialog, body.dark #right-sidebar .dialog {
   background: #1f2021;

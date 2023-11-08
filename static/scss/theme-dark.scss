@@ -3,9 +3,6 @@ body.dark {
   color: $main_fg;
   $main_bg: #1f2021;
   #left-sidebar, #right-sidebar {
-    .open, .close {
-      background: #00000055;
-    }
     .dialog {
       background: $main_bg;
       .heading {

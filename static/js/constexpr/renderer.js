@@ -19,8 +19,23 @@ async function fetchResources() {
         nav: await fetch('/collections/nav.json')
             .then(res => res.json()),
         projects: await fetch('/collections/projects.json')
-            .then(res => res.json())
+            .then(res => res.json()),
+        icons: {
+            hn: await fetch('/static/img/icons/hn.svg')
+                .then(res => res.text()),
+            twitter: await fetch('/static/img/icons/twitter.svg')
+                .then(res => res.text()),
+            facebook: await fetch('/static/img/icons/facebook.svg')
+                .then(res => res.text()),
+            reddit: await fetch('/static/img/icons/reddit.svg')
+                .then(res => res.text()),
+            swipe: await fetch('/static/img/icons/swipe.svg')
+                .then(res => res.text()),
+            moon: await fetch('/static/img/icons/moon.svg')
+                .then(res => res.text()),
+        },
     };
+
     res.thisPost = res.posts.find(p => p.url === document.location.pathname)
     if (res.thisPost) {
         res.title = res.thisPost.title
@@ -38,6 +53,7 @@ async function fetchResources() {
 async function site_global_rendering() {
     // Load all necessary javascript
     await evalConstexpr('/static/js/constexpr/lib.js')
+    await evalConstexpr('/static/js/constexpr/lodash.js')
     await evalConstexpr('/static/js/constexpr/react.js')
     await evalConstexpr('/static/js/constexpr/react-dom.js')
 
@@ -96,7 +112,6 @@ async function populateHead(resources) {
             `<link rel="icon" href="/favicon.ico" sizes="32x32" type="image/x-icon">`
         )
     )
-    window._ConstexprJS_.addDependency('/favicon.ico')
     document.head.appendChild(
         make_element(
             `<meta name="viewport" content="width=device-width, min-width=600, initial-scale=1, minimum-scale=1">`
@@ -236,42 +251,54 @@ function LeftSidebar() {
 
 function RightSidebar() {
     return e(
-        'div',
-        {id: 'right-sidebar'},
-        e(
+        PageResources.Consumer,
+        {},
+        context => e(
             'div',
-            {className: 'dialog'},
+            {id: 'right-sidebar'},
             e(
                 'div',
-                {className: 'heading'},
-                'Settings'
-            ),
-            e(
-                'div',
-                {className: 'content'},
+                {className: 'dialog'},
                 e(
-                    'button',
-                    {},
-                    'Subscribe'
+                    'div',
+                    {className: 'heading'},
+                    'Settings'
                 ),
                 e(
                     'div',
-                    {id: 'toggle_theme_wrapper'},
+                    {className: 'content'},
+                    e(
+                        'button',
+                        {},
+                        'Subscribe'
+                    ),
                     e(
                         'div',
-                        {id: 'toggle_theme'}
+                        {id: 'toggle_theme_wrapper'},
+                        e(
+                            PageResources.Consumer,
+                            {},
+                            (context) => e(
+                                SvgIcon,
+                                {
+                                    mask: true,
+                                    backgroundSvg: context.icons.moon,
+                                    id: 'toggle_theme',
+                                }
+                            )
+                        )
                     )
-                )
+                ),
             ),
-        ),
-        e(
-            'img',
-            {className: 'open', alt: 'open right sidebar', src: '/static/img/icons/swipe.svg'}
-        ),
-        e(
-            'img',
-            {className: 'close', alt: 'close right sidebar', src: '/static/img/icons/swipe.svg'}
-        ),
+            e(
+                SvgIcon,
+                {className: 'open', alt: 'open right sidebar', backgroundSvg: context.icons.swipe}
+            ),
+            e(
+                SvgIcon,
+                {className: 'close', alt: 'close right sidebar', backgroundSvg: context.icons.swipe}
+            ),
+        )
     )
 }
 
@@ -296,48 +323,82 @@ function PageContent() {
             ),
             e(Article, {}),
             e(
-                'footer', {},
-                e(
-                    'div', {className: 'links'},
+                PageResources.Consumer,
+                {},
+                (context) => e(
+                    'footer', {},
                     e(
-                        'div', {className: 'social'},
+                        'div', {className: 'links'},
                         e(
-                            'div', {className: 'footer-title'},
-                            'Share this page'
-                        ),
-                        e('a', {
-                            className: 'svg-icon twitter',
-                            rel: 'noopener',
-                            title: 'twitter',
-                            target: '_blank',
-                            href: `https://twitter.com/share?text=${context.title}&url=${context.cfg.url + window.location.pathname}`
-                        }),
-                        e('a', {
-                            className: 'svg-icon facebook',
-                            rel: 'noopener',
-                            title: 'facebook',
-                            target: '_blank',
-                            href: `https://www.facebook.com/sharer.php?u=${context.cfg.url + window.location.pathname}`
-                        }),
-                        e('a', {
-                            className: 'svg-icon reddit',
-                            rel: 'noopener',
-                            title: 'reddit',
-                            target: '_blank',
-                            href: `https://www.reddit.com/submit?title=${context.title}&url=${context.cfg.url + window.location.pathname}`
-                        }),
-                        e('a', {
-                            className: 'svg-icon hn',
-                            rel: 'noopener',
-                            title: 'hacker news',
-                            target: '_blank',
-                            href: `https://news.ycombinator.com/submitlink?t=${context.title}&u=${context.cfg.url + window.location.pathname}`
-                        }),
+                            'div', {className: 'social'},
+                            e(
+                                'div', {className: 'footer-title'},
+                                'Share this page'
+                            ),
+                            e(SvgIcon, {
+                                backgroundSvg: context.icons.twitter,
+                                title: 'Twitter',
+                                href: `https://twitter.com/share?text=${context.title}&url=${context.cfg.url + window.location.pathname}`
+                            }),
+                            e(SvgIcon, {
+                                backgroundSvg: context.icons.facebook,
+                                title: 'Facebook',
+                                href: `https://www.facebook.com/sharer.php?u=${context.cfg.url + window.location.pathname}`
+                            }),
+                            e(SvgIcon, {
+                                backgroundSvg: context.icons.reddit,
+                                title: 'Reddit',
+                                href: `https://www.reddit.com/submit?title=${context.title}&url=${context.cfg.url + window.location.pathname}`
+                            }),
+                            e(SvgIcon, {
+                                backgroundSvg: context.icons.hn,
+                                title: 'Hacker News',
+                                href: `https://news.ycombinator.com/submitlink?t=${context.title}&u=${context.cfg.url + window.location.pathname}`
+                            }),
+                        )
                     )
                 )
             )
         )
     )
+}
+
+function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt, img}) {
+    let dataUrl = `url('data:image/svg+xml;base64,${btoa(backgroundSvg)}')`
+    let attrs = {
+        className: `svg-icon ${className || ''}`,
+        id,
+        title,
+        alt,
+        style: _.merge(
+            mask ? {maskImage: dataUrl, webkitMaskImage: dataUrl} : {backgroundImage: dataUrl},
+            style
+        ),
+    }
+    if (href) {
+        return e(
+            'a',
+            _.merge(
+                attrs,
+                {
+                    href,
+                    rel: 'noopener',
+                    target: '_blank',
+                }
+            )
+        )
+    } else if (img) {
+    } else {
+        return e(
+            'div',
+            _.merge(
+                attrs,
+                {
+
+                }
+            )
+        )
+    }
 }
 
 // * split the article contents into groups at each 'h2' tag
