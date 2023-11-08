@@ -80,6 +80,7 @@ function show_image_tag(tag) {
     }
     document.addEventListener('keydown', key_handler)
 }
+document.querySelector('#view_bg_btn').addEventListener('click', () => show_image_tag(document.querySelector('img#main_bg')))
 
 function theme_switcher_setup() {
     document.querySelector('#toggle_theme_wrapper').addEventListener('click', () => {
