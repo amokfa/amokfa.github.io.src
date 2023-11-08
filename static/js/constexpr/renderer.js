@@ -145,17 +145,18 @@ async function populateHead(resources) {
     )
 
     // hide dynamic controls if JS disabled
-    document.head.appendChild(
-        make_element(`
-      <noscript>
-        <style>
-          #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar #toggle_theme_wrapper, #view_bg_btn {
-            display: none;
-          } 
-        </style>
-      </noscript>
-      `)
-    )
+    // breaks sometimes on webkit
+    // document.head.appendChild(
+    //     make_element(`
+    //   <noscript>
+    //     <style>
+    //       #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar #toggle_theme_wrapper, #view_bg_btn {
+    //         display: none;
+    //       }
+    //     </style>
+    //   </noscript>
+    //   `)
+    // )
 }
 
 function Page({ pageHasRendered }) {
@@ -288,6 +289,7 @@ function RightSidebar() {
                                     mask: true,
                                     backgroundSvg: context.icons.moon,
                                     id: 'toggle_theme',
+                                    style: {width: '1.3em', height: '1.3em'}
                                 }
                             )
                         )
@@ -367,7 +369,7 @@ function PageContent() {
     )
 }
 
-function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt, img}) {
+function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt}) {
     let dataUrl = `url('data:image/svg+xml;base64,${btoa(backgroundSvg)}')`
     let attrs = {
         className: `svg-icon ${className || ''}`,
@@ -375,7 +377,7 @@ function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt, i
         title,
         alt,
         style: _.merge(
-            mask ? {maskImage: dataUrl, WebkitMaskImage: dataUrl} : {backgroundImage: dataUrl},
+            mask ? {maskImage: dataUrl, WebkitMaskImage: dataUrl, maskPosition: 'center', WebkitMaskPosition: 'center', maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat', maskSize: 'contain', WebkitMaskSize: 'contain'} : {backgroundImage: dataUrl},
             style
         ),
     }
@@ -391,7 +393,6 @@ function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt, i
                 }
             )
         )
-    } else if (img) {
     } else {
         return e(
             'div',
