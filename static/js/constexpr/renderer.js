@@ -1,3 +1,4 @@
+// Fetch a script, eval it, and exclude it from resources
 async function evalConstexpr(path) {
     window._ConstexprJS_.addExclusion(path)
     let t = await fetch(path)
@@ -5,6 +6,8 @@ async function evalConstexpr(path) {
     eval(t)
 }
 
+// All site configuration is loaded here
+// This is provided using a context to react code to render the website
 let PageResources
 async function fetchResources() {
     let res = {
@@ -33,6 +36,7 @@ async function fetchResources() {
 }
 
 async function site_global_rendering() {
+    // Load all necessary javascript
     await evalConstexpr('/static/js/constexpr/lib.js')
     await evalConstexpr('/static/js/constexpr/react.js')
     await evalConstexpr('/static/js/constexpr/react-dom.js')
@@ -40,11 +44,16 @@ async function site_global_rendering() {
     PageResources = React.createContext()
     window.e = React.createElement
 
-    await renderBody()
-
-    document.querySelector('body > article').remove()
+    const resources = await fetchResources()
+    // * Renders overall layout of the website (using ReactJS)
+    await renderBody(resources)
+    // * Renders latex, graphs, syntax highlighting, etc
     await Promise.all([literal_links(), render_latex(), render_graphviz(), syntax_highlight()])
-    await populateHead()
+
+    // * Adds necessary info to head (title, meta, etc)
+    await populateHead(resources)
+
+    // * Adds runtime bootstrap hooks
     addRuntimeBootstrapHook({
         src: '/static/js/dynamic-pre.js',
         early: true
@@ -57,7 +66,7 @@ async function site_global_rendering() {
     })
 }
 
-async function renderBody() {
+async function renderBody(resources) {
     document.body.setAttribute('render_date', `${new Date()}`)
     document.body.classList.add('dark')
 
@@ -65,8 +74,7 @@ async function renderBody() {
     newBody.setAttribute('id', 'body_wrapper')
     document.body.prepend(newBody)
 
-    const resources = await fetchResources()
-
+    // Wait until react is done rendering the page and then return
     await new Promise((resolve) => {
         ReactDOM.createRoot(newBody)
             .render(e(
@@ -77,11 +85,69 @@ async function renderBody() {
     })
 }
 
-async function populateHead() {
+async function populateHead(resources) {
+    document.head.appendChild(
+        make_element(
+            `<meta charset="UTF-8">`
+        )
+    )
+    document.head.appendChild(
+        make_element(
+            `<link rel="icon" href="/favicon.ico" sizes="32x32" type="image/x-icon">`
+        )
+    )
+    window._ConstexprJS_.addDependency('/favicon.ico')
+    document.head.appendChild(
+        make_element(
+            `<meta name="viewport" content="width=device-width, min-width=600, initial-scale=1, minimum-scale=1">`
+        )
+    )
+    document.head.appendChild(
+        make_element(
+            `<style>${await fetch('/static/css/styles.css')
+                .then(res => res.text())}</style>`
+        )
+    )
+    document.head.appendChild(
+        make_element(
+            `<link rel="preconnect" href="https://fonts.gstatic.com">`
+        )
+    )
+    if (resources.thisPost) {
+        document.head.appendChild(
+            make_element(
+                `<meta name="description" content="${resources.thisPost.description}">`
+            )
+        )
+        document.head.appendChild(
+            make_element(
+                `<meta name="keywords" content="${resources.thisPost.tags.join(',')}">`
+            )
+        )
+    }
+    document.head.appendChild(
+        make_element(`<title>${resources.title}</title>`)
+    )
+
+    // hide dynamic controls if JS disabled
+    document.head.appendChild(
+        make_element(`
+      <noscript>
+        <style>
+          #left-sidebar .open, #left-sidebar .close, #right-sidebar .open, #right-sidebar .close, #right-sidebar #toggle_theme_wrapper, #view_bg_btn {
+            display: none;
+          } 
+        </style>
+      </noscript>
+      `)
+    )
 }
 
 function Page({ pageHasRendered }) {
     React.useEffect(() => {
+        // not needed since it's contents have been rendered in react app
+        // See `Article` react component below
+        document.querySelector('body > article').remove()
         pageHasRendered()
     }, []);
     return e(
@@ -89,6 +155,8 @@ function Page({ pageHasRendered }) {
         {},
         e(
             PageResources.Consumer, {},
+            // <style>[All necessary css</style>
+            // Essential embedded in HTML instead of <link rel="stylesheet"> for performance
             context => e('style', {}, context.mainCss)
         ),
         e('img', {src: '/static/img/bg.webp', className: 'bg', id: 'main_bg', loading: 'lazy'}),
@@ -96,7 +164,7 @@ function Page({ pageHasRendered }) {
         e(LeftSidebar),
         e(PageContent),
         e(RightSidebar),
-        // All the unnecessary css is loaded here after the page has loaded
+        // All the non-essential css is loaded here after the page has loaded
         e('div', {id: 'post_load_css'})
     )
 }
@@ -109,6 +177,9 @@ function ViewBgBtn() {
     )
 }
 
+// Used in table of content
+// Article is split into sections at every heading
+// Each section has an id based on section heading
 function titleToId(title) {
     return title.toLowerCase()
         .replaceAll(' ', '_')
@@ -269,6 +340,9 @@ function PageContent() {
     )
 }
 
+// * split the article contents into groups at each 'h2' tag
+// * add a section for each group
+// * add an id to each section, links in table of content point to it
 function Article() {
     let currentContent = [...document.querySelector('article').children]
     if (currentContent.length === 0) {
