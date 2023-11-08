@@ -41,9 +41,11 @@
 </script>
 
 <script constexpr>
-    window._ConstexprJS_.addDependency('/favicon.ico')
-    Promise.all([site_global_rendering(), page_specific_stuff()])
-      .then(() => window._ConstexprJS_.compile())
+    (async function () {
+        await site_global_rendering()
+        await page_specific_stuff()
+        window._ConstexprJS_.compile()
+    })()
 </script>
 
 <style>

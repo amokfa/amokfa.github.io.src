@@ -212,40 +212,44 @@ function LeftSidebar() {
         .map(el => el.textContent))
 
     return e(
-        'div',
-        {id: 'left-sidebar'},
-        e(
+        PageResources.Consumer,
+        {},
+        context => e(
             'div',
-            {className: 'dialog', style: {display: marks.length < 2 ? 'none' : null}},
+            {id: 'left-sidebar'},
             e(
                 'div',
-                {className: 'heading'},
-                'Table of content'
-            ),
-            e(
-                'ol',
-                {className: 'content'},
-                marks.map(
-                    mark => e(
-                        'li',
-                        {key: mark},
-                        e(
-                            'a',
-                            {href: `#${titleToId(mark)}`},
-                            mark
+                {className: 'dialog', style: {display: marks.length < 2 ? 'none' : null}},
+                e(
+                    'div',
+                    {className: 'heading'},
+                    'Table of content'
+                ),
+                e(
+                    'ol',
+                    {className: 'content'},
+                    marks.map(
+                        mark => e(
+                            'li',
+                            {key: mark},
+                            e(
+                                'a',
+                                {href: `#${titleToId(mark)}`},
+                                mark
+                            )
                         )
-                    )
+                    ),
                 ),
             ),
-        ),
-        e(
-            'img',
-            {className: 'open', alt: 'open left sidebar', src: '/static/img/icons/swipe.svg'}
-        ),
-        e(
-            'img',
-            {className: 'close', alt: 'close left sidebar', src: '/static/img/icons/swipe.svg'}
-        ),
+            e(
+                SvgIcon,
+                {className: 'open', alt: 'open left sidebar', backgroundSvg: context.icons.swipe}
+            ),
+            e(
+                SvgIcon,
+                {className: 'close', alt: 'close left sidebar', backgroundSvg: context.icons.swipe}
+            ),
+        )
     )
 }
 
@@ -371,7 +375,7 @@ function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt, i
         title,
         alt,
         style: _.merge(
-            mask ? {maskImage: dataUrl, webkitMaskImage: dataUrl} : {backgroundImage: dataUrl},
+            mask ? {maskImage: dataUrl, WebkitMaskImage: dataUrl} : {backgroundImage: dataUrl},
             style
         ),
     }
