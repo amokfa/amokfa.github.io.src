@@ -1,12 +1,12 @@
 function swiper_setup() {
     document.querySelectorAll('.open, .close').forEach(e => e.style.display = null)
     document.querySelector('#left-sidebar .open').addEventListener('click', () => {
-        let curr = document.querySelector('#left-sidebar')
-        let other = document.querySelector('#right-sidebar')
+        let left = document.querySelector('#left-sidebar')
+        let right = document.querySelector('#right-sidebar')
         let body = document.querySelector('#page_content')
-        curr.classList.add('up')
-        other.classList.remove('up')
-        other.classList.add('down')
+        left.classList.add('up')
+        right.classList.remove('up')
+        right.classList.add('down')
         body.style.opacity = 0
     })
     document.querySelector('#left-sidebar .close').addEventListener('click', () => {

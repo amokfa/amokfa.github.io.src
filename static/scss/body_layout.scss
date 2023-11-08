@@ -262,7 +262,7 @@
 }
 
 @media(max-width: 800px) {
-  body {
+  #body_wrapper {
     #page_content {
       transition: opacity 0.2s linear;
     }
