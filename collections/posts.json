@@ -25,14 +25,6 @@
     ]
   },
   {
-    "title": "Dependency resolution in ConstexprJS",
-    "url": "/posts/constexprjs_dependency_resolution.html",
-    "description": "This page describes how constexprjs figures how the dependencies of a page",
-    "tags": [
-      "constexprjs"
-    ]
-  },
-  {
     "title": "ConstexprJS API Documentation",
     "url": "/posts/constexprjs_api_docs.html",
     "description": "Description of API hooks provided by constexprjs to the compiler code",

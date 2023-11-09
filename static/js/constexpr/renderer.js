@@ -329,7 +329,7 @@ function PageContent() {
                 context.thisPost ? e(
                     'ul', {className: 'tags_list'},
                     context.thisPost.tags
-                        .map(tag => e('li', {}, e('a', {className: 'tag_element', href: `/tags/generator.html?${tag}`}, tag)))
+                        .map(tag => e('li', {key: tag}, e('a', {className: 'tag_element', href: `/tags/generator.html?${tag}`}, tag)))
                 ) : null
             ),
             e(Article, {}),

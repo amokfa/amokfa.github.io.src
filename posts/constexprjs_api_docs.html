@@ -28,11 +28,21 @@
             </p>
         </li>
         <li>
-            <prog class="language-js">window._ConstexprJS_.addExclusion(paths)</prog>
+            <prog class="language-js">window._ConstexprJS_.addExclusion(path)</prog>
+            <p>
+                After the compiler has rendered a page, it extracts the list of resources used by the page by looking at
+                the DOM. It includes all local images, media, stylesheets, and favicons in the dependency list of the page.
+                You can use this method to exclude a resource from being included in the dependencies list of this page
+                which would have been included otherwise. It won't be copied to the output directory.
+            </p>
+        </li>
+        <li>
             <prog class="language-js">window._ConstexprJS_.addDependency(path)</prog>
             <p>
-                Manage dependencies of current page. Read <a href="/posts/constexprjs_dependency_resolution.html">this page</a>
-                to learn how it resolves dependencies of a page.
+                Include a local resource in the dependencies list of this page. It will be copied to the output directory.
+                This method takes precedence over <progi>addExclusion</progi>. Use it for resources which aren't detected
+                by the automatic dependency resolution system. For example fonts, SASS/LESS source maps, assets included
+                with CSS.
             </p>
         </li>
     </ul>
