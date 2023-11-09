@@ -119,13 +119,12 @@ async function populateHead(resources) {
     )
     document.head.appendChild(
         make_element(
-            `<style>${await fetch('/static/css/styles.css')
-                .then(res => res.text())}</style>`
+            `<link rel="preconnect" href="https://fonts.gstatic.com">`
         )
     )
-    document.head.appendChild(
+    document.querySelector('#post_load_css').appendChild(
         make_element(
-            `<link rel="preconnect" href="https://fonts.gstatic.com">`
+            `<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">`
         )
     )
     if (resources.thisPost) {
@@ -161,18 +160,19 @@ async function populateHead(resources) {
 
 function Page({ pageHasRendered }) {
     React.useEffect(() => {
-        // not needed since it's contents have been rendered in react app
+        // removed since its contents are rendered in react app
         // See `Article` react component below
         document.querySelector('body > article').remove()
         pageHasRendered()
     }, []);
+    // include scss source map in website distribution
+    window._ConstexprJS_.addDependency('/static/css/styles.css.map')
     return e(
         React.Fragment,
         {},
         e(
             PageResources.Consumer, {},
-            // <style>[All necessary css</style>
-            // Essential embedded in HTML instead of <link rel="stylesheet"> for performance
+            // Essential CSS embedded in HTML instead of <link rel="stylesheet"> for performance
             context => e('style', {}, context.mainCss)
         ),
         e('img', {src: '/static/img/bg.webp', className: 'bg', id: 'main_bg', loading: 'lazy'}),
