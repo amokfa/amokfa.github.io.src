@@ -325,7 +325,12 @@ function PageContent() {
                             item.name
                         ))
                 ),
-                e('h1', {id: 'main_title'}, context.thisPost ? context.thisPost.title : null),
+                e('h1', {id: 'main_title'}, context.thisPost ? context.thisPost.title : ''),
+                context.thisPost ? e(
+                    'ul', {className: 'tags_list'},
+                    context.thisPost.tags
+                        .map(tag => e('li', {}, e('a', {className: 'tag_element', href: `/tags/generator.html?${tag}`}, tag)))
+                ) : null
             ),
             e(Article, {}),
             e(
