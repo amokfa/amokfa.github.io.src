@@ -1,9 +1,8 @@
 // Fetch a script, eval it, and exclude it from resources
 async function evalConstexpr(path) {
-    window._ConstexprJS_.addExclusion(path)
     let t = await fetch(path)
         .then((res) => res.text())
-    eval(t)
+    window.eval(t)
 }
 
 // All site configuration is loaded here
