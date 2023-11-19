@@ -80,5 +80,14 @@
     "tags": [
       "clojure"
     ]
+  },
+  {
+    "title": "Build static websites using ReactJS and ConstexprJS",
+    "url": "/posts/constexprjs_reactjs.html",
+    "description": "Describes how reactjs can be used to render static websites",
+    "tags": [
+      "constexprjs",
+      "web"
+    ]
   }
 ]
