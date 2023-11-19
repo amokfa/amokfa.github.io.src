@@ -30,21 +30,22 @@
     <p>
         The compiler renders the pages using chrome, and saves the rendered state as new pages when they finish rendering.
         It also strips out the javascript that was used for generating HTML, potentially reducing download
-        size for the website users drastically. For example, this website is rendered using 50k lines of javascript, none
+        size for the website users drastically. For example, this website is rendered using >100k lines of javascript, none
         of which you need to download or execute to view this site. You can test this by disabling the javascript in your browser.
         <prog class="language-bash">
-$ tokei static/packages/ static/js/constexpr/
+❯ tokei static/packages/ static/js/constexpr/
+
 ===============================================================================
  Language            Files        Lines         Code     Comments       Blanks
 ===============================================================================
  CSS                     4         1095         1081           12            2
- JavaScript             29        61395        49577         5539         6279
+ JavaScript             32       110804        77808        20057        12939
 -------------------------------------------------------------------------------
  Markdown                1           77            0           53           24
  |- HTML                 1           15           10            3            2
  (Total)                             92           10           56           26
 ===============================================================================
- Total                  34        62567        50658         5604         6305
+ Total                  37       111976        78889        20122        12965
 ===============================================================================
         </prog>
         Any piece of javascript code that just generates some HTML can be made constexpr.
@@ -111,8 +112,9 @@ optional arguments:
       <div class="asciinema-player"></div>
     </div>
     <p>
-      This page also uses prism.js for syntax highlighting, katex for math formulae, and viz.js for graphs, along with
-      jquery and papaparse. None of which you need to download or execute because it's constexpr.
+      This page also uses reactjs for laying out the website, prism.js for syntax highlighting, katex for math formulae,
+      and viz.js for graphs, along with jquery and papaparse. None of which you need to download or execute because it's
+      all constexpr.
     </p>
 
     <h2>Performance</h2>
@@ -206,9 +208,7 @@ Promise.all([render_task_1(), render_task_2()])
       <ul>
         <li>Use sqlite instead of JSON files for data</li>
         <li>A shell executor function</li>
-        <li>Format output HTML</li>
         <li>Incremental compilation</li>
-        <li>Experiment with ReactJS for generating static websites</li>
         <li>Make resource collector recognize query/hash strings</li>
         <li>NPM template for creating a constexprjs project</li>
         <li>Github action for deploying a ConstexprJS website</li>
