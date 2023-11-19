@@ -182,19 +182,10 @@ if (!window._ConstexprJS_) {
             </prog>
         </li>
         <li>
-            You can manage multiple rendering task in your page using promises:
-            <prog class="language-js">
-Promise.all([render_task_1(), render_task_2()])
-    .then(() => window._ConstexprJS_.compile())
-            </prog>
-        </li>
-        <li>
             You should keep all structured data separate from the html in <a
                 href="https://github.com/amokfa/amokfa.github.io.src/tree/master/collections">json files</a>.
             <progi>constexpr</progi> javascript should fetch these json files and render the site using them.
             <br/>
-            I plan to add sqlite support to the compiler. The runtime will have <progi>window._ConstexprJS_.runSQL</progi> function
-            for querying this database.
         </li>
         <li>
             Use this if you love javascript
@@ -206,7 +197,6 @@ Promise.all([render_task_1(), render_task_2()])
     <h2>Roadmap</h2>
     <p>
       <ul>
-        <li>Use sqlite instead of JSON files for data</li>
         <li>A shell executor function</li>
         <li>Incremental compilation</li>
         <li>Make resource collector recognize query/hash strings</li>
