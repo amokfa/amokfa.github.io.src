@@ -8,8 +8,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'react'], factory) :
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('static/js/constexpr/third_party/react')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'static/js/constexpr/third_party/react'], factory) :
   (global = global || self, factory(global.ReactDOM = {}, global.React));
 }(this, (function (exports, React) { 'use strict';
 

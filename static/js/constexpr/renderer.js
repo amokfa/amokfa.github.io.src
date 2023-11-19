@@ -1,4 +1,4 @@
-async function evalConstexpr(path) {
+async function evalScript(path) {
     let t = await fetch(path)
         .then((res) => res.text())
     window.eval(t)
@@ -50,10 +50,10 @@ async function fetchResources() {
 
 async function site_global_rendering() {
     // Load all necessary javascript
-    await evalConstexpr('/static/js/constexpr/lib.js')
-    await evalConstexpr('/static/js/constexpr/lodash.js')
-    await evalConstexpr('/static/js/constexpr/react.js')
-    await evalConstexpr('/static/js/constexpr/react-dom.js')
+    await evalScript('/static/js/constexpr/lib.js')
+    await evalScript('/static/js/constexpr/third_party/lodash.js')
+    await evalScript('/static/js/constexpr/third_party/react.js')
+    await evalScript('/static/js/constexpr/third_party/react-dom.js')
 
     PageResources = React.createContext()
     window.e = React.createElement
