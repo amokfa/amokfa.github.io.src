@@ -1,4 +1,3 @@
-// Fetch a script, eval it, and exclude it from resources
 async function evalConstexpr(path) {
     let t = await fetch(path)
         .then((res) => res.text())
@@ -60,15 +59,18 @@ async function site_global_rendering() {
     window.e = React.createElement
 
     const resources = await fetchResources()
-    // * Renders overall layout of the website (using ReactJS)
+    // Renders overall layout of the website (using ReactJS)
     await renderBody(resources)
-    // * Renders latex, graphs, syntax highlighting, etc
+    // removed since its contents are rendered in react app
+    // See `Article` react component below
+    document.querySelector('body > article').remove()
+    // Renders latex, graphs, syntax highlighting, etc
     await Promise.all([literal_links(), render_latex(), render_graphviz(), syntax_highlight()])
 
-    // * Adds necessary info to head (title, meta, etc)
+    // Adds necessary info to head (title, meta, etc)
     await populateHead(resources)
 
-    // * Adds runtime bootstrap hooks
+    // Add runtime bootstrap hooks
     addRuntimeBootstrapHook({
         src: '/static/js/dynamic-pre.js',
         early: true
@@ -85,17 +87,17 @@ async function renderBody(resources) {
     document.body.setAttribute('render_date', `${new Date()}`)
     document.body.classList.add('dark')
 
-    const newBody = document.createElement('div')
-    newBody.setAttribute('id', 'body_wrapper')
-    document.body.prepend(newBody)
+    const contentRoot = document.createElement('div')
+    contentRoot.setAttribute('id', 'body_wrapper')
+    document.body.prepend(contentRoot)
 
     // Wait until react is done rendering the page and then return
     await new Promise((resolve) => {
-        ReactDOM.createRoot(newBody)
+        ReactDOM.createRoot(contentRoot)
             .render(e(
                 PageResources.Provider,
                 {value: resources},
-                e(Page, {pageHasRendered: () => resolve()}, null)
+                e(Page, {pageHasRendered: () => resolve()})
             ))
     })
 }
@@ -159,9 +161,6 @@ async function populateHead(resources) {
 
 function Page({ pageHasRendered }) {
     React.useEffect(() => {
-        // removed since its contents are rendered in react app
-        // See `Article` react component below
-        document.querySelector('body > article').remove()
         pageHasRendered()
     }, []);
     // include scss source map in website distribution

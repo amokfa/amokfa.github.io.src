@@ -34,8 +34,14 @@
       margin: 1em 0;
       padding: 1em;
 
-      p, prog, blockquote {
+      p {
         margin: 1rem 0;
+      }
+      li {
+        margin: 1em 0;
+      }
+      prog {
+        margin: 0.5em 0;
       }
     }
   }

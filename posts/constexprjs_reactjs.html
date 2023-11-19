@@ -3,7 +3,138 @@
 <body>
 <article>
   <p>
-    This entire website is
+    I use ReactJS and ConstexprJS to render this static website. The React code is evaluated and stripped at compile
+    time and only static HTML is left which you see on your browser right now. In this article I'll share some tips for
+    using ReactJS with ConstexprJS.
+  </p>
+  <blockquote>
+    ConstexprJS is not bound to a web development framework like ReactJS. It's just a tool for evaluating
+    javascript in a website ahead of time. Nothing is stopping you from using jquery, vanilla javascript, or anything
+    else with it.
+  </blockquote>
+  <p>
+    I'll refer to the implementation of this website as an example. For the impatient folks, <a
+    href="family friendly mock text">here</a>
+    is the commented javascript code that renders this website.
+  </p>
+  <p>
+    In the below explanation, I've reordered/refactored the code blocks a little to make them easier to understand.
+  </p>
+  <h2>Setup</h2>
+  <ul>
+    <li>
+      All the required libraries are fetched and evaluated:
+      <prog>
+await evalScript('/static/js/constexpr/lib.js')
+await evalScript('/static/js/constexpr/lodash.js')
+await evalScript('/static/js/constexpr/react.js')
+await evalScript('/static/js/constexpr/react-dom.js')
+      </prog>
+    </li>
+    <li>
+      An alias is defined to make react programming easier:
+      <prog>
+window.e = React.createElement
+      </prog>
+      With this in place, the following vanilla javascript:
+      <prog>
+e(
+    SvgIcon,
+    {
+        className: 'open',
+        alt: 'open left sidebar',
+        backgroundSvg: context.icons.swipe
+    }
+)
+      </prog>
+      will be equivalent to this JSX:
+      <prog>
+&lt;SvgIcon
+  className="open"
+  alt="open left sidebar",
+  backgroundSvg={context.icons.swipe}
+/>
+      </prog>
+      Actually the order should be reversed. The bottom JSX compiles down to the vanilla javascript above it, but JSX
+      has become the standard these days, which is why I ordered them like this.
+    </li>
+    <li>
+      Wait until react is done rendering the page:
+      <prog>
+await new Promise((resolve) => {
+    ReactDOM.createRoot(contentRoot)
+        .render(e(Page, {pageHasRendered: () => resolve()}, null))
+})
+      </prog>
+      The top level component, <progi>Page</progi>, calls the provided callback in an effect:
+      <prog>
+React.useEffect(() => {
+    pageHasRendered()
+}, []);
+      </prog>
+      Which means the promise will resolve once react has rendered the site.
+    </li>
+  </ul>
+  <h2>Site data</h2>
+  <p>
+    All the external resources are provided to the rendering code using a react context:
+    <prog>
+let PageResources
+...
+PageResources = React.createContext()
+...
+ReactDOM.createRoot(contentRoot)
+.render(e(
+    PageResources.Provider,
+    {value: fetchResources()},
+    e(Page, {})
+))
+    </prog>
+  </p>
+  <p>
+    These resources include site data (the website url, top nav items list, projects list, posts list along with tags, etc),
+    inline styles/svg for performance, etc.
+  </p>
+  <p>
+    The <progi>fetchResources</progi> function downloads all the site data, which I store as JSON files, and returns it
+    along with some other computed data.
+  </p>
+  <p>
+    This context is consumed by whatever component needs to access this data:
+    <prog>
+e(
+    PageResources.Consumer, {},
+    // Essential CSS embedded in HTML instead of &lt;link rel="stylesheet"> for performance
+    context => e('style', {}, context.mainCss)
+)
+...
+e(
+    PageResources.Consumer,
+    {},
+    (context) => e(
+        'nav', {},
+        context.nav
+            .map(item => e(
+                'a', {href: item.href, key: item.href, className: item.href === window.location.pathname ? 'current' : ''},
+                item.name
+            ))
+    )
+)
+...
+e(
+    PageResources.Consumer,
+    {},
+    (context) => e(
+        SvgIcon,
+        {
+            mask: true,
+            backgroundSvg: context.icons.moon,
+            id: 'toggle_theme',
+            style: {width: '1.3em', height: '1.3em'}
+        }
+    )
+)
+    </prog>
   </p>
 </article>
 </body>
@@ -12,8 +143,8 @@
 
 <script constexpr>
     async function render_page() {
-        const base_page_render = site_global_rendering()
-        await base_page_render
+        document.querySelectorAll('prog').forEach(el => el.classList.add('language-js'))
+        await site_global_rendering()
     }
 </script>
 
