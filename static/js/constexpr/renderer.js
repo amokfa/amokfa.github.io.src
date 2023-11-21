@@ -321,7 +321,12 @@ function PageContent() {
                     'nav', {},
                     context.nav
                         .map(item => e(
-                            'a', {href: item.href, key: item.href, className: item.href === window.location.pathname ? 'current' : ''},
+                            'a', {
+                                href: item.href,
+                                key: item.href,
+                                className: item.href === window.location.pathname  || item.href + 'index.html' === window.location.pathname
+                                    ? 'current' : '',
+                            },
                             item.name
                         ))
                 ),
