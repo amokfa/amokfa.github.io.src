@@ -179,7 +179,7 @@ function Page({ pageHasRendered }) {
         e(PageContent),
         e(RightSidebar),
         // All the non-essential css is loaded here after the page has loaded
-        e('div', {id: 'post_load_css'})
+        e('div', {id: 'post_load_css', style: {display: 'none'}})
     )
 }
 
@@ -259,6 +259,8 @@ function RightSidebar() {
         context => e(
             'div',
             {id: 'right-sidebar'},
+            e('a', {href: 'https://github.com/amokfa/ConstexprJS', target: '_blank'},
+                e('img', {src: '/static/img/power.png', className: 'etopower'})),
             e(
                 'div',
                 {className: 'dialog'},
@@ -468,7 +470,7 @@ async function syntax_highlight() {
     const els = [...document.querySelectorAll('prog[class]')]
     if (els.length > 0) {
         window.Prism = {manual: true};
-        await evalConstexpr("/static/js/constexpr/third_party/prism.js")
+        await evalScript("/static/js/constexpr/third_party/prism.js")
         document.querySelector('#post_load_css').appendChild(
             make_element(`<link rel="stylesheet" href="/static/css/prism.css">`)
         )
@@ -483,8 +485,8 @@ async function syntax_highlight() {
 async function render_latex() {
     const blocks = document.querySelectorAll('formula')
     if (blocks.length > 0) {
-        await evalConstexpr("/static/packages/katex/katex.js")
-        await evalConstexpr("/static/packages/katex/contrib/auto-render.js")
+        await evalScript("/static/packages/katex/katex.js")
+        await evalScript("/static/packages/katex/contrib/auto-render.js")
         document.querySelector('#post_load_css').appendChild(make_element(`<link rel="stylesheet" href="/static/packages/katex/katex.css">`))
         window._ConstexprJS_.addDependency('/static/packages/katex/fonts')
         blocks.forEach(block => renderMathInElement(block))
@@ -494,8 +496,8 @@ async function render_latex() {
 async function render_graphviz() {
     const blocks = document.querySelectorAll('.graphviz')
     if (blocks.length > 0) {
-        await evalConstexpr('/static/packages/vizjs/viz.js')
-        await evalConstexpr('/static/packages/vizjs/full.render.js')
+        await evalScript('/static/packages/vizjs/viz.js')
+        await evalScript('/static/packages/vizjs/full.render.js')
 
         for (const block of blocks) {
             const viz = new Viz()
