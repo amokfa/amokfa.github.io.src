@@ -5,7 +5,7 @@ async function evalScript(path) {
 }
 
 // All site configuration is loaded here
-// This is provided using a context to react code to render the website
+// This is provided using a context to react code that renders the website
 let PageResources
 async function fetchResources() {
     let res = {

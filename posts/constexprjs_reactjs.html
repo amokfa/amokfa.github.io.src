@@ -75,7 +75,7 @@ React.useEffect(() => {
       Which means the promise will resolve once react has rendered the site.
     </li>
   </ul>
-  <h2>Site data</h2>
+  <h2>Data store</h2>
   <p>
     All the external resources are provided to the rendering code using a react context:
     <prog>
@@ -94,10 +94,6 @@ ReactDOM.createRoot(contentRoot)
   <p>
     These resources include site data (the website url, top nav items list, projects list, posts list along with tags, etc),
     inline styles/svg for performance, etc.
-  </p>
-  <p>
-    The <progi>fetchResources</progi> function downloads all the site data, which I store as JSON files, and returns it
-    along with some other computed data.
   </p>
   <p>
     This context is consumed by whatever component needs to access this data:
