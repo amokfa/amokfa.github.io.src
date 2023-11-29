@@ -31,7 +31,7 @@ await evalScript('/static/js/constexpr/third_party/react-dom.js')
       <prog>
 window.e = React.createElement
       </prog>
-      With this in place, the following vanilla javascript:
+      With this in place, we can use the following vanilla javascript:
       <prog>
 e(
     SvgIcon,
@@ -42,7 +42,7 @@ e(
     }
 )
       </prog>
-      will be equivalent to this JSX:
+      To render this JSX component:
       <prog>
 &lt;SvgIcon
   className="open"
@@ -50,8 +50,6 @@ e(
   backgroundSvg={context.icons.swipe}
 />
       </prog>
-      Actually the order should be reversed. The bottom JSX compiles down to the vanilla javascript above it, but JSX
-      has become the standard these days, which is why I ordered them like this.
     </li>
     <li>
       Wait until react is done rendering the page:
@@ -145,7 +143,18 @@ e(
         like JSX and Typescript. These features are out of ConstexprJS's scope. However, plans to
         introduce NPM project templates with sample configurations are in the pipeline.
       </li>
+      <li>
+        These frameworks support automatic hydration. Hydration has to be done manually in ConstexprJS. (
+        <a literal>/posts/constexprjs_code_organization.html</a>)
+      </li>
+      <li>
+        ConstexprJS gives you fine-grained control over what code you want to run at compile time. It's determined by the
+        constexpr code in your website.
+      </li>
     </ul>
+    <blockquote>
+      See pages tagged with <a class="tag_element" href="/tags/generator.html?constexprjs">constexprjs</a> for more guides.
+    </blockquote>
   </p>
 </article>
 </body>

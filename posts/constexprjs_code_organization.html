@@ -154,12 +154,16 @@
       This script is <a href="https://github.com/amokfa/amokfa.github.io.src/blob/master/devtools/_template.html">included as constexpr in every page</a>.
     </p>
     <p>
-        The code that bootstraps the dynamic behavior is contained in a separate file, <a href="https://github.com/amokfa/amokfa.github.io.src/blob/master/static/js">/static/js/dynamic-{pre,post}.js</a>.
-        The constexpr code in <progi>renderer.js</progi> adds this script tag to every page once it has finished rendering:
+        The code that bootstraps the dynamic behavior is contained in separate files, <a href="https://github.com/amokfa/amokfa.github.io.src/blob/master/static/js">/static/js/dynamic-{pre,post}.js</a>.
+        The constexpr code in <progi>renderer.js</progi> adds these script tags to every page once it has finished rendering:
     </p>
     <prog class="language-js">
 addRuntimeBootstrapHook({
-  src: '/static/js/dynamic.js'
+    src: '/static/js/dynamic-pre.js',
+    early: true
+})
+addRuntimeBootstrapHook({
+    src: '/static/js/dynamic-post.js'
 })
     </prog>
     <p>
