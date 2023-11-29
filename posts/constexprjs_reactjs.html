@@ -4,14 +4,9 @@
 <article>
   <p>
     I use ReactJS and ConstexprJS to render this static website. The React code is evaluated and stripped at compile
-    time and only static HTML is left which you see on your browser right now. In this article I'll share some tips for
+    time and only static HTML is left which is what you see in your browser right now. In this article I'll share some tips for
     using ReactJS with ConstexprJS.
   </p>
-  <blockquote>
-    ConstexprJS is not bound to a web development framework like ReactJS. It's just a tool for evaluating
-    javascript in a website ahead of time. Nothing is stopping you from using jquery, vanilla javascript, or anything
-    else with it.
-  </blockquote>
   <p>
     I'll refer to the implementation of this website as an example. For the impatient folks, <a
     href="https://github.com/amokfa/amokfa.github.io.src/blob/main/static/js/constexpr/renderer.js">here</a>
@@ -131,6 +126,26 @@ e(
     )
 )
     </prog>
+  </p>
+  <h2>How does ConstexprJS compare to Next.js, Qwik.js, ...?</h2>
+  <p>
+    <ul>
+      <li>
+        ConstexprJS is not bound to a web development framework like ReactJS. It's just a tool for evaluating
+        javascript in a website ahead of time. Nothing is stopping you from using jquery, vanilla javascript, or anything
+        else with it.
+      </li>
+      <li>
+        All of these frameworks render the React components in Node.js using DOM emulation libraries like jsdom.
+        ConstexprJS renders your websites in a headless chrome instance, which means you can use any JS library and it's
+        guaranteed to work exactly like it does in a browser.
+      </li>
+      <li>
+        Next.js and Qwik.js project templates are preconfigured to support contemporary React development practices,
+        like JSX and Typescript. These features are out of ConstexprJS's scope. However, plans to
+        introduce NPM project templates with sample configurations are in the pipeline.
+      </li>
+    </ul>
   </p>
 </article>
 </body>

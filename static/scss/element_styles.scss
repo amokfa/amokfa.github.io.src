@@ -105,10 +105,8 @@ em {
   margin: 1em;
 }
 
-@media(max-width: 800px) {
-  ul, ol {
-    padding: 1em;
-  }
+ul, ol {
+  padding: 0 1em;
 }
 
 .post_card {

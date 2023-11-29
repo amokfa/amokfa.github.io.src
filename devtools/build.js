@@ -2,6 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const cp = require('child_process')
 const execSh = require('exec-sh').promise
+const { createSitemap } = require('sitemaps')
 
 async function main() {
     process.chdir("..")
@@ -29,6 +30,22 @@ async function main() {
         `constexprjs ${process.argv.slice(2).join(' ')} --input=. --output=_out --entry /index.html --jobcount 12 --depfile devtools/deps.json --literal-tag style --literal-tag prog`,
         {},
     )
+    const config = JSON.parse(fs.readFileSync('collections/config.json'))
+    const deps = JSON.parse(fs.readFileSync('devtools/deps.json'))
+    const now = new Date()
+    createSitemap({
+        filePath: '_out/sitemap.xml',
+        urls: deps.allResults.map(
+            res => {
+                const path = res.output
+                const parts = res.output.split('/')
+                return {
+                    loc: `${config.url}${path}`,
+                    priority: 1 - (parts.length - 1) * 0.1
+                }
+            }
+        )
+    })
 }
 
 
