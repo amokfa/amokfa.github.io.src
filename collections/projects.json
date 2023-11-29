@@ -21,7 +21,7 @@
   },
   {
     "name": "SBF archive parser",
-    "description": "Reverse engineered the SBF file format that is used to ship music with DF:BHD and extracted mp3 from it",
+    "description": "Reverse engineered the SBF file format that was used to ship music with DF:BHD",
     "url": "/posts/dfbhd_sbf.html"
   },
   {
