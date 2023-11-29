@@ -84,7 +84,9 @@ async function site_global_rendering() {
 }
 
 async function renderBody(resources) {
-    document.body.setAttribute('render_date', `${new Date()}`)
+    if (window.location.pathname === '/index.html') {
+        document.body.setAttribute('render_date', `${new Date()}`)
+    }
     document.body.classList.add('dark')
 
     const contentRoot = document.createElement('div')
