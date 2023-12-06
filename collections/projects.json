@@ -16,7 +16,7 @@
   },
   {
     "name": "flutter_curved_gradient",
-    "description": "Generate a gradient using a custom curve function. Can be used in place of `LinearGradient`",
+    "description": "Generate a gradient using a custom curve function. Can be used in place of LinearGradient",
     "url": "https://pub.dev/packages/curved_gradient"
   },
   {

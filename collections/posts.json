@@ -5,8 +5,7 @@
     "description": "An introduction to constexprjs",
     "tags": [
       "constexprjs",
-      "web",
-      "reactjs"
+      "web"
     ]
   },
   {
@@ -88,7 +87,8 @@
     "description": "Describes how reactjs can be used to render static websites",
     "tags": [
       "constexprjs",
-      "web"
+      "web",
+      "reactjs"
     ]
   }
 ]
