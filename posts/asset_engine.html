@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<article>
+  <h2>Introduction</h2>
+  <p>
+    <a>Asset engine</a> is a tool for generating graphics assets. It isn't a conventional image editor like gimp/photoshop
+    in which you use your mouse to drag and drop
+  </p>
+</article>
+</body>
+<script constexpr src="/static/js/constexpr/lib.js"></script>
+<script constexpr src="/static/js/constexpr/renderer.js"></script>
+
+<script constexpr>
+    async function render_page() {
+        const base_page_render = site_global_rendering()
+        await base_page_render
+    }
+</script>
+
+<script constexpr>
+    render_page()
+        .then(() => window._ConstexprJS_.compile())
+</script>
+
+</html>
