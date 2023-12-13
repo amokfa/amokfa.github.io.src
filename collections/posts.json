@@ -70,7 +70,8 @@
     "url": "/posts/dfbhd_sbf.html",
     "description": "Describes the SBF assets used to store music in DFBHD",
     "tags": [
-      "games"
+      "games",
+      "coding"
     ]
   },
   {
@@ -89,6 +90,14 @@
       "constexprjs",
       "web",
       "reactjs"
+    ]
+  },
+  {
+    "title": "Honey bee's game of life",
+    "url": "/posts/bee.html",
+    "description": "An automaton that simulates a real world phenomena",
+    "tags": [
+      "coding"
     ]
   }
 ]

@@ -218,9 +218,9 @@ function LeftSidebar() {
         context => e(
             'div',
             {id: 'left-sidebar'},
-            e(
+            (marks.length >= 2 && !window._ConstexprJS_.skipIndex) ? e(
                 'div',
-                {className: 'dialog', style: {display: marks.length < 2 ? 'none' : null}},
+                {className: 'dialog'},
                 e(
                     'div',
                     {className: 'heading'},
@@ -241,7 +241,7 @@ function LeftSidebar() {
                         )
                     ),
                 ),
-            ),
+            ) : null,
             e(
                 SvgIcon,
                 {className: 'open', alt: 'open left sidebar', backgroundSvg: context.icons.swipe}

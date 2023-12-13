@@ -19,6 +19,7 @@
     const list = document.querySelector('ul')
     let postCount = 0
     posts.filter(p => p.tags.indexOf(tagName) !== -1)
+      .reverse()
       .forEach(post => {
         postCount++
         let tags = ''
