@@ -3,6 +3,7 @@
     "title": "ConstexprJS",
     "url": "/posts/constexprjs.html",
     "description": "An introduction to constexprjs",
+    "date": "2023-10-07",
     "tags": [
       "constexprjs",
       "web"
@@ -12,6 +13,7 @@
     "title": "ConstexprJS hello world",
     "url": "/posts/constexprjs_hello_world.html",
     "description": "A tutorial for constexprjs",
+    "date": "2023-10-07",
     "tags": [
       "constexprjs"
     ]
@@ -20,6 +22,7 @@
     "title": "Entry Points in ConstexprJS",
     "url": "/posts/constexprjs_entry_points.html",
     "description": "How to use entry points in constexprjs",
+    "date": "2023-10-07",
     "tags": [
       "constexprjs"
     ]
@@ -28,6 +31,7 @@
     "title": "ConstexprJS API Documentation",
     "url": "/posts/constexprjs_api_docs.html",
     "description": "Description of API hooks provided by constexprjs to the compiler code",
+    "date": "2023-10-07",
     "tags": [
       "constexprjs"
     ]
@@ -36,6 +40,7 @@
     "title": "Code organization with ConstexprJS",
     "url": "/posts/constexprjs_code_organization.html",
     "description": "Some tips for organizing code when using constexprjs",
+    "date": "2023-10-07",
     "tags": [
       "constexprjs"
     ]
@@ -44,6 +49,7 @@
     "title": "Syntax Highlighting in a Webpage Without Javascript",
     "url": "/posts/constexprjs_syntax_highlighting.html",
     "description": "This guide describes how you can use constexprjs to highlight code in your website on server side",
+    "date": "2023-10-07",
     "tags": [
       "constexprjs",
       "web"
@@ -53,6 +59,7 @@
     "title": "Accessing xorg clipboard from command line",
     "url": "/posts/clipboard_cli.html",
     "description": "A simple command line utility for working with clipboard on linux",
+    "date": "2023-10-07",
     "tags": [
       "utilities"
     ]
@@ -61,6 +68,7 @@
     "title": "All Delta Force Black Hawk Down OSTs",
     "url": "/posts/dfbhd_mus.html",
     "description": "All Delta Force Black Hawk Down OSTs extracted from the SBF assets",
+    "date": "2023-10-07",
     "tags": [
       "games"
     ]
@@ -69,6 +77,7 @@
     "title": "Reverse engineering SBF file format",
     "url": "/posts/dfbhd_sbf.html",
     "description": "Describes the SBF assets used to store music in DFBHD",
+    "date": "2023-10-07",
     "tags": [
       "games",
       "coding"
@@ -78,6 +87,7 @@
     "title": "Datest",
     "url": "/posts/datest.html",
     "description": "Documentation for 'datest', a clojure(script) testing framework designed to be used from the REPL",
+    "date": "2023-11-03",
     "tags": [
       "clojure"
     ]
@@ -86,6 +96,7 @@
     "title": "Build static websites using ReactJS and ConstexprJS",
     "url": "/posts/constexprjs_reactjs.html",
     "description": "Describes how reactjs can be used to render static websites",
+    "date": "2023-11-19",
     "tags": [
       "constexprjs",
       "web",
@@ -93,9 +104,10 @@
     ]
   },
   {
-    "title": "Honey bee's game of life",
+    "title": "Honey bee cellular automaton",
     "url": "/posts/bee.html",
-    "description": "An automaton that simulates a real world phenomena",
+    "description": "A cellular automaton that simulates a real world phenomena",
+    "date": "2023-12-14",
     "tags": [
       "coding"
     ]

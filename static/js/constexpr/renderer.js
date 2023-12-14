@@ -7,6 +7,7 @@ async function evalScript(path) {
 // All site configuration is loaded here
 // This is provided using a context to react code that renders the website
 let PageResources
+
 async function fetchResources() {
     let res = {
         mainCss: await fetch('/static/css/styles.css').then(res => res.text()),
@@ -30,6 +31,8 @@ async function fetchResources() {
             swipe: await fetch('/static/img/icons/swipe.svg')
                 .then(res => res.text()),
             moon: await fetch('/static/img/icons/moon.svg')
+                .then(res => res.text()),
+            rss: await fetch('/static/img/icons/rss.svg')
                 .then(res => res.text()),
         },
     };
@@ -161,7 +164,7 @@ async function populateHead(resources) {
     // )
 }
 
-function Page({ pageHasRendered }) {
+function Page({pageHasRendered}) {
     React.useEffect(() => {
         pageHasRendered()
     }, []);
@@ -208,7 +211,8 @@ function LeftSidebar() {
         if (document.querySelector('article').children[0].tagName !== 'H2') {
             marks = ['Top']
         }
-    } catch (e) {}
+    } catch (e) {
+    }
     marks.push(...Array.from(document.querySelectorAll('article h2'))
         .map(el => el.textContent))
 
@@ -280,21 +284,38 @@ function RightSidebar() {
                         'Subscribe'
                     ),
                     e(
-                        'div',
-                        {id: 'toggle_theme_wrapper'},
-                        e(
-                            PageResources.Consumer,
-                            {},
-                            (context) => e(
-                                SvgIcon,
-                                {
-                                    mask: true,
-                                    backgroundSvg: context.icons.moon,
-                                    id: 'toggle_theme',
-                                    style: {width: '1.3em', height: '1.3em'}
-                                }
+                        PageResources.Consumer,
+                        {},
+                        (context) => e(
+                            'div',
+                            {className: 'control-buttons'},
+                            e(
+                                'div',
+                                {id: 'toggle_theme_wrapper'},
+                                e(
+                                    SvgIcon,
+                                    {
+                                        mask: true,
+                                        backgroundSvg: context.icons.moon,
+                                        id: 'toggle_theme',
+                                        style: {width: '1.3em', height: '1.3em'}
+                                    }
+                                ),
+                            ),
+                            e(
+                                'a',
+                                {href: '/rss.xml'},
+                                e(
+                                    SvgIcon,
+                                    {
+                                        // mask: true,
+                                        backgroundSvg: context.icons.rss,
+                                        id: 'toggle_theme',
+                                        style: {width: '1.3em', height: '1.3em'}
+                                    }
+                                ),
                             )
-                        )
+                        ),
                     )
                 ),
             ),
@@ -326,7 +347,7 @@ function PageContent() {
                             'a', {
                                 href: item.href,
                                 key: item.href,
-                                className: item.href === window.location.pathname  || item.href + 'index.html' === window.location.pathname
+                                className: item.href === window.location.pathname || item.href + 'index.html' === window.location.pathname
                                     ? 'current' : '',
                             },
                             item.name
@@ -336,7 +357,10 @@ function PageContent() {
                 context.thisPost ? e(
                     'ul', {className: 'tags_list'},
                     context.thisPost.tags
-                        .map(tag => e('li', {key: tag}, e('a', {className: 'tag_element', href: `/tags/generator.html?${tag}`}, tag)))
+                        .map(tag => e('li', {key: tag}, e('a', {
+                            className: 'tag_element',
+                            href: `/tags/generator.html?${tag}`
+                        }, tag)))
                 ) : null
             ),
             e(Article, {}),
@@ -389,7 +413,16 @@ function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt}) 
         title,
         alt,
         style: _.merge(
-            mask ? {maskImage: dataUrl, WebkitMaskImage: dataUrl, maskPosition: 'center', WebkitMaskPosition: 'center', maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat', maskSize: 'contain', WebkitMaskSize: 'contain'} : {backgroundImage: dataUrl},
+            mask ? {
+                maskImage: dataUrl,
+                WebkitMaskImage: dataUrl,
+                maskPosition: 'center',
+                WebkitMaskPosition: 'center',
+                maskRepeat: 'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskSize: 'contain',
+                WebkitMaskSize: 'contain'
+            } : {backgroundImage: dataUrl},
             style
         ),
     }
@@ -410,9 +443,7 @@ function SvgIcon({backgroundSvg, mask, id, style, className, href, title, alt}) 
             'div',
             _.merge(
                 attrs,
-                {
-
-                }
+                {}
             )
         )
     }
@@ -436,11 +467,11 @@ function Article() {
         }
     })
     const sections = []
-    for (let i=0; i<headerIdxs.length; i++) {
+    for (let i = 0; i < headerIdxs.length; i++) {
         sections.push({
             id: titleToId(currentContent[headerIdxs[i]].textContent),
             ref: React.createRef(),
-            elements: currentContent.slice(headerIdxs[i], headerIdxs[i+1] || 1000000),
+            elements: currentContent.slice(headerIdxs[i], headerIdxs[i + 1] || 1000000),
         })
     }
     React.useEffect(() => {

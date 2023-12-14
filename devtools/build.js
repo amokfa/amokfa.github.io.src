@@ -3,6 +3,7 @@ const path = require('path')
 const cp = require('child_process')
 const execSh = require('exec-sh').promise
 const { createSitemap } = require('sitemaps')
+const RSS = require('rss')
 
 async function main() {
     process.chdir("..")
@@ -32,7 +33,7 @@ async function main() {
     )
     const config = JSON.parse(fs.readFileSync('collections/config.json'))
     const deps = JSON.parse(fs.readFileSync('devtools/deps.json'))
-    const now = new Date()
+    const posts = JSON.parse(fs.readFileSync('collections/posts.json'))
     createSitemap({
         filePath: '_out/sitemap.xml',
         urls: deps.allResults.map(
@@ -46,8 +47,24 @@ async function main() {
             }
         )
     })
+    const feed = new RSS({
+        title: 'Sagar Tiwari\'s blog',
+        feed_url: `${config.url}/rss.xml`,
+        site_url: `${config.url}`,
+        image_url: `${config.url}/favicon.ico`,
+        pubDate: posts.map((p) => p.date).reduce((a, b) => a > b ? a : b),
+    })
+    for (let post of posts) {
+        feed.item({
+            title: post.title,
+            description: post.description,
+            url: `${config.url}${post.url}`,
+            categories: post.tags,
+            date: new Date(post.date),
+        })
+    }
+    fs.writeFileSync('_out/rss.xml', feed.xml({indent: true}))
 }
-
 
 main()
     .then(() => process.exit(0))

@@ -109,9 +109,6 @@
     .dialog {
       .content {
         padding: 1em;
-        //display: flex;
-        //flex-direction: column;
-        //align-items: center;
         button {
           width: 100%;
           font-size: 1.1em;
@@ -122,10 +119,18 @@
         }
         #toggle_theme_wrapper {
           display: inline-block;
-          margin-top: 1em;
           cursor: pointer;
           padding: 5px;
           border-radius: 3px;
+        }
+        .control-buttons {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          > * {
+            margin-top: 1em;
+            margin-right: 1em;
+          }
         }
       }
     }
