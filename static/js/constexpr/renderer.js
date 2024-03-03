@@ -265,8 +265,6 @@ function RightSidebar() {
         context => e(
             'div',
             {id: 'right-sidebar'},
-            e('a', {href: 'https://github.com/amokfa/ConstexprJS', target: '_blank'},
-                e('img', {src: '/static/img/power.png', className: 'etopower'})),
             e(
                 'div',
                 {className: 'dialog'},
