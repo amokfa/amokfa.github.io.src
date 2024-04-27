@@ -111,5 +111,16 @@
     "tags": [
       "coding"
     ]
+  },
+  {
+    "title": "Turning off the borrow checker",
+    "url": "/posts/rust_disable_borrowchecker.html",
+    "description": "How you can bypass borrow checking in your rust programs if you need to",
+    "date": "2024-04-27",
+    "tags": [
+      "rust",
+      "games",
+      "coding"
+    ]
   }
 ]
