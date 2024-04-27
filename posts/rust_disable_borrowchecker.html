@@ -5,10 +5,11 @@
     <p>
         LogLog Games is an indie game studio that moved from unity to rust 3 years ago. They wrote their own
         game engine in rust and developed and published a game using it as well. Recently they decided to abandon
-        rust and move back to unity. They wrote an article sharing their reasons for this decision. A lot of the reasons
-        could be boiled down to the statement that <a href="https://loglog.games/blog/leaving-rust-gamedev">rust borrow checker is too strict</a>.
-        The compiler will reject valid programs because it cannot prove that they are safe in the framework
-        defined by the creators of the rust language. This is one of the example they used (in the section "Abstraction isn't a choice"):
+        rust and move back to unity. They wrote an <a href="https://loglog.games/blog/leaving-rust-gamedev">article</a>
+        sharing their reasons for this decision. A lot of the reasons could be boiled down to the statement that rust
+        borrow checker is too strict. The compiler will reject valid programs because it cannot prove that they are safe
+        in the framework defined by the creators of the rust language. This is one of the example they used (in the
+        section "Abstraction isn't a choice"):
     </p>
     <prog>
 if let Some(character) = &self.selected_duck {
