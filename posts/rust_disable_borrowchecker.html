@@ -5,7 +5,7 @@
     <p>
         LogLog Games is an indie game studio that moved from unity to rust 3 years ago. They wrote their own
         game engine in rust and developed and published a game using it as well. Recently they decided to abandon
-        rust and move back to unity. They wrote an <a href="https://loglog.games/blog/leaving-rust-gamedev">article</a>
+        rust and move back to unity. They wrote an <a target="_blank" href="https://loglog.games/blog/leaving-rust-gamedev">article</a>
         sharing their reasons for this decision. A lot of the reasons could be boiled down to the statement that rust
         borrow checker is too strict. The compiler will reject valid programs because it cannot prove that they are safe
         in the framework defined by the creators of the rust language. This is one of the example they used (in the
@@ -23,9 +23,9 @@ if let Some(character) = &self.selected_duck {
         <progi>self</progi> to a function. The compilation fails apparently because the function takes a mutable reference
         to <progi>self</progi>, and rustc won't allow that because there is already an immutable reference to a field of
         <progi>self</progi> in scope. This code won't compile even if <progi>character_select_duck_detail</progi> isn't
-        mutating the field of <progi>self</progi> that has been borrowed. The compiler just isn't smart enough to see
-        this. So you need to refactor your code to satisfy the compiler. And sometimes that refactoring results in
-        suboptimal code. Even if the refactoring doesn't result in suboptimal code, a lot of times it's completely
+        mutating the field of <progi>self</progi> that has been borrowed. The compiler/optimizer just isn't smart enough to take that into account.
+        So you need to refactor your code to satisfy the compiler. Their argument is that sometimes that refactoring
+        results in suboptimal code. Even if the refactoring doesn't result in suboptimal code, a lot of times it's completely
         unnecessary and just adds unneeded burden on the programmer. The model you have of your code in your head might
         not be the same as the model borrow checker has of your code and in those situations it's just a distraction.
     </p>
@@ -41,10 +41,6 @@ pub fn ms&lt;T: ?Sized>(r : &T) -> &'static T {
 pub fn mm&lt;T: ?Sized>(r : &T) -> &mut T {
     #[allow(mutable_transmutes)]
     unsafe { std::mem::transmute::&lt;_, &mut T>(r) }
-}
-
-pub fn msm&lt;T: ?Sized>(r : &mut T) -> &'static mut T {
-    unsafe { std::mem::transmute::&lt;_, &'static mut T>(r) }
 }
     </prog>
     <p>
@@ -71,10 +67,17 @@ if frame_idx % 30 == 0 {
     </prog>
     <p>
         The engine takes a screenshot every 0.5s and uses it to show the color under the cursor. I use it to debug rendering
-        bugs. If you remove lines 2 and 3 the compiler will start complaining about lifetimes. It will say that the
+        issues. If you remove lines 2 and 3 the compiler will start complaining about lifetimes. It will say that the
         launched thread might outlive these objects and then I will get a use after free bug. What the compiler doesn't
-        know is that these objects live as long as the game. So I use <progi>ms</progi> to silence the compiler. I could
-        wrap these objects with <progi>Arc&lt;Mutex&lt;>></progi> but it is completely unnecessary in this case.
+        know is that these objects live as long as the game. So I use <progi>ms</progi> to silence the compiler.
+    </p>
+    <p>
+        I could wrap these objects with <progi>Arc&lt;Mutex&lt;>></progi> but it feels unnecessary in this case. I did put
+        the screenshot buffer inside a mutex for correctness' sake but even that isn't necessary. There are millions of pixels on the
+        screen and a write happens only once every 0.5s. The probability that a pixel will be written to while we are reading
+        it is very low. Even then the pixel color we read will be a blend of the RGBA values of the previous frame and the
+        next frame and will only look like that for one frame. Rust gives you guaranteed memory and thread safety but you
+        might not even need that in many cases.
     </p>
     <p>
         <progi>mm</progi> stands for make mutable. It takes a constant pointer and returns a mutable pointer. This function
@@ -91,8 +94,8 @@ if let Some(character) = &self.selected_duck {
     </prog>
     <p>
         Of course this method is about as far away from conventional rust as you could go. If you use these utilities, rustc
-        cannot guarantee the memory safety in your programs. Warranty void if seal broken. You will get segmentation faults,
-        use after free bugs, data races, UB etc if you aren't careful. But then some programmers view the memory bugs as just
+        cannot guarantee memory safety in your programs. Warranty void if seal broken. You will get segmentation faults,
+        use after free bugs, data races, UB etc if you aren't careful. But then some programmers believe the memory bugs are just
         another class of bugs that you are supposed to weed out before shipping.
     </p>
 </article>
