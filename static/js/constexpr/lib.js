@@ -1,6 +1,15 @@
 if (!window._ConstexprJS_) {
   window._ConstexprJS_ = {
-    compile: () => {},
+    compile: () => {
+      // If compile is called, that means the page has rendered, we can reset the scroll position
+      const scrollPosition = localStorage.getItem("scrollPosition")
+      if (scrollPosition) {
+        const html = document.querySelector('html')
+        html.style.setProperty('scroll-behavior', 'auto')
+        window.scrollTo(0, parseInt(scrollPosition, 10))
+        html.style.removeProperty('scroll-behavior')
+      }
+    },
     abort: () => {},
     addPath: () => {},
     addExclusion: () => {},
@@ -79,3 +88,11 @@ console.info = function filterWarnings(msg, ...args) {
     window._ConstexprJS_.consoleInfo(msg, ...args);
   }
 };
+
+window.addEventListener("beforeunload", function() {
+  localStorage.setItem("scrollPosition", window.scrollY);
+});
+
+window.addEventListener('focus', function() {
+  location.reload();
+});

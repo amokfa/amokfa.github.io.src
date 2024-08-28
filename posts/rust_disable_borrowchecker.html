@@ -2,6 +2,7 @@
 <html lang="en">
 <body>
 <article>
+    <h2>Why?</h2>
     <p>
         LogLog Games is an indie game studio that moved from unity to rust 3 years ago. They wrote their own
         game engine in rust and developed and published a game using it as well. Recently they decided to abandon
@@ -20,15 +21,16 @@ if let Some(character) = &self.selected_duck {
     </prog>
     <p>
         Here they are taking a reference to the field <progi>selected_duck</progi> and in the next line they are passing
-        <progi>self</progi> to a function. The compilation fails apparently because the function takes a mutable reference
+        <progi>self</progi> to a function. The compilation fails because the function takes a mutable reference
         to <progi>self</progi>, and rustc won't allow that because there is already an immutable reference to a field of
         <progi>self</progi> in scope. This code won't compile even if <progi>character_select_duck_detail</progi> isn't
-        mutating the field of <progi>self</progi> that has been borrowed. The compiler/optimizer just isn't smart enough to take that into account.
+        mutating the field of <progi>self</progi> that has been borrowed. The compiler/optimizer simply isn't smart enough to take that into account.
         So you need to refactor your code to satisfy the compiler. Their argument is that sometimes that refactoring
         results in suboptimal code. Even if the refactoring doesn't result in suboptimal code, a lot of times it's completely
         unnecessary and just adds unneeded burden on the programmer. The model you have of your code in your head might
         not be the same as the model borrow checker has of your code and in those situations it's just a distraction.
     </p>
+    <h2>How?</h2>
     <p>
         However, there is a way you can turn off the borrow checker if you are fairly sure that the errors it's giving
         you are false positives. I have a couple utility functions that do this:
@@ -47,6 +49,10 @@ pub fn mm&lt;T: ?Sized>(r : &T) -> &mut T {
         These functions takes a pointer as input, and gives another pointer as output. The output is the same pointer,
         the same 8 bytes representing a location in memory, but with a different type.
     </p>
+    <blockquote>
+        Rust veterans will disagree with me here. A reference is not the same thing as a pointer. But it looks like a
+        pointer and quacks like a pointer, so I'm using it like a pointer.
+    </blockquote>
     <p>
         <progi>ms</progi> stands for make static. It takes a regular pointer and gives back a static pointer. Static
         pointers have infinite lifetime, so if the compiler is complaining about a lifetime error which you know is
@@ -76,8 +82,8 @@ if frame_idx % 30 == 0 {
         the screenshot buffer inside a mutex for correctness' sake but even that isn't necessary. There are millions of pixels on the
         screen and a write happens only once every 0.5s. The probability that a pixel will be written to while we are reading
         it is very low. Even then the pixel color we read will be a blend of the RGBA values of the previous frame and the
-        next frame and will only look like that for one frame. Rust gives you guaranteed memory and thread safety but you
-        might not even need that in many cases.
+        next frame and will only look like that for one frame, assuming the buffer is not overwritten in multiples of 4 bytes, in which case even that won't happen.
+        Rust gives you guaranteed memory and thread safety, but you might not even need that in many cases.
     </p>
     <p>
         <progi>mm</progi> stands for make mutable. It takes a constant pointer and returns a mutable pointer. This function
@@ -93,10 +99,41 @@ if let Some(character) = &self.selected_duck {
 }
     </prog>
     <p>
-        Of course this method is about as far away from conventional rust as you could go. If you use these utilities, rustc
+        Of course this is about as far away from conventional rust as you could go. If you use these utilities, rustc
         cannot guarantee memory safety in your programs. Warranty void if seal broken. You will get segmentation faults,
-        use after free bugs, data races, UB etc if you aren't careful. But then some programmers believe the memory bugs are just
+        use after free bugs, data races, UB, the whole bunch, if you aren't careful. But then some programmers believe the memory bugs are just
         another class of bugs that you are supposed to weed out before shipping.
+    </p>
+    <h2>Should you write rust like this?</h2>
+    <p>
+        You shouldn't program a tls library the same way you program a video game. Vice verse, you shouldn't have to program a video game the same way you program a tls library.
+        Video game programming is distinct due to its significant emphasis on extensive prototyping. You need to prototype <em>a lot</em> to
+        figure out what looks good and feels fun. Many games stay in the prototyping phase right upto the release date. That's when the
+        developers clean everything up and ship it to the users. As evident by the article written by LogLog games, rust
+        is <em>very</em> hostile to such programming patterns. And if you're building a single player game, it doesn't really
+        matter if the program crashes once during a runtime of 100 years, which translates to 10 out of a million players seeing
+        the crash once if they finish it in 10 hours. You need to see if that level of reliability is worth the
+        loss of ergonomics which rust forces on you for your particular use case. Not to mention that a user will not gain anything by hacking the vulnerabilities in his single player game.
+        It would be a good idea to write safe code in the netcode of a multiplayer game though, because that is likely the component that
+        the cheaters will attack.
+    </p>
+    <p>
+        For many command-line utilities, it doesn't matter if your program has vulnerabilities or concurrency bugs either, except for how they affect the user experience.
+    </p>
+    <p>
+        When you're writing rust like this, you'll have to maintain a list of unchecked invariants in your mind about your program. This is where
+        the memory and concurrency bugs will originate from. It would be a good idea to write them down as well, or encode them
+        in the structure of a program. And the larger your team size is, the more likely it will be that you'll either forget
+        to document these invariants properly, or someone will not understand them properly and cause problems. And the chances
+        of seeing memory bugs will increase.
+    </p>
+    <p>
+        It would definitely be a bad idea to write a library like this and publish it for others to use. I would be very hesitant
+        to use a rust library whose code is written like this. It's very likely that the author of that library hasn't
+        considered all the ways in which people will use that library, and someone will use that library in a way it wasn't
+        intended, and introduce a bug in their program. But for moderately sized <em>applications</em> where security/reliability
+        isn't one of the main concerns, or you want/need to be able to prototype very quickly, there are little to no reasons
+        for not programming like this.
     </p>
 </article>
 </body>
@@ -107,8 +144,7 @@ if let Some(character) = &self.selected_duck {
     async function render_page() {
         document.querySelectorAll('prog')
             .forEach((el) => el.classList.add('language-rust'))
-        const base_page_render = site_global_rendering()
-        await base_page_render
+        await site_global_rendering()
     }
 </script>
 
