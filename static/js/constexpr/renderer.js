@@ -40,6 +40,9 @@ async function fetchResources() {
     res.thisPost = res.posts.find(p => p.url === document.location.pathname)
     if (res.thisPost) {
         res.title = res.thisPost.title
+        if (res.thisPost.draft) {
+            res.title = res.title + " (DRAFT)"
+        }
     } else {
         let navItem = res.nav.find(n => n.href === document.location.pathname)
         if (navItem) {
@@ -351,7 +354,7 @@ function PageContent() {
                             item.name
                         ))
                 ),
-                e('h1', {id: 'main_title'}, context.thisPost ? context.thisPost.title : ''),
+                e('h1', {id: 'main_title'}, context.title),
                 context.thisPost ? e(
                     'ul', {className: 'tags_list'},
                     context.thisPost.tags

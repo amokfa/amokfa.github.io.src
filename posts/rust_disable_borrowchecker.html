@@ -105,8 +105,9 @@ if let Some(character) = &self.selected_duck {
         another class of bugs that you are supposed to weed out before shipping.
     </p>
     <h2>Should you write rust like this?</h2>
+    <img src="/static/img/seatbelt.webp" />
     <p>
-        You shouldn't program a tls library the same way you program a video game. Vice verse, you shouldn't have to program a video game the same way you program a tls library.
+        You shouldn't program a TLS library the same way you program a video game. Vice verse, you shouldn't have to program a video game the same way you program a TLS library.
         Video game programming is distinct due to its significant emphasis on extensive prototyping. You need to prototype <em>a lot</em> to
         figure out what looks good and feels fun. Many games stay in the prototyping phase right upto the release date. That's when the
         developers clean everything up and ship it to the users. As evident by the article written by LogLog games, rust
@@ -114,8 +115,6 @@ if let Some(character) = &self.selected_duck {
         matter if the program crashes once during a runtime of 100 years, which translates to 10 out of a million players seeing
         the crash once if they finish it in 10 hours. You need to see if that level of reliability is worth the
         loss of ergonomics which rust forces on you for your particular use case. Not to mention that a user will not gain anything by hacking the vulnerabilities in his single player game.
-        It would be a good idea to write safe code in the netcode of a multiplayer game though, because that is likely the component that
-        the cheaters will attack.
     </p>
     <p>
         For many command-line utilities, it doesn't matter if your program has vulnerabilities or concurrency bugs either, except for how they affect the user experience.
@@ -133,7 +132,22 @@ if let Some(character) = &self.selected_duck {
         considered all the ways in which people will use that library, and someone will use that library in a way it wasn't
         intended, and introduce a bug in their program. But for moderately sized <em>applications</em> where security/reliability
         isn't one of the main concerns, or you want/need to be able to prototype very quickly, there are little to no reasons
-        for not programming like this.
+        for not using these techniques.
+    </p>
+    <h2>Why even use rust if you're going to bypass the borrow checker?</h2>
+    <p>
+        If you're bypassing Rust's borrow checker, it might seem like you're throwing away its main selling point—memory
+        safety. But Rust offers much more than just the borrow checker. For one, it provides checked array indexing,
+        which prevents common out-of-bounds bugs at runtime, giving you safety even without a manual bounds check.
+        Rust’s straightforward cross-compilation process also makes it easy to build and deploy for multiple platforms,
+        a far cry from the headaches often faced in languages like C++. Speaking of C++, Rust boasts a sane feature set;
+        it's far less cluttered and avoids the excessive complexity C++ has accumulated over the years. Rust also has a
+        rich and growing community, ensuring that help, libraries, and knowledge are readily available. Plus, it has a rich and
+        stable standard library, which means you can accomplish a lot without resorting to third party libraries.
+        And even when you have to reach for third party libraries, using them is about as easy as it could be.
+        Amazing tooling and IDE support, often missing in newer languages, makes Rust a joy to work with on both small
+        and large projects. Even if you bypass some of its strictest features like the borrow checker, these other
+        advantages still make Rust an incredibly valuable tool for building reliable software.
     </p>
 </article>
 </body>
@@ -152,5 +166,13 @@ if let Some(character) = &self.selected_duck {
     render_page()
         .then(() => window._ConstexprJS_.compile())
 </script>
+
+<style>
+    article img {
+        max-height: 25em;
+        display: block;
+        margin: 2em auto;
+    }
+</style>
 
 </html>
