@@ -25,7 +25,9 @@
       generator: post.url,
       output: post.url
     }))
-    posts.forEach(post => {
+    posts
+        .filter(p => window._ConstexprJS_.DEV ? true : !p.draft)
+        .forEach(post => {
       let tags = ''
       post.tags.forEach(tag => {
         tags += `<a class="tag_element" href="/tags/generator.html?${tag}">${tag}</a> `

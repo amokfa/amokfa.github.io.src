@@ -14,8 +14,7 @@ async function fetchResources() {
         cfg: await fetch('/collections/config.json')
             .then(res => res.json()),
         posts: await fetch('/collections/posts.json')
-            .then(res => res.json())
-            .then(res => window._ConstexprJS_.DEV ? res : res.filter(p => !p.draft)),
+            .then(res => res.json()),
         nav: await fetch('/collections/nav.json')
             .then(res => res.json()),
         projects: await fetch('/collections/projects.json')

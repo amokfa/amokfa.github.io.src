@@ -93,6 +93,8 @@ window.addEventListener("beforeunload", function() {
   localStorage.setItem("scrollPosition", window.scrollY);
 });
 
-window.addEventListener('focus', function() {
-  location.reload();
-});
+if (window._ConstexprJS_.DEV) {
+  window.addEventListener('focus', function() {
+    location.reload();
+  });
+}
